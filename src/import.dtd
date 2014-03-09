@@ -1,0 +1,28 @@
+<!ELEMENT templates (template)+>
+<!ELEMENT template (sheet)+>
+<!ATTLIST template id CDATA #REQUIRED>
+<!ATTLIST template workbookProtect (true|false) #IMPLIED>
+<!ATTLIST template certificate CDATA #IMPLIED>
+<!ELEMENT sheet (col)+>
+<!ATTLIST sheet name CDATA #REQUIRED>
+<!ATTLIST sheet tableName CDATA #REQUIRED>
+<!ATTLIST sheet dataStartRowNum CDATA #REQUIRED>
+<!ATTLIST sheet isValidate (true|false) #IMPLIED>
+<!ATTLIST sheet operation (UPDATE|INSERT|MULTINSERT) #REQUIRED>
+<!ATTLIST sheet wholeRow (true|false) #IMPLIED>
+<!ATTLIST sheet colCount CDATA #IMPLIED>
+
+<!ELEMENT col (validation)*>
+<!ATTLIST col colNum CDATA #REQUIRED>
+<!ATTLIST col tabField CDATA #REQUIRED>
+<!ATTLIST col colName CDATA #IMPLIED>
+<!ATTLIST col fieldType (STRING|NUM|DATE) #REQUIRED>
+<!ATTLIST col isCondition (true|false) #IMPLIED>
+<!ATTLIST col colNum (UPDATE|INSERT) #REQUIRED>
+<!ATTLIST col colNum (UPDATE|INSERT) #REQUIRED>
+<!ATTLIST col converter CDATA #IMPLIED>
+<!ATTLIST col regExpChecker CDATA #IMPLIED>
+<!ATTLIST col unique (true|false) #IMPLIED>
+<!ATTLIST col maxLength CDATA #IMPLIED>
+<!ELEMENT validation EMPTY>
+<!ATTLIST validation valType (NOTNULL|NUM|POSITIVENUM) #REQUIRED>

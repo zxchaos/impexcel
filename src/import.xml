@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE templates SYSTEM "import.dtd">
+<!-- Excel 文件导入配置 -->
+<!--
+	 
+	<template id="template1" certificate="c58f3e113b85c1ac1a7ebe9b8739b035"> 
+		标签template：每一个template标签对应一个导入模板 id在整个配置文件中唯一	
+		
+		workbookProtect 属性为是否在编写模板是进行了工作簿保护 true为设置了工作簿保护， false或不填为未设置工作簿保护
+		
+		certificate属性为导入的模板文件的认证码，用于区分是否为初始提供的模板文件，设置该属性是为了防止导入的excel文件不是原始系统提供的模板文件，
+		该属性值的验证需要在模板文件中新建名称为certificate的sheet来记录该认证码该认证码需要与该属性值一致。 如不需要验证，则此属性可不填
+		
+		
+			<sheet name="" tableName="" dataStartRowNum="" isValidate="">
+			 	标签sheet：每一个sheet标签对应模板中的每一个sheet 
+			 	name 为sheet的名称 
+			 	tableName为该sheet中要导入的数据所插入的表名 
+			 	dataStartRowNum为导入数据起始的行数（不包括标题与表头） 
+			 	isValidate 取值为true 时对该sheet中的导入字段进行验证 值为false或不填写则不对该sheet进行验证 
+				operation 对本工作簿sheet要做的操作分为：UPDATE | INSERT | MULTINSERT 此属性必填，此属性值含义：更新操作，插入操作，多行插入操作即一行中填写了多条记录
+				wholeRow 该属性意义为：sheet中配置的列是否为包含了一整行（即该行中没有其他列），若该属性值为false或不配置则所配置的列不包含一整行，例如模板中可能包含已经预生成的列
+				colCount 该属性与operation的值为MULTINSERT时一起使用，colCount属性值为多行插入时每条记录的列数目
+					<col colNum="" tabField="" fieldType="" converter="" regexpChecker="">
+			 			标签col为 模板中要导入的列信息 
+			 			colNum 导入的Excel列号 第几列 
+			 			
+			 			#+++新加+++
+			 			colName 列名称，即excel列的表头名称 目前没用
+			 			isCondition 是否作为sql语句的条件（目前只和sheet标签的operation属性一起使用，即当operation为UPDATE时在生成的sql语句最后增加条件）将此属性设为false或不设置该属性则不当做条件
+			 			#+++++++新加++++++
+			 			
+			 			tabField 对应插入表中的字段名称 
+			 			fieldType 导入字段的类型支持类型： STRING | NUM | DATE （注：在excel表中填写日期格式的形式为：yyyy-MM-dd）
+			 			converter 若导入单元格中的值需要转换（例如："新疆"要转换为650000）则此属性中填写转换器类，转换器类要实现IConverter接口 不设置该属性则不做转换
+			 			regExpChecker feildType为STRING时可配置正则表达式检验器来检验是否符合特定格式
+			 			unique 若该属性设置为true则表示此列中的值是否唯一在该列中的所有值中不能重复;若设置为false或不设置则表示不增加此限制
+			 			maxLength 字符串的最大长度按英文字符算即汉字算为2个字符
+							<validation valType="">
+				 				标签validation：当sheet标签中的validate为true时该标签起作用 其属性valType支持类型：NOTNULL（非空）| NUM（非空数字）| POSITIVENUM（正浮点数） 
+							</validation> 
+			 		</col>
+			</sheet> 
+	</template>
+	-->
+	
+<templates>
+	<!-- 数据批量录入 -->
+	<template id="csgj"  workbookProtect="true" certificate="7bb2bee76b8904c8f05ee64d2979ac0bf2186f8a">
+		<sheet name="csgj" tableName="CSGJ_YYYXX" dataStartRowNum="5" isValidate="true" wholeRow="true" operation="UPDATE">
+			<col colNum="1" tabField="CPHM" colName="车牌号" fieldType="STRING" isCondition="true"></col>
+			<col colNum="6" tabField="RLLX" colName="燃料类型" fieldType="STRING">
+			</col>
+			<col colNum="7" tabField="SJYYTS" colName="实际运营天数" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="8" tabField="GFQDCPJYYSJ" colName="高峰期单程平均运营时间(分钟)" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="9" tabField="YCGL" colName="月初公里(表里程)" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="10" tabField="YMGL" colName="月末公里(表里程)" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="11" tabField="DYXSLC" colName="当月行驶里程（公里）" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="12" tabField="LCSJLY" colName="行驶里程数据来源" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.XSLCDataSourceConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			
+			<col colNum="13" tabField="DYQYXHL" colName="汽油" fieldType="NUM">
+			</col>
+			<col colNum="14" tabField="DYCYXHL" colName="柴油" fieldType="NUM">
+			</col>
+			<col colNum="15" tabField="DYLNGXHL" colName="LNG" fieldType="NUM">
+			</col>
+			<col colNum="16" tabField="DYLPGXHL" colName="LPG" fieldType="NUM">
+			</col>
+			<col colNum="17" tabField="DYCNGXHL" colName="CNG" fieldType="NUM">
+			</col>
+			<col colNum="18" tabField="RYXHSJLY" colName="燃油消耗数据来源"  fieldType="STRING" converter="com.taiji.excelimp.impl.converter.RYXHDataSourceConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+		</sheet>
+	</template>
+	<template id="ncky"  workbookProtect="true" certificate="238bc6dece7d7644d2c3b2e7a3494cd7684e0578">
+		<sheet name="ncky" tableName="NCKY_YYYXX" dataStartRowNum="5" isValidate="true" wholeRow="true" operation="UPDATE">
+			<col colNum="1" tabField="CPHM" colName="车牌号" fieldType="STRING" isCondition="true"></col>
+			<col colNum="7" tabField="RLLX" colName="燃料类型" fieldType="STRING">
+			</col>
+			<col colNum="8" tabField="SJYYTS" colName="实际运营天数" fieldType="NUM">
+			<validation valType="NUM"/>
+			</col>
+			<col colNum="9" tabField="GFQDCPJYYSJ" colName="高峰期单程平均运营时间(分钟)" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="10" tabField="YCGL" colName="月初公里(表里程)" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="11" tabField="YMGL" colName="月末公里(表里程)" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="12" tabField="DYXSLC" colName="当月行驶里程（公里）" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="13" tabField="LCSJLY" colName="行驶里程数据来源" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.XSLCDataSourceConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			
+			<col colNum="14" tabField="DYQYXHL" colName="汽油" fieldType="NUM">
+			</col>
+			<col colNum="15" tabField="DYCYXHL" colName="柴油" fieldType="NUM">
+			</col>
+			<col colNum="16" tabField="DYLNGXHL" colName="LNG" fieldType="NUM">
+			</col>
+			<col colNum="17" tabField="DYLPGXHL" colName="LPG" fieldType="NUM">
+			</col>
+			<col colNum="18" tabField="DYCNGXHL" colName="CNG" fieldType="NUM">
+			</col>
+			<col colNum="19" tabField="RYXHSJLY" colName="燃油消耗数据来源" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.RYXHDataSourceConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+		</sheet>
+	</template>
+	<template id="czqc"  workbookProtect="true" certificate="2dc6df0c2a8a24a1ec39ae6aed7ce1e37b2ff0b1">
+		<sheet name="czqc" tableName="CZQC_YYYXX" dataStartRowNum="5" isValidate="true" wholeRow="true" operation="UPDATE">
+			<col colNum="1" tabField="CPHM" colName="车牌号" fieldType="STRING" isCondition="true"></col>
+			
+			<col colNum="7" tabField="RLLX" colName="燃料类型" fieldType="STRING">
+			</col>
+			<col colNum="8" tabField="SJYYTS" colName="实际运营天数" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="9" tabField="GFQDCPJYYSJ" colName="高峰期单程平均运营时间(分钟)" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="10" tabField="YCGL" colName="月初公里(表里程)" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="11" tabField="YMGL" colName="月末公里(表里程)" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="12" tabField="DYXSLC" colName="当月行驶里程（公里）" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="13" tabField="LCSJLY" colName="行驶里程数据来源" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.XSLCDataSourceConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			
+			<col colNum="14" tabField="DYQYXHL" colName="汽油" fieldType="NUM">
+			</col>
+			<col colNum="15" tabField="DYCYXHL" colName="柴油" fieldType="NUM">
+			</col>
+			<col colNum="16" tabField="DYLNGXHL" colName="LNG" fieldType="NUM">
+			</col>
+			<col colNum="17" tabField="DYLPGXHL" colName="LPG" fieldType="NUM">
+			</col>
+			<col colNum="18" tabField="DYCNGXHL" colName="CNG" fieldType="NUM">
+			</col>
+			<col colNum="19" tabField="RYXHSJLY" colName="燃油消耗数据来源" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.RYXHDataSourceConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+		</sheet>
+	</template>
+	
+	<!-- 批量注册 -->
+	<!-- 城市公交批量注册 -->
+	<template id="csgjplzc"  workbookProtect="true" certificate="468e9d86912aeb53bd108d8a8f4de5e8ec7da4a2">
+		<sheet name="csgjplzc" tableName="CSGJJCB" dataStartRowNum="5" isValidate="true" operation="INSERT" wholeRow="true">
+			<col colNum="1" tabField="CPHM" colName="车牌号码" fieldType="STRING" unique="true" regExpChecker="com.taiji.excelimp.impl.checker.CPHMRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="2" tabField="CPYS" colName="车牌颜色" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.CPYSConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="3" tabField="BGQK" colName="变更情况" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.BGQKConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="4" tabField="BGQKDYSJ" colName="变更日期" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="5" tabField="CSLCS" colName="初始里程数（公里）" fieldType="NUM">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="6" tabField="CJH" colName="车辆识别代号/车架号" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.CLSBDHRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="7" tabField="JDCDJZFZRQ" colName="机动车登记证发证日期" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="8" tabField="JDCDJZSBH" colName="机动车登记证书编号" fieldType="STRING" maxLength="12">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="9" tabField="FDJH" colName="发动机号" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.EngineNumChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="10" tabField="JYFS" colName="经营方式" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.JYFSConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="11" tabField="SYXZ" colName="使用性质" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.SYXZConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="12" tabField="SFGPS" colName="是否安装GPS" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.TrueFlaseConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="13" tabField="JDCSYR" colName="机动车所有人" fieldType="STRING" maxLength="50">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="14" tabField="GJHM" colName="线路名称" fieldType="STRING">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="15" tabField="SSFGS" colName="所属分公司" fieldType="STRING" maxLength="100"/>
+			
+			<col colNum="16" tabField="CLPP" colName="车辆品牌" fieldType="STRING" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="17" tabField="CLXH" colName="车辆型号" fieldType="STRING" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="18" tabField="FDJXH" colName="发动机型号" fieldType="STRING" maxLength="50">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="19" tabField="CLLX" colName="车辆类型" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.CLLXConverter" >
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="20" tabField="SCCJ" colName="生产厂家" fieldType="STRING" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="21" tabField="CC" colName="长" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="22" tabField="CK" colName="宽" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="23" tabField="CG" colName="高" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="24" tabField="RLLX" colName="类型" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.RLLXConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="25" tabField="RLLX*1" colName="明细" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.SecondRLLXConverter">
+			</col>
+			<col colNum="26" tabField="PL" colName="排量(毫升)" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="27" tabField="PFBZ" colName="排放标准" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.PFBZConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="28" tabField="SFKTC" colName="是否为空调车" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.TrueFlaseConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="29" tabField="BSQXS" colName="变速器型式" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.BSQXSConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="30" tabField="ZZL" colName="总质量(千克)" fieldType="NUM">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="31" tabField="EDZK" colName="额定载客(人)" fieldType="NUM" regExpChecker="com.taiji.excelimp.impl.checker.EDZKChecker">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="32" tabField="SFSCC" colName="是否双层车" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.TrueFlaseConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="33" tabField="FDJGL" colName="功率(千瓦)" fieldType="NUM">
+				<validation valType="POSITIVENUM"/>
+			</col>
+		</sheet>
+	</template>
+	<!-- 农村客运批量注册 -->
+	<template id="nckyplzc"  workbookProtect="true" certificate="dfa136c64eb34d37c737f9e693b24a3f836f8f4e">
+		<sheet name="nckyplzc" tableName="NCKYJCB" dataStartRowNum="5" isValidate="true" operation="INSERT" wholeRow="true">
+			<col colNum="1" tabField="CPHM" colName="车牌号码" fieldType="STRING" unique="true" regExpChecker="com.taiji.excelimp.impl.checker.CPHMRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="2" tabField="CPYS" colName="车牌颜色" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.CPYSConverter" >
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="3" tabField="BGQK" colName="变更情况" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.BGQKConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="4" tabField="BGQKDYSJ" colName="变更日期" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="5" tabField="CSLCS" colName="初始里程数（公里）" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="6" tabField="CJH" colName="车辆识别代号/车架号" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.CLSBDHRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="7" tabField="JDCDJZFZRQ" colName="机动车登记证发证日期" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="8" tabField="JDCDJZSBH" colName="机动车登记证书编号" fieldType="STRING" maxLength="12">
+				<validation valType="NOTNULL"/>
+			</col>
+			
+			<col colNum="9" tabField="FDJH" colName="发动机号" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.EngineNumChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="10" tabField="JYFS" colName="经营方式" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.JYFSConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="11" tabField="SYXZ" colName="使用性质" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.SYXZConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="12" tabField="SFGPS" colName="是否安装GPS" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.TrueFlaseConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="13" tabField="JDCSYR" colName="机动车所有人" fieldType="STRING" maxLength="50">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="14" tabField="NKHM" colName="线路名称" fieldType="STRING">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="15" tabField="SSFGS" colName="所属分公司" fieldType="STRING" maxLength="100"/>
+			
+			<col colNum="16" tabField="CLPP" colName="车辆品牌" fieldType="STRING" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="17" tabField="CLXH" colName="车辆型号" fieldType="STRING" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="18" tabField="FDJXH" colName="发动机型号" fieldType="STRING" maxLength="50">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="19" tabField="CLLX" colName="车辆类型" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.CLLXConverter" >
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="20" tabField="SCCJ" colName="生产厂家" fieldType="STRING" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="21" tabField="CC" colName="长" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="22" tabField="CK" colName="宽" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="23" tabField="CG" colName="高" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="24" tabField="RLLX" colName="类型" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.RLLXConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="25" tabField="RLLX*1" colName="明细" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.SecondRLLXConverter">
+			</col>
+			<col colNum="26" tabField="PL" colName="排量(毫升)" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="27" tabField="PFBZ" colName="排放标准" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.PFBZConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="28" tabField="SFKTC" colName="是否为空调车" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.TrueFlaseConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="29" tabField="BSQXS" colName="变速器型式" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.BSQXSConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="30" tabField="ZZL" colName="总质量(千克)" fieldType="NUM">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="31" tabField="EDZK" colName="额定载客(人)" fieldType="NUM" regExpChecker="com.taiji.excelimp.impl.checker.EDZKChecker">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="32" tabField="ZWS" colName="座位数" fieldType="NUM">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="33" tabField="FDJGL" colName="功率(千瓦)" fieldType="NUM">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="34" tabField="YYZH" colName="道路运输证号" fieldType="STRING" maxLength="20">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="35" tabField="DLYSZCCPFRQ" colName="初次配发日期" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="36" tabField="DLYSZYXQQ" colName="有效期起" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="37" tabField="DLYSZYXQZ" colName="有效期止" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="38" tabField="DLYSZFZJG" colName="发证机关" fieldType="STRING" maxLength="110">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="39" tabField="JYFW" colName="经营范围" fieldType="STRING" maxLength="210">
+				<validation valType="NOTNULL"/>
+			</col>
+		</sheet>
+	</template>
+	
+	<!-- 出租汽车批量注册 -->
+	<template id="czqcplzc"  workbookProtect="true" certificate="8dbcd22bf060925990da556fb1b89dabf5e96451">
+		<sheet name="czqcplzc" tableName="CZQCJCB" dataStartRowNum="5" isValidate="true" operation="INSERT" wholeRow="true">
+			<col colNum="1" tabField="CPHM" colName="车牌号码" fieldType="STRING" unique="true" regExpChecker="com.taiji.excelimp.impl.checker.CPHMRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="2" tabField="CPYS" colName="车牌颜色" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.CPYSConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="3" tabField="BGQK" colName="变更情况" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.BGQKConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="4" tabField="BGQKDYSJ" colName="变更日期" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="5" tabField="CSLCS" colName="初始里程数（公里）" fieldType="NUM">
+				<validation valType="NUM"/>
+			</col>
+			<col colNum="6" tabField="CJH" colName="车辆识别代号/车架号" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.CLSBDHRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="7" tabField="DJZFZRQ" colName="机动车登记证发证日期" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="8" tabField="JDCDJZSBH" colName="机动车登记证书编号" fieldType="STRING" maxLength="12">
+				<validation valType="NOTNULL"/>
+			</col>
+			
+			<col colNum="9" tabField="FDJH" colName="发动机号" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.EngineNumChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="10" tabField="JYFS" colName="经营方式" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.JYFSConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="11" tabField="SYXZ" colName="使用性质" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.SYXZConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="12" tabField="SFGPS" colName="是否安装GPS" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.TrueFlaseConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="13" tabField="YYMS" colName="运营模式" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.YYMSConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="14" tabField="JDCSYR" colName="机动车所有人" fieldType="STRING" maxLength="50">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="15" tabField="SSFGS" colName="所属分公司" fieldType="STRING" maxLength="100"/>
+			<col colNum="16" tabField="CLPP" colName="车辆品牌" fieldType="STRING" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="17" tabField="CLXH" colName="车辆型号" fieldType="STRING" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="18" tabField="FDJXH" colName="发动机型号" fieldType="STRING" maxLength="50">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="19" tabField="CLLX" colName="车辆类型" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.CLLXConverter" >
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="20" tabField="SCCJ" colName="生产厂家" fieldType="STRING" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="21" tabField="CC" colName="长" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="22" tabField="CK" colName="宽" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="23" tabField="CG" colName="高" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="24" tabField="RLLX" colName="类型" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.RLLXConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="25" tabField="RLLX*1" colName="明细" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.SecondRLLXConverter">
+			</col>
+			<col colNum="26" tabField="PL" colName="排量(毫升)" fieldType="NUM" >
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="27" tabField="PFBZ" colName="排放标准" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.PFBZConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="28" tabField="SFKTC" colName="是否为空调车" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.TrueFlaseConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="29" tabField="BSQXS" colName="变速器型式" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.BSQXSConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="30" tabField="ZZL" colName="总质量(千克)" fieldType="NUM">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="31" tabField="EDZK" colName="额定载客(人)" fieldType="NUM" regExpChecker="com.taiji.excelimp.impl.checker.EDZKChecker">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="32" tabField="FDJGL" colName="功率(千瓦)" fieldType="NUM">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="33" tabField="YYZH" colName="营运证号" fieldType="STRING" maxLength="50"/>
+			<col colNum="34" tabField="JYFW" colName="经营范围" fieldType="STRING" maxLength="150"/>
+			<col colNum="35" tabField="CCPFRQ" colName="初次配发日期" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker"/>
+			<col colNum="36" tabField="YXQQ" colName="有效期起" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker"/>
+			<col colNum="37" tabField="YXQZ" colName="有效期止" fieldType="STRING" regExpChecker="com.taiji.excelimp.impl.checker.DateRegExpChecker"/>
+			<col colNum="38" tabField="YYZFZJG" colName="发证机关" fieldType="STRING" maxLength="110"/>
+		</sheet>
+	</template>
+	
+	<!-- 农村客运线路批量导入 -->
+	<template id="nckyxlgl" certificate="ae1aa9abacc665789d06b4894fc136adecc82c3a" workbookProtect="true">
+		<sheet name="nckyxlgl" operation="INSERT" tableName="T_NCKY_XLGL"  dataStartRowNum="4" wholeRow="true">
+			<col colNum="1" tabField="XLMC" fieldType="STRING" colName="线路名称" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="2" tabField="BXSFDMC" fieldType="STRING" colName="班线始发地名称" maxLength="50">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="3" tabField="BXZDDMC" fieldType="STRING" colName="班线终到地名称" maxLength="50">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="4" tabField="XLCD" fieldType="NUM" colName="线路长度(公里)">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="5" tabField="RFBC" fieldType="NUM" colName="日发班次">
+				<validation valType="POSITIVENUM"/>
+			</col>
+			<col colNum="6" tabField="BXLX" fieldType="STRING" colName="班线类型" converter="com.taiji.excelimp.impl.converter.BXLXConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="7" tabField="XLDJ" fieldType="STRING" colName="线路等级" converter="com.taiji.excelimp.impl.converter.XLDJConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="8" tabField="XIAN" fieldType="STRING" colName="县（市、区）" converter="com.taiji.excelimp.impl.converter.XianName2CodeConverter">
+				<validation valType="NOTNULL"/>
+			</col>
+		</sheet>
+	</template>
+	
+	<!-- 受益人信息批量导入 -->
+	<!-- 城市公交受益人 -->
+	<template id="csgjsyr" certificate="70b8b815c7084ed9bb99c094bf2da100c2ee68c6" workbookProtect="true">
+		<sheet name="csgjsyr" operation="MULTINSERT" colCount="4" tableName="T_GRGZT_BTSYRJCB" isValidate="true"  dataStartRowNum="4">
+			<col colNum="8" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="9" tabField="LXFS" fieldType="STRING" colName="手机号" maxLength="50">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="10" tabField="SFZH" fieldType="STRING" colName="身份证号" regExpChecker="com.taiji.excelimp.impl.checker.IDCardChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="11" tabField="YHKH" fieldType="STRING" colName="银行卡号" maxLength="30">
+				<validation valType="NOTNULL"/>
+			</col>
+			
+			<col colNum="12" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100"/>
+			<col colNum="13" tabField="LXFS" fieldType="STRING" colName="手机号" maxLength="50"/>
+			<col colNum="14" tabField="SFZH" fieldType="STRING" colName="身份证号" regExpChecker="com.taiji.excelimp.impl.checker.IDCardChecker"/>
+			<col colNum="15" tabField="YHKH" fieldType="STRING" colName="银行卡号" maxLength="30"/>
+			
+			<col colNum="16" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100"/>
+			<col colNum="17" tabField="LXFS" fieldType="STRING" colName="手机号" maxLength="50"/>
+			<col colNum="18" tabField="SFZH" fieldType="STRING" colName="身份证号" regExpChecker="com.taiji.excelimp.impl.checker.IDCardChecker"/>
+			<col colNum="19" tabField="YHKH" fieldType="STRING" colName="银行卡号" maxLength="30"/>
+		</sheet>
+	</template>
+	<!-- 农村客运受益人 -->
+	<template id="nckysyr" certificate="4fb78be85c34580f2f3bdd4568d067b08adddd98" workbookProtect="true">
+		<sheet name="nckysyr" operation="MULTINSERT" colCount="4" tableName="T_GRGZT_BTSYRJCB" isValidate="true" dataStartRowNum="4">
+			<col colNum="8" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="9" tabField="LXFS" fieldType="STRING" colName="手机号" maxLength="50">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="10" tabField="SFZH" fieldType="STRING" colName="身份证号" regExpChecker="com.taiji.excelimp.impl.checker.IDCardChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="11" tabField="YHKH" fieldType="STRING" colName="银行卡号" maxLength="30">
+				<validation valType="NOTNULL"/>
+			</col>
+			
+			<col colNum="12" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100"/>
+			<col colNum="13" tabField="LXFS" fieldType="STRING" colName="手机号" maxLength="50"/>
+			<col colNum="14" tabField="SFZH" fieldType="STRING" colName="身份证号" regExpChecker="com.taiji.excelimp.impl.checker.IDCardChecker"/>
+			<col colNum="15" tabField="YHKH" fieldType="STRING" colName="银行卡号" maxLength="30"/>
+			
+			<col colNum="16" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100"/>
+			<col colNum="17" tabField="LXFS" fieldType="STRING" colName="手机号" maxLength="50"/>
+			<col colNum="18" tabField="SFZH" fieldType="STRING" colName="身份证号" regExpChecker="com.taiji.excelimp.impl.checker.IDCardChecker"/>
+			<col colNum="19" tabField="YHKH" fieldType="STRING" colName="银行卡号" maxLength="30"/>
+		</sheet>
+	</template>
+	<!-- 出租汽车受益人 -->
+	<template id="czqcsyr" certificate="43e07d10aa36e90b1230382744be94aad09c0bb9" workbookProtect="true">
+		<sheet name="czqcsyr" operation="MULTINSERT" colCount="4" tableName="T_GRGZT_BTSYRJCB" isValidate="true"  dataStartRowNum="4">
+			<col colNum="8" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="9" tabField="LXFS" fieldType="STRING" colName="手机号" maxLength="50">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="10" tabField="SFZH" fieldType="STRING" colName="身份证号" regExpChecker="com.taiji.excelimp.impl.checker.IDCardChecker">
+				<validation valType="NOTNULL"/>
+			</col>
+			<col colNum="11" tabField="YHKH" fieldType="STRING" colName="银行卡号" maxLength="30">
+				<validation valType="NOTNULL"/>
+			</col>
+			
+			<col colNum="12" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100"/>
+			<col colNum="13" tabField="LXFS" fieldType="STRING" colName="手机号" maxLength="50"/>
+			<col colNum="14" tabField="SFZH" fieldType="STRING" colName="身份证号" regExpChecker="com.taiji.excelimp.impl.checker.IDCardChecker"/>
+			<col colNum="15" tabField="YHKH" fieldType="STRING" colName="银行卡号" maxLength="30"/>
+			
+			<col colNum="16" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100"/>
+			<col colNum="17" tabField="LXFS" fieldType="STRING" colName="手机号" maxLength="50"/>
+			<col colNum="18" tabField="SFZH" fieldType="STRING" colName="身份证号" regExpChecker="com.taiji.excelimp.impl.checker.IDCardChecker"/>
+			<col colNum="19" tabField="YHKH" fieldType="STRING" colName="银行卡号" maxLength="30"/>
+		</sheet>
+	</template>
+</templates>
