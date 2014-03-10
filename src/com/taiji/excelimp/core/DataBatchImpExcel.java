@@ -559,7 +559,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 			calBGLPJDHNormal("DYLPGXHL", "LPGBGLPJDH", dyxslc, updateMap);
 		} else if ("'CNG'".equals(rllx)) {
 			calBGLPJDHNormal("DYCNGXHL", "CNGBGLPJDH", dyxslc, updateMap);
-		} else if ("'双燃料'".equals(rllx)) {
+		} else if (StringUtils.contains(rllx, "双燃料")) {
 			// 从当月汽油消耗量（DYQYXHL）或当月柴油消耗量（DYCYXHL）中取一个非空值放入updateMap中 再从
 			// LNG，LPG，CNG的当月柴油消耗量中取一个非空值放入updateMap中
 			calBGLPJDHNormal("DYQYXHL", "QYBGLPJDH", dyxslc, updateMap);
