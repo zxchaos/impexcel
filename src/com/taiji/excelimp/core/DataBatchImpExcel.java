@@ -400,8 +400,8 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 								Cell cCell = row.getCell(Integer.valueOf(colNum) - 1);
 								if (cCell == null || StringUtils.isBlank(ExcelImportUtil.getCellValue(cCell))) {
 									nullCellNum += ExcelImportUtil.colNumToColName(Integer.valueOf(colNum)) + ",";
-									ExcelImportUtil.setFailMsg(resultMap, "根据燃料类型判断，行：" + (rowIndex + 1) + "，列："
-											+ nullCellNum + "中都没有值");
+									ExcelImportUtil.setFailMsg(resultMap, "根据燃料类型判断，第" + (rowIndex + 1) + "行，第"
+											+ nullCellNum + "列中都没有值");
 									logger.warn(resultMap.get(ExcelConstants.MSG_KEY));
 									break;
 								}
@@ -472,7 +472,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 				}
 			}
 			if (isFail) {
-				failMsg.append("根据油料类型判断，行：" + (rowIndex + 1) + "，列：" + nonCellNum + "中不能有值");
+				failMsg.append("根据油料类型判断，第" + (rowIndex + 1) + "行，第" + nonCellNum + "列中不能有值");
 				ExcelImportUtil.setFailMsg(resultMap, failMsg.toString());
 				logger.warn(resultMap.get(ExcelConstants.MSG_KEY));
 			}
@@ -481,7 +481,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 			Cell cCell = row.getCell(Integer.valueOf(nonIncludeCols) - 1);
 			if (cCell != null) {
 				ExcelImportUtil
-						.setFailMsg(resultMap, "根据油料类型判断，行：" + (rowIndex + 1) + "，列：" + nonIncludeCols + "中不能有值");
+						.setFailMsg(resultMap, "根据油料类型判断，第" + (rowIndex + 1) + "行，第" + nonIncludeCols + "列中不能有值");
 				logger.warn(resultMap.get(ExcelConstants.MSG_KEY));
 			}
 		}
@@ -512,13 +512,13 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 		}
 		if (orCount > 1) {// 或结构中只能有1列的有值
 			notNullCellNum = StringUtils.substring(notNullCellNum, 0, StringUtils.lastIndexOf(notNullCellNum, "或"));
-			ExcelImportUtil.setFailMsg(resultMap, "根据燃料类型判断，行：" + (row.getRowNum() + 1) + "，列：" + notNullCellNum
-					+ "中只能有一列有值");
+			ExcelImportUtil.setFailMsg(resultMap, "根据燃料类型判断，第" + (row.getRowNum() + 1) + "行，第" + notNullCellNum
+					+ "列中只能有一列有值");
 			logger.warn(resultMap.get(ExcelConstants.MSG_KEY));
 		} else if (orCount == 0) {
 			nullCellNum = StringUtils.substring(nullCellNum, 0, StringUtils.lastIndexOf(nullCellNum, "或"));
-			ExcelImportUtil.setFailMsg(resultMap, "根据燃料类型判断，行：" + (row.getRowNum() + 1) + "，列：" + nullCellNum
-					+ "中必须有一列有值");
+			ExcelImportUtil.setFailMsg(resultMap, "根据燃料类型判断，第" + (row.getRowNum() + 1) + "行，第" + nullCellNum
+					+ "列中必须有一列有值");
 			logger.warn(resultMap.get(ExcelConstants.MSG_KEY));
 		}
 	}

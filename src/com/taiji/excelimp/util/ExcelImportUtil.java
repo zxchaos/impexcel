@@ -859,7 +859,7 @@ public class ExcelImportUtil {
 	 * @param row
 	 */
 	private static void setFailMsg(Map<String, String> resultMap, Element colEle, Row row, String failMsg) {
-		String fMsg = "行："+(row.getRowNum()+1)+"，列："+colNumToColName(Integer.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_COLNUM)))+"，" + failMsg;
+		String fMsg = "第"+(row.getRowNum()+1)+"行，第"+colNumToColName(Integer.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_COLNUM)))+"列，" + failMsg;
 		logger.debug("---验证失败---"+fMsg);
 		setFailMsg(resultMap, fMsg);
 	}
@@ -893,7 +893,7 @@ public class ExcelImportUtil {
 	 * @param failMsg
 	 */
 	public static void setFailMsg(Cell cell,Map<String, String>resultMap, String failMsg){
-		failMsg = "行："+(cell.getRowIndex()+1)+"，列："+ExcelImportUtil.colNumToColName(cell.getColumnIndex()+1)+"，"+failMsg;
+		failMsg = "第"+(cell.getRowIndex()+1)+"行，第"+ExcelImportUtil.colNumToColName(cell.getColumnIndex()+1)+"列，"+failMsg;
 		setFailMsg(resultMap, failMsg);
 	}
 	/**
@@ -907,9 +907,9 @@ public class ExcelImportUtil {
 	 */
 	public static String makeFailMsg(String sheetName, int rowIndex, int colIndex, String failMsg) {
 		if (StringUtils.isBlank(sheetName)) {
-			return "行：" + (rowIndex + 1) + "， 列：" + ExcelImportUtil.colNumToColName(colIndex + 1) + "，" + failMsg;
+			return "第" + (rowIndex + 1) + "行， 第" + ExcelImportUtil.colNumToColName(colIndex + 1) + "列，" + failMsg;
 		}else {
-			return "工作表：" + sheetName + "，行：" + (rowIndex + 1) + "， 列：" + ExcelImportUtil.colNumToColName(colIndex + 1) + "，" + failMsg;
+			return "工作表：" + sheetName + "，第" + (rowIndex + 1) + "行， 第" + ExcelImportUtil.colNumToColName(colIndex + 1) + "列，" + failMsg;
 		}
 		
 	}
@@ -979,7 +979,7 @@ public class ExcelImportUtil {
 		String fieldType = colEle.attributeValue(ExcelConstants.COL_ATTR_FIELDTYPE);// 获得要插入的字段的类型
 		String result = "";
 		String failMsg = "";
-		String rowColInfo = "行："+(row.getRowNum()+1)+"，列："+ExcelImportUtil.colNumToColName(Integer.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_COLNUM)))+"，";
+		String rowColInfo = "第"+(row.getRowNum()+1)+"行，第"+ExcelImportUtil.colNumToColName(Integer.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_COLNUM)))+"列，";
 		if (ExcelConstants.FIELD_TYPE_DATE.equalsIgnoreCase(fieldType)) {
 			if (isRegExpMatch(ExcelConstants.REGEXP_DATE, cellValue)) {
 				result = "to_date('" + cellValue + "','" + ExcelConstants.DATE_FORMAT + "')";
