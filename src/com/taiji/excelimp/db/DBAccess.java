@@ -63,7 +63,7 @@ public class DBAccess {
 			for (int i = 0; i < sqls.length; i++) {
 				stmt.addBatch(sqls[i]);
 			}
-			int [] count = stmt.executeBatch();
+			int[] count = stmt.executeBatch();
 			conn.commit();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
@@ -78,7 +78,7 @@ public class DBAccess {
 		}
 
 	}
-	
+
 	/**
 	 * 批量执行sql
 	 * 
@@ -92,7 +92,7 @@ public class DBAccess {
 			for (int i = 0; i < sqls.length; i++) {
 				stmt.addBatch(sqls[i]);
 			}
-			int [] count = stmt.executeBatch();
+			int[] count = stmt.executeBatch();
 			conn.commit();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
@@ -173,19 +173,15 @@ public class DBAccess {
 		}
 
 		int v_hzjb = v_jb;
-		if (v_jb == 9 && v_xzjb == 2) {
+		if (v_countyid == -1) {
 			// 市直
-			v_hzjb = 3;
 			v_county = "市直";
 			v_countyid = -1;
 		}
-		if (v_jb == 9 && v_xzjb == 1) {
+		if (v_countyid == -1 && v_cityid == -1) {
 			// 省直
-			v_hzjb = 2;
 			v_city = "省直";
-			v_cityid = -1;
 			v_county = "省直";
-			v_countyid = -1;
 		}
 		int v_dwlb = v_jb;
 
@@ -226,42 +222,42 @@ public class DBAccess {
 			proc.close();
 		}
 	}
-	
+
 	/**
 	 * 执行批量更新和调用存储过程
+	 * 
 	 * @param dbAccess
 	 * @param updateSqls
 	 * @param fileNameParts
 	 * @throws Exception
 	 */
-	public void  updateAndCallprocedure(String [] updateSqls, String [] fileNameParts) throws Exception{
+	public void updateAndCallprocedure(String[] updateSqls, String[] fileNameParts) throws Exception {
 		logger.debug("---开始批量更新和调用存储过程---");
 		Connection conn = this.getConnection();
 		try {
 			conn.setAutoCommit(false);
 			// 将解析excel生成的sql导入数据库
 			logger.debug("---将update语句写入数据库---");
-			this.batchExecuteSqls(updateSqls,conn);
+			this.batchExecuteSqls(updateSqls, conn);
 			logger.debug("---写入数据库完毕---");
 
 			logger.debug("---调用存储过程---");
 			this.updateSjhz(9, 4, Long.valueOf(fileNameParts[2]), Long.valueOf(fileNameParts[3]),
 					Long.valueOf(fileNameParts[4]), fileNameParts[5], Integer.parseInt(fileNameParts[6]),
 					Integer.parseInt(fileNameParts[7]), fileNameParts[8], fileNameParts[9], fileNameParts[10],
-					fileNameParts[11],conn);
+					fileNameParts[11], conn);
 			logger.debug("---结束调用存储过程---");
 			conn.commit();
 		} catch (Exception e) {
 			conn.rollback();
 			logger.debug("---批量更新和调用存储过程出错---");
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 			throw e;
-		}finally{
+		} finally {
 			this.release(conn);
 		}
 		logger.debug("---结束批量更新和调用存储过程---");
 	}
-	
 
 	/**
 	 * 释放Statement Connection资源
@@ -281,7 +277,7 @@ public class DBAccess {
 	 * 
 	 * @param conn
 	 */
-	public  void release(Connection conn) {
+	public void release(Connection conn) {
 		if (conn != null) {
 			try {
 				conn.close();
@@ -298,7 +294,7 @@ public class DBAccess {
 	 * @param stmt
 	 *            要被释放的Statement
 	 */
-	public  void release(Statement stmt) {
+	public void release(Statement stmt) {
 		if (stmt != null) {
 			try {
 				stmt.close();
@@ -370,7 +366,7 @@ public class DBAccess {
 	 *            数据库连接
 	 * @return List
 	 */
-	public String getOneFieldContent(String sql, Connection conn) throws Exception{
+	public String getOneFieldContent(String sql, Connection conn) throws Exception {
 		String tmp = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -407,7 +403,7 @@ public class DBAccess {
 		long dbseq = Long.valueOf(getOneFieldContent(" select SEQ_ID.nextval from dual ", conn));
 		return seq * 100000 + dbseq;
 	}
-	
+
 	/**
 	 * 获得当前时间yyyyMMdd
 	 * 
@@ -426,14 +422,14 @@ public class DBAccess {
 	 * @param sj
 	 * @param info
 	 */
-	public void insertErrorInfo(long dwid, String hylb, String sj, String info,String type) throws Exception {
+	public void insertErrorInfo(long dwid, String hylb, String sj, String info, String type) throws Exception {
 		String insertsql = "INSERT INTO PLDRFK_INFO (ID,DWID,HYLB,SJ,INFO,TYPE) values(?,?,?,?,?,?)";
-		logger.debug("---插入导入结果信息的预编译sql---"+insertsql);
+		logger.debug("---插入导入结果信息的预编译sql---" + insertsql);
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		try {
 			long id = getSequence();
-			logger.debug("---生成id---"+id);
+			logger.debug("---生成id---" + id);
 			conn = getConnection();
 			psmt = conn.prepareStatement(insertsql);
 			psmt.setLong(1, id);
@@ -445,118 +441,122 @@ public class DBAccess {
 			psmt.executeUpdate();
 			logger.debug("---执行插入完成---");
 		} catch (SQLException e) {
-			logger.error("执行sql出错，"+e.getMessage(),e);
+			logger.error("执行sql出错，" + e.getMessage(), e);
 			throw e;
 		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 			throw e;
-		}finally{
-			release(psmt,conn);
+		} finally {
+			release(psmt, conn);
 		}
 	}
-	
+
 	/**
 	 * 判断某字段的值是否在某表中有重复
+	 * 
 	 * @param fieldName
 	 * @param value
 	 * @return
 	 */
-	public boolean isFieldValueDup(String tableName,String fieldName, String value, Connection conn ) throws Exception{
+	public boolean isFieldValueDup(String tableName, String fieldName, String value, Connection conn) throws Exception {
 		boolean result = true;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT SJID FROM "+tableName+" WHERE "+fieldName+"=?";
-		logger.debug("---查重sql---"+sql);
+		String sql = "SELECT SJID FROM " + tableName + " WHERE " + fieldName + "=?";
+		logger.debug("---查重sql---" + sql);
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, value);
 			rs = psmt.executeQuery();
 			if (rs.next()) {
 				result = true;
-				logger.debug("---有"+fieldName+"为"+value+"的重复的记录---");
-			}else {
+				logger.debug("---有" + fieldName + "为" + value + "的重复的记录---");
+			} else {
 				result = false;
-				logger.debug("---没有"+fieldName+"为"+value+"的记录---");
+				logger.debug("---没有" + fieldName + "为" + value + "的记录---");
 			}
 		} catch (SQLException e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 			throw e;
-		}finally{
+		} finally {
 			release(rs);
 			release(psmt);
 		}
 		return result;
 	}
-	
-	
-	
+
 	/**
 	 * @param strSQL
 	 * @return
 	 */
-	public HashMap<String,Long> initHashMap(String strSQL){
+	public HashMap<String, Long> initHashMap(String strSQL) {
 		logger.debug("---开始获取缓存Map---");
-		logger.debug("---获取sql---"+strSQL);
+		logger.debug("---获取sql---" + strSQL);
 		Connection conn = null;
 		PreparedStatement pstm = null;
 		ResultSet rst = null;
-		
-		HashMap<String,Long> hashmp = new HashMap<String,Long>();
+
+		HashMap<String, Long> hashmp = new HashMap<String, Long>();
 		try {
 			conn = getConnection();
 			pstm = conn.prepareStatement(strSQL);
-			rst =  pstm.executeQuery();
-			
-			while(rst.next()){
+			rst = pstm.executeQuery();
+
+			while (rst.next()) {
 				Long shiOrXian = rst.getLong(1);
 				String shiOrXiaNname = rst.getString(2);
-				hashmp.put(shiOrXiaNname,shiOrXian);
+				hashmp.put(shiOrXiaNname, shiOrXian);
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 		} finally {
 			this.release(conn);
 		}
 		logger.debug("---获取map完毕---");
 		return hashmp;
 	}
+
 	/**
 	 * 插入受益人表 和 基础表
+	 * 
 	 * @param conn
 	 * @param multInsertSql
 	 * @param pks
 	 * @param sjid
 	 */
-	public void multInsertSyrAndJCB(Connection conn, String multInsertSql,String pks, String sjid, String hylb) throws Exception{
+	public void multInsertSyrAndJCB(Connection conn, String multInsertSql, String pks, String sjid, String hylb)
+			throws Exception {
 		Statement stmtSyr = null;
 		Statement stmtJcb = null;
 		try {
 			stmtSyr = conn.createStatement();
 			stmtSyr.executeUpdate(multInsertSql);
 			logger.debug("---multinsert---插入受益人表完毕---");
-			String jcbSql = "UPDATE "+hylb+"JCB SET ";
-			String [] pkParts = pks.split(",");
+			String jcbSql = "UPDATE " + hylb + "JCB SET ";
+			String[] pkParts = pks.split(",");
 			for (int i = 0; i < pkParts.length; i++) {
-				jcbSql += "BTSYRID"+(i+1)+"="+pkParts[i]+",";
+				jcbSql += "BTSYRID" + (i + 1) + "=" + pkParts[i] + ",";
 			}
 			jcbSql = jcbSql.substring(0, jcbSql.lastIndexOf(","));
-			jcbSql += " WHERE SJID="+sjid;
-			logger.debug("---multinsert---插入基础表sql---"+jcbSql);
+			jcbSql += " WHERE SJID=" + sjid;
+			logger.debug("---multinsert---插入基础表sql---" + jcbSql);
 			stmtJcb = conn.createStatement();
 			stmtJcb.executeUpdate(jcbSql);
 			logger.debug("---multinsert---插入基础表完毕---");
-			
+
 		} catch (SQLException e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 			throw e;
-		}finally{
+		} finally {
 			release(stmtSyr);
 			release(stmtJcb);
 		}
 	}
-	
-	public static void main(String [] args){
-		DBAccess dbAccess = new DBAccess("jdbc:oracle:thin:@192.168.10.17:1521:orcl", "rybt_xj", "rybt_xj", "oracle.jdbc.driver.OracleDriver");
-//		System.out.println(dbAccess.isFieldValueDup("CSGJJCB", "DWID", "1123225005222"));
+
+	public static void main(String[] args) {
+		DBAccess dbAccess = new DBAccess("jdbc:oracle:thin:@192.168.10.17:1521:orcl", "rybt_xj", "rybt_xj",
+				"oracle.jdbc.driver.OracleDriver");
+		// System.out.println(dbAccess.isFieldValueDup("CSGJJCB", "DWID",
+		// "1123225005222"));
 	}
 }
