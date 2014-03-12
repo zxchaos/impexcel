@@ -69,9 +69,10 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 					ExcelImportUtil.setFailMsg(resultMap, "导入的模板中不包含数据");
 				}
 				
-				String [] inserts = insertSqls.split(ExcelConstants.SQL_TAIL);
+				String [] inserts = null;
 				List<Map<String, String>> jcbList = new ArrayList<Map<String,String>>();
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
+					inserts = insertSqls.split(ExcelConstants.SQL_TAIL);
 					jcbList = getJcbList(resultMap,sysConfig,inserts.length);
 				}
 				
@@ -124,19 +125,19 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 				String cpysValue = ExcelImportUtil.getCellValue(row.getCell(1));
 				String bgqkValue = ExcelImportUtil.getCellValue(row.getCell(2));
 				if (StringUtils.isBlank(cphmValue)) {
-					String failMsg = "行："+(row.getRowNum()+1)+"，列：A，不能为空";
+					String failMsg = "第"+(row.getRowNum()+1)+"行，第A列，不能为空";
 					logger.debug(failMsg);
 					ExcelImportUtil.setFailMsg(resultMap, failMsg);
 					continue;
 				}
 				if (StringUtils.isBlank(cpysValue)) {
-					String failMsg = "行："+(row.getRowNum()+1)+"，列：B，不能为空";
+					String failMsg = "第"+(row.getRowNum()+1)+"行，第B列，不能为空";
 					logger.debug(failMsg);
 					ExcelImportUtil.setFailMsg(resultMap, failMsg);
 					continue;
 				}
 				if (StringUtils.isBlank(bgqkValue)) {
-					String failMsg = "行："+(row.getRowNum()+1)+"，列：C，不能为空";
+					String failMsg = "第"+(row.getRowNum()+1)+"行，第C列，不能为空";
 					logger.debug(failMsg);
 					ExcelImportUtil.setFailMsg(resultMap, failMsg);
 					continue;
