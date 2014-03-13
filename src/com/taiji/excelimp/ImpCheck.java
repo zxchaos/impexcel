@@ -93,10 +93,10 @@ public class ImpCheck {
 	 */
 	private static void initRegionCache(DBAccess dbAccess) {
 		String shiSQL = "select distinct(shi),shiname,shengname from t_sys_user_count t where t.shengname='新疆' and shiname is not null";
-//		HashMap<String, Long> shiMap = dbAccess.initHashMap(shiSQL);
+		HashMap<String, Long> shiMap = dbAccess.initHashMap(shiSQL);
 		String xianSQL = "select xian,xianname from t_sys_user_count t where t.shengname='新疆' and xianname is not null";
-//		HashMap<String, Long> xianMap = dbAccess.initHashMap(xianSQL);
-//		RegionUtil.initShiXianMap(shiMap, xianMap);
+		HashMap<String, Long> xianMap = dbAccess.initHashMap(xianSQL);
+		RegionUtil.initShiXianMap(shiMap, xianMap);
 		logger.debug("---缓存市县map完毕---");
 
 	}

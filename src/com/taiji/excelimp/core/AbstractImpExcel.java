@@ -91,7 +91,7 @@ public abstract class AbstractImpExcel {
 			info = info.substring(0,2001);
 			logger.debug("---截断超过长度的错误信息后---"+info);
 		}
-//		dbAccess.insertErrorInfo(dwid, hylb, sj, info, type);
+		dbAccess.insertErrorInfo(dwid, hylb, sj, info, type);
 		logger.debug("---导入结果信息写入数据库完成---");
 	}
 

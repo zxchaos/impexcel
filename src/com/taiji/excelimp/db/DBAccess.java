@@ -93,14 +93,11 @@ public class DBAccess {
 				stmt.addBatch(sqls[i]);
 			}
 			int[] count = stmt.executeBatch();
-			conn.commit();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-			rollback(conn);
 			throw e;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			rollback(conn);
 			throw e;
 		} finally {
 			release(stmt);
@@ -140,6 +137,36 @@ public class DBAccess {
 	}
 
 	/**
+	 * 执行sql
+	 * 
+	 * @param sql
+	 * @return
+	 * @throws Exception
+	 */
+	public int executeSql(String sql, Connection conn) throws Exception {
+		int result = 0;
+		Statement stmt = null;
+		logger.debug("---执行sql---" + sql);
+		try {
+			stmt = conn.createStatement();
+			result = stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e);
+			conn.rollback();
+			throw e;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			conn.rollback();
+			throw e;
+		} finally {
+			conn.commit();
+			release(stmt);
+		}
+		logger.debug("---sql---执行完成---");
+		return result;
+	}
+
+	/**
 	 * @param v_jb
 	 *            当前用户级别
 	 * @param v_xzjb
@@ -164,10 +191,10 @@ public class DBAccess {
 	 *            公司名称
 	 * 
 	 * */
-	public String updateSjhz(int v_jb, int v_xzjb, long v_proviceid, long v_cityid, long v_countyid,
+	public String updateSjhzCSGJ(int v_jb, int v_xzjb, long v_proviceid, long v_cityid, long v_countyid,
 			String v_companyid, int v_year, int v_month, String v_province, String v_city, String v_county,
 			String v_company, Connection conn) throws Exception {
-
+		logger.debug("---开始调用---csgj存储过程---");
 		if (conn == null) {
 			return "0,no conn";
 		}
@@ -206,7 +233,176 @@ public class DBAccess {
 			proc.registerOutParameter(14, OracleTypes.VARCHAR);
 
 			proc.execute();
+			logger.debug("---结束调用csgj存储过程---");
+			v_out_int = proc.getInt(13);
+			v_out_str = proc.getString(14);
 
+			// 调试信息
+			if (v_out_str != null)
+				logger.debug(v_out_str);
+			return v_out_int + "," + v_out_str;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			conn.rollback();
+			throw ex;
+		} finally {
+			proc.close();
+		}
+	}
+
+	/**
+	 * @param v_jb
+	 *            当前用户级别
+	 * @param v_xzjb
+	 *            行政级别
+	 * @param v_proviceid
+	 *            省ID
+	 * @param v_cityid
+	 *            市ID
+	 * @param v_countyid
+	 *            县ID
+	 * @param v_year
+	 *            年度
+	 * @param v_month
+	 *            月份
+	 * @param v_province
+	 *            省名称
+	 * @param v_city
+	 *            市名称
+	 * @param v_county
+	 *            县名称
+	 * @param v_company
+	 *            公司名称
+	 * 
+	 * */
+	public String updateSjhzNCKY(int v_jb, int v_xzjb, long v_proviceid, long v_cityid, long v_countyid,
+			String v_companyid, int v_year, int v_month, String v_province, String v_city, String v_county,
+			String v_company, Connection conn) throws Exception {
+		logger.debug("---开始调用---ncky存储过程---");
+		if (conn == null) {
+			return "0,no conn";
+		}
+
+		int v_hzjb = v_xzjb;
+		if (v_countyid == -1) {
+			// 市直
+			v_county = "市直";
+			v_countyid = -1;
+		}
+		if (v_countyid == -1 && v_cityid == -1) {
+			// 省直
+			v_city = "省直";
+			v_county = "省直";
+		}
+
+		int v_dwlb = v_jb;
+
+		int v_out_int = -1;
+		String v_out_str = "";
+		CallableStatement proc = null;
+		try {
+			proc = conn.prepareCall("{call p_sjhz_ncky_gen_manual_new(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			proc.setInt(1, v_hzjb);
+			proc.setInt(2, v_dwlb);
+			proc.setLong(3, v_proviceid);
+			proc.setLong(4, v_cityid);
+			proc.setLong(5, v_countyid);
+			proc.setString(6, v_companyid);
+			proc.setInt(7, v_year);
+			proc.setInt(8, v_month);
+			proc.setString(9, v_province);
+			proc.setString(10, v_city);
+			proc.setString(11, v_county);
+			proc.setString(12, v_company);
+			proc.registerOutParameter(13, OracleTypes.INTEGER);
+			proc.registerOutParameter(14, OracleTypes.VARCHAR);
+
+			proc.execute();
+			logger.debug("---结束调用ncky存储过程---");
+			v_out_int = proc.getInt(13);
+			v_out_str = proc.getString(14);
+
+			// 调试信息
+			if (v_out_str != null)
+				logger.debug(v_out_str);
+			return v_out_int + "," + v_out_str;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			conn.rollback();
+			throw ex;
+		} finally {
+			proc.close();
+		}
+	}
+
+	/**
+	 * @param v_jb
+	 *            当前用户级别
+	 * @param v_xzjb
+	 *            行政级别
+	 * @param v_proviceid
+	 *            省ID
+	 * @param v_cityid
+	 *            市ID
+	 * @param v_countyid
+	 *            县ID
+	 * @param v_year
+	 *            年度
+	 * @param v_month
+	 *            月份
+	 * @param v_province
+	 *            省名称
+	 * @param v_city
+	 *            市名称
+	 * @param v_county
+	 *            县名称
+	 * @param v_company
+	 *            公司名称
+	 * 
+	 * */
+	public String updateSjhzCZQC(int v_jb, int v_xzjb, long v_proviceid, long v_cityid, long v_countyid,
+			String v_companyid, int v_year, int v_month, String v_province, String v_city, String v_county,
+			String v_company, Connection conn) throws Exception {
+		logger.debug("---开始调用---czqc存储过程---");
+		if (conn == null) {
+			return "0,no conn";
+		}
+
+		int v_hzjb = v_xzjb;
+		if (v_countyid == -1) {
+			// 市直
+			v_county = "市直";
+			v_countyid = -1;
+		}
+		if (v_countyid == -1 && v_cityid == -1) {
+			// 省直
+			v_city = "省直";
+			v_county = "省直";
+		}
+		int v_dwlb = v_jb;
+
+		int v_out_int = -1;
+		String v_out_str = "";
+		CallableStatement proc = null;
+		try {
+			proc = conn.prepareCall("{call p_sjhz_czqc_gen_manual_new(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			proc.setInt(1, v_hzjb);
+			proc.setInt(2, v_dwlb);
+			proc.setLong(3, v_proviceid);
+			proc.setLong(4, v_cityid);
+			proc.setLong(5, v_countyid);
+			proc.setString(6, v_companyid);
+			proc.setInt(7, v_year);
+			proc.setInt(8, v_month);
+			proc.setString(9, v_province);
+			proc.setString(10, v_city);
+			proc.setString(11, v_county);
+			proc.setString(12, v_company);
+			proc.registerOutParameter(13, OracleTypes.INTEGER);
+			proc.registerOutParameter(14, OracleTypes.VARCHAR);
+
+			proc.execute();
+			logger.debug("---结束调用czqc存储过程---");
 			v_out_int = proc.getInt(13);
 			v_out_str = proc.getString(14);
 
@@ -231,7 +427,7 @@ public class DBAccess {
 	 * @param fileNameParts
 	 * @throws Exception
 	 */
-	public void updateAndCallprocedure(String[] updateSqls, String[] fileNameParts) throws Exception {
+	public void updateAndCallprocedure(String[] updateSqls, String[] fileNameParts, String hylb) throws Exception {
 		logger.debug("---开始批量更新和调用存储过程---");
 		Connection conn = this.getConnection();
 		try {
@@ -239,15 +435,28 @@ public class DBAccess {
 			// 将解析excel生成的sql导入数据库
 			logger.debug("---将update语句写入数据库---");
 			this.batchExecuteSqls(updateSqls, conn);
-			logger.debug("---写入数据库完毕---");
+			logger.debug("---update数据库完毕---");
 
 			logger.debug("---调用存储过程---");
-			this.updateSjhz(9, 4, Long.valueOf(fileNameParts[2]), Long.valueOf(fileNameParts[3]),
-					Long.valueOf(fileNameParts[4]), fileNameParts[5], Integer.parseInt(fileNameParts[6]),
-					Integer.parseInt(fileNameParts[7]), fileNameParts[8], fileNameParts[9], fileNameParts[10],
-					fileNameParts[11], conn);
-			logger.debug("---结束调用存储过程---");
+			if ("csgj".equals(hylb)) {
+				this.updateSjhzCSGJ(9, 4, Long.valueOf(fileNameParts[2]), Long.valueOf(fileNameParts[3]),
+						Long.valueOf(fileNameParts[4]), fileNameParts[5], Integer.parseInt(fileNameParts[6]),
+						Integer.parseInt(fileNameParts[7]), fileNameParts[8], fileNameParts[9], fileNameParts[10],
+						fileNameParts[11], conn);
+			} else if ("ncky".equals(hylb)) {
+				this.updateSjhzNCKY(9, 4, Long.valueOf(fileNameParts[2]), Long.valueOf(fileNameParts[3]),
+						Long.valueOf(fileNameParts[4]), fileNameParts[5], Integer.parseInt(fileNameParts[6]),
+						Integer.parseInt(fileNameParts[7]), fileNameParts[8], fileNameParts[9], fileNameParts[10],
+						fileNameParts[11], conn);
+			} else if ("czqc".equals(hylb)) {
+				this.updateSjhzCZQC(9, 4, Long.valueOf(fileNameParts[2]), Long.valueOf(fileNameParts[3]),
+						Long.valueOf(fileNameParts[4]), fileNameParts[5], Integer.parseInt(fileNameParts[6]),
+						Integer.parseInt(fileNameParts[7]), fileNameParts[8], fileNameParts[9], fileNameParts[10],
+						fileNameParts[11], conn);
+			}
+
 			conn.commit();
+			logger.debug("---结束调用存储过程---");
 		} catch (Exception e) {
 			conn.rollback();
 			logger.debug("---批量更新和调用存储过程出错---");

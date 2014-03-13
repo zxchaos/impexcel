@@ -89,7 +89,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 					logger.info("---文件---" + excelFile.getName() + "---解析成功---");
 					
 					//批量更新和调用存储过程
-					dbAccess.updateAndCallprocedure(updateSqls, fileNameParts);
+					dbAccess.updateAndCallprocedure(updateSqls, fileNameParts,hylb);
 					super.insertImpInfo(dbAccess, resultMap, infoFieldMap, true, super.getType());
 					logger.debug("---成功信息插入完毕---");
 				}

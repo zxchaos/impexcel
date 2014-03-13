@@ -119,7 +119,7 @@
 			</col>
 			<col colNum="18" tabField="DYCNGXHL" colName="CNG" fieldType="NUM">
 			</col>
-			<col colNum="19" tabField="RYXHSJLY" colName="燃油消耗数据来源" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.RYXHDataSourceConverter">
+			<col colNum="19" tabField="RLXHSJLY" colName="燃油消耗数据来源" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.RYXHDataSourceConverter">
 				<validation valType="NOTNULL"/>
 			</col>
 		</sheet>
@@ -159,7 +159,7 @@
 			</col>
 			<col colNum="18" tabField="DYCNGXHL" colName="CNG" fieldType="NUM">
 			</col>
-			<col colNum="19" tabField="RYXHSJLY" colName="燃油消耗数据来源" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.RYXHDataSourceConverter">
+			<col colNum="19" tabField="RLXHSJLY" colName="燃油消耗数据来源" fieldType="STRING" converter="com.taiji.excelimp.impl.converter.RYXHDataSourceConverter">
 				<validation valType="NOTNULL"/>
 			</col>
 		</sheet>
