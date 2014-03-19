@@ -24,5 +24,7 @@
 <!ATTLIST col regExpChecker CDATA #IMPLIED>
 <!ATTLIST col unique (true|false) #IMPLIED>
 <!ATTLIST col maxLength CDATA #IMPLIED>
+<!ATTLIST col ignore (true|false) #IMPLIED>
+
 <!ELEMENT validation EMPTY>
 <!ATTLIST validation valType (NOTNULL|NUM|POSITIVENUM) #REQUIRED>

@@ -51,6 +51,8 @@ public class ExcelConstants implements Serializable {
 	public static final String COL_ATTR_REGEXPCHECKER = "regExpChecker";
 	public static final String COL_ATTR_UNIQUE = "unique";
 	public static final String COL_ATTR_MAXLENGTH = "maxLength";
+	public static final String COL_ATTR_IGNORE = "ignore";
+	
 	//validation±Í«© Ù–‘
 	public static final String VALIDATION_ATTR_VALTYPE = "valType";
 	

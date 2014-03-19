@@ -40,16 +40,16 @@ import com.taiji.excelimp.api.IRegExpChecker;
 
 /**
  * Excel 导入工具类 本类完成对所导入的Excel文件的工作簿结合导入配置文件import.xml中的配置进行导入与验证
- * 
+ *
  * @author zhangxin
- * 
+ *
  */
 public class ExcelImportUtil {
 	public static final Logger logger = LoggerFactory.getLogger(ExcelImportUtil.class);
 
 	/**
 	 * 导入Excel功能入口方法 将目录impExcelDir下的所有的excel文件按照配置文件中的同一个模板导入
-	 * 
+	 *
 	 * @param impExcelDir
 	 *            存放Excel文件的目录
 	 * @param templateId
@@ -58,10 +58,10 @@ public class ExcelImportUtil {
 	 *            配置文件路径
 	 * @param excelFileType
 	 *            目录下的excel文件类型 分为 xls 和 xlsx 两种
-	 * 
+	 *
 	 * @return 返回中的Map的key包含"result":表示解析成功或失败其值为"fail"或"success" 若解析失败即result对应的值为fail时 则包含key："msg" 其中包含错误信息
-	 *         若解析成功即result对应的值为success时 则包含key："sqls" 其中包含解析成功后的insert 或 update 语句 insert 或 update 语句格式为: 
-	 *         INSERT INTO TABLENAME (FIELD1,FIELD2...) @%&#VALUES#&%@ (VALUE1,VALUE2);\n 
+	 *         若解析成功即result对应的值为success时 则包含key："sqls" 其中包含解析成功后的insert 或 update 语句 insert 或 update 语句格式为:
+	 *         INSERT INTO TABLENAME (FIELD1,FIELD2...) @%&#VALUES#&%@ (VALUE1,VALUE2);\n
 	 *         或者 UPDATE TABLENAME SET FIELD1=VALUE1,FIELD2=VALUE2... WHERE FIELD3=VALUE3 AND FIELD4=VALUE4 ...;\n
 	 */
 	public static Map<String, String> importExcel(String impExcelDir, String templateId, String configFilePath,
@@ -84,7 +84,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 导入Excel功能入口方法 根据配置文件中模板id和配置文件路径导入Excel
-	 * 
+	 *
 	 * @param excelFile
 	 *            要导入的excel文件
 	 * @param templateId
@@ -92,9 +92,9 @@ public class ExcelImportUtil {
 	 * @param configFilePath
 	 *            配置文件位置
 	 * @return 返回中的Map的key包含"result":表示解析成功或失败其值为"fail"或"success" 若解析失败即result对应的值为fail时 则包含key："msg" 其中包含错误信息
-	 *         若解析成功即result对应的值为success时 则包含key："sqls" 其中包含解析成功后的insert语句 insert 语句格式为: 
-	 *         INSERT INTO TABLENAME (FIELD1,FIELD2...) @%&#VALUES#&%@ (VALUE1,VALUE2);\n 
-	 *         或者 
+	 *         若解析成功即result对应的值为success时 则包含key："sqls" 其中包含解析成功后的insert语句 insert 语句格式为:
+	 *         INSERT INTO TABLENAME (FIELD1,FIELD2...) @%&#VALUES#&%@ (VALUE1,VALUE2);\n
+	 *         或者
 	 *         UPDATE TABLENAME SET FIELD1=VALUE1,FIELD2=VALUE2...;\n
 	 */
 	public static Map<String, String> importExcel(File excelFile, String templateId, String configFilePath)
@@ -107,16 +107,16 @@ public class ExcelImportUtil {
 		logger.debug("+++结束---方法---importExcel");
 		return resultMap;
 	}
-	
-	
+
+
 	public static void importExcel(Workbook workbook,Document configDoc, String templateId)
 			throws Exception {
 		importExcel(workbook, configDoc, templateId, null);
 	}
-	
+
 	/**
 	 * 导入Excel功能入口方法 根据配置文件中模板id和配置文件路径导入Excel
-	 * 
+	 *
 	 * @param workbook
 	 *            要解析的工作簿对象
 	 * @param configDoc 导入配置文件的文档对象
@@ -124,9 +124,9 @@ public class ExcelImportUtil {
 	 *            模板Id
 	 * @param resultMap 存放解析结果
 	 * @return 返回中的Map的key包含"result":表示解析成功或失败其值为"fail"或"success" 若解析失败即result对应的值为fail时 则包含key："msg" 其中包含错误信息
-	 *         若解析成功即result对应的值为success时 则包含key："sqls" 其中包含解析成功后的insert语句 insert 语句格式为: 
-	 *         INSERT INTO TABLENAME (FIELD1,FIELD2...) @%&#VALUES#&%@ (VALUE1,VALUE2);\n 
-	 *         或者 
+	 *         若解析成功即result对应的值为success时 则包含key："sqls" 其中包含解析成功后的insert语句 insert 语句格式为:
+	 *         INSERT INTO TABLENAME (FIELD1,FIELD2...) @%&#VALUES#&%@ (VALUE1,VALUE2);\n
+	 *         或者
 	 *         UPDATE TABLENAME SET FIELD1=VALUE1,FIELD2=VALUE2...;\n
 	 *         或者
 	 *         INSERT INTO TABLENAME (FIELD1,FIELD2...) SELECT VALUE1,VALUE2... FROM DUAL UNION SELECT ...
@@ -144,7 +144,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 设置excel导入成功信息
-	 * 
+	 *
 	 * @param resultMap
 	 *            总结果map
 	 * @param impMap
@@ -163,7 +163,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 设置resultMap并追加失败信息的文件信息
-	 * 
+	 *
 	 * @param resultMap
 	 *            结果map
 	 * @param excelFile
@@ -197,7 +197,7 @@ public class ExcelImportUtil {
 	}
 	/**
 	 * 获得目录下的指定扩展名的文件
-	 * 
+	 *
 	 * @param excelDir
 	 *            要获得指定类型文件的目录
 	 * @param fileExtName
@@ -218,7 +218,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 获得目录下的的excel文件包括Excel 2007+与2003
-	 * 
+	 *
 	 * @param excelDir
 	 *            要获得excel文件的目录
 	 * @return
@@ -243,7 +243,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 获得导入配置文件的文档对象
-	 * 
+	 *
 	 * @param configFilePath
 	 * @return 配置文件的文档对象
 	 * @throws Exception
@@ -261,7 +261,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 导入Excel 工作簿
-	 * 
+	 *
 	 * @param workbook
 	 *            工作簿对象
 	 * @param doc
@@ -304,7 +304,7 @@ public class ExcelImportUtil {
 	public static void setFailMsg(Map<String, String> resultMap, String failMsg) {
 		setFailMsg(resultMap, failMsg, true);
 	}
-	
+
 	/**
 	 * @param resultMap
 	 * @param failMsg
@@ -327,7 +327,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 根据配置文件的文档对象和配置文件中template标签id值获得某一template标签下的sheet标签
-	 * 
+	 *
 	 * @param doc
 	 * @param templateId
 	 * @return
@@ -342,7 +342,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 根据配置文件sheet标签中的配置导入excel文件sheet中的数据
-	 * 
+	 *
 	 * @param impSheet
 	 * @param sheetEle
 	 * @param isValidate
@@ -358,7 +358,7 @@ public class ExcelImportUtil {
 
 		Boolean isValidate = Boolean.valueOf(sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_ISVALIDATE));// 导入的sheet是否进行验证
 		Boolean isWholeRow = Boolean.valueOf(sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_WHOLEROW));//导入的列是否为一整行
-		
+
 		StringBuffer sql = null;
 		String operation = sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_OPERATION);
 		boolean isInsert = true;
@@ -378,7 +378,7 @@ public class ExcelImportUtil {
 
 		List<Element> colList = sheetEle.selectNodes("./" + ExcelConstants.ELEMENT_COL);// 获得sheet元素下所有的col子元素
 		List<String> uniqueList = new ArrayList<String>();
-		
+
 		for (int i = dataStartRowNum; i <= impSheet.getLastRowNum(); i++) {
 			StringBuffer rowSql = new StringBuffer(sql);// 导入的sheet中每一行组成一个insert 或者 update 语句
 			Map<String, String> rowResultMap = new HashMap<String, String>();
@@ -388,26 +388,24 @@ public class ExcelImportUtil {
 				continue;
 			}
 			logger.debug("---解析行---" + (dataRow.getRowNum()+1));
-			
 			StringBuffer updateWhere = new StringBuffer("");// update操作的条件
 			int nullColNum = 0;//值为空的列数
 			int multInsertCount = 0;//multinsert操作时计数
 			int multInsertBlankNum = 0;//multinsert操作时的空列的数目
 			for (Element colEle : colList) {
 				Integer colNum = Integer.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_COLNUM).trim()) - 1;// 获得要导入的列的列号
-				
+
 				Cell impCell = dataRow.getCell(colNum);
-				
+
 				if (!checkCellType(impCell, rowResultMap)) {
 					continue;
 				}
-				
 				//要导入的列是否为空
 				if (null == impCell || StringUtils.isBlank(getCellValue(impCell))) {
 					nullColNum++;
 				}
-				
-				if (isValidate != null && isValidate 
+
+				if (isValidate != null && isValidate
 						&& !validating(rowResultMap, colEle, impCell, impSheet, dataRow)) {// 导入的sheet需要验证
 						continue;
 				}
@@ -415,12 +413,12 @@ public class ExcelImportUtil {
 				if (!regExpCheck(colEle, impCell,rowResultMap,dataRow)) {
 					continue;
 				}
-				
+
 				//检查excel中的重复值
 				if (checkUnique(rowResultMap, uniqueList, colEle, impCell)) {
 					continue;
 				}
-				
+
 				//检查所填值的最大长度
 				if (!checkLength(rowResultMap, colEle, impCell)) {
 					continue;
@@ -430,6 +428,10 @@ public class ExcelImportUtil {
 				if (isCondition != null && isCondition) {// 该单元格作为update条件
 					makeUpdateWhere(dataRow,updateWhere, colEle, impCell, rowResultMap);
 				} else if (ExcelConstants.OPERATION_TYPE_MULTINSERT.equalsIgnoreCase(operation)) {//若操作为multinsert
+					Boolean ignore = Boolean.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_IGNORE));
+					if (ignore) {//若该列被忽略则跳过
+						continue;
+					}
 					multInsertCount++;
 					String cellValue = getCellValue(impCell);
 					if (StringUtils.isBlank(cellValue)) {
@@ -454,7 +456,7 @@ public class ExcelImportUtil {
 			}
 			int configColNum = colList.size();
 			logger.debug("行"+(i+1)+"的空列数目为"+nullColNum+"---配置的列的数目为"+configColNum+"---配置中的wholeRow属性值为："+isWholeRow);
-			
+
 			if (null != isWholeRow && isWholeRow && nullColNum == configColNum) {//若一整行都为空
 				logger.info("行："+(i+1)+"为空");
 				continue;
@@ -463,7 +465,7 @@ public class ExcelImportUtil {
 					appendFailMsg(resultMap, rowResultMap);
 					continue;
 			}
-			
+
 			if (ExcelConstants.FAIL.equals(resultMap.get(ExcelConstants.RESULT_KEY))) {// 校验失败
 				continue;
 			}
@@ -481,7 +483,7 @@ public class ExcelImportUtil {
 				rowSql.replace(rowSql.lastIndexOf(ExcelConstants.SQL_MULTINSERT_UNION_SELECT_FLAG), rowSql.length(),"");
 				logger.debug("---multinsert---整行处理完毕生成sql---"+rowSql);
 			}
-			
+
 			genSqls.append(rowSql);
 			genSqls.append(ExcelConstants.SQL_TAIL);
 		}
@@ -546,21 +548,21 @@ public class ExcelImportUtil {
 		}
 		return result;
 	}
-	
+
 
 	/**
 	 * 检查导入的单元格中的值是否与给定的正则表达式检查器匹配
 	 * @param colEle
 	 * @param impCell
 	 * @return 匹配结果
-	 * @throws ClassNotFoundException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
 	private static boolean regExpCheck(Element colEle, Cell impCell, Map<String, String>resultMap, Row dataRow) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Element validation = (Element) colEle.selectSingleNode("./" + ExcelConstants.ELEMENT_VALIDATION);
 		boolean hasValidation = hasVal(validation);
-		
+
 		boolean result = true;
 		String recheckerAttrVal = colEle.attributeValue(ExcelConstants.COL_ATTR_REGEXPCHECKER);
 		if (StringUtils.isNotBlank(recheckerAttrVal)) {//是否配置正则表达式检查器 并且 有验证限制
@@ -588,10 +590,10 @@ public class ExcelImportUtil {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 生成要更新的行的 update sql语句
-	 * 
+	 *
 	 * @param rowSql
 	 * @param updateWhere
 	 */
@@ -605,7 +607,7 @@ public class ExcelImportUtil {
 			rowSql.replace(rowSql.lastIndexOf(","), rowSql.length(), "");
 		}
 	}
-	
+
 	/**
 	 * 生成multinsert语句
 	 * @param row
@@ -629,7 +631,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 生成update操作的where条件子句 生成的where子句格式为 field1=value1 AND field1=value1 AND ...
-	 * 
+	 *
 	 * @param updateWhere
 	 * @param colEle
 	 *            表中的列名
@@ -654,7 +656,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 组成每一行要的insert 或 update sql
-	 * 
+	 *
 	 * @param rowSql
 	 *            已拼完成的部分insert 或 update sql
 	 * @param colEle
@@ -664,14 +666,14 @@ public class ExcelImportUtil {
 	 */
 	private static void makeRowSql(Row row, StringBuffer rowSql, Element colEle, Cell impCell, Map<String, String> resultMap,
 			Boolean isInsert) throws Exception {
-		
+
 		String cellValue = getCellValueByConvertion(colEle, impCell,resultMap,row);
 		makeFullSqlByType(row, rowSql, colEle, cellValue, resultMap, isInsert);
 	}
-	
+
 	/**
 	 * 根据转换器获得单元格的值
-	 * 
+	 *
 	 * @param colEle
 	 * @param impCell
 	 * @return
@@ -693,7 +695,7 @@ public class ExcelImportUtil {
 				cellValue = convertCellVal(impCell, converterVal, resultMap);
 			}
 		}
-		
+
 		return cellValue;
 	}
 
@@ -720,7 +722,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 验证操作
-	 * 
+	 *
 	 * @param resultMap
 	 * @param colEle
 	 * @param impCell
@@ -751,7 +753,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 根据配置文件中的sheet元素来组成insert语句的：values 之前的部分
-	 * 
+	 *
 	 * @param sheetEle
 	 * @return
 	 */
@@ -771,7 +773,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 生成部分的update语句
-	 * 
+	 *
 	 * @param sheetElement
 	 *            配置文件中的sheet标签
 	 * @return
@@ -799,6 +801,11 @@ public class ExcelImportUtil {
 		Integer colCount = Integer.valueOf(sheetElement.attributeValue(ExcelConstants.SHEET_ATTR_COLCOUNT));
 		for(int i = 0; i<colCount; i++){
 			Element colEle = (Element)colList.get(i);
+			Boolean isIgnore = Boolean.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_IGNORE));
+			if (isIgnore) {
+				colCount++;
+				continue;
+			}
 			String field = colEle.attributeValue(ExcelConstants.COL_ATTR_TABFIELD);
 			result.append(field);
 			result.append(",");
@@ -811,7 +818,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 验证excel单元格
-	 * 
+	 *
 	 * @param cell
 	 *            要验证的excel单元格
 	 * @param validateRule
@@ -829,7 +836,7 @@ public class ExcelImportUtil {
 		}else if (valType.equalsIgnoreCase(ExcelConstants.VALIDATION_NOTNULL)) {// 验证是否为空
 			isSuccess = !isCellValueBlank(cell, resultMap,colEle,row);
 		}
-		
+
 		return isSuccess;
 	}
 	/**
@@ -848,7 +855,7 @@ public class ExcelImportUtil {
 			}else {
 				setFailMsg(resultMap, colEle, row,ExcelConstants.VAL_FAIL_MSG_NOTNULL);
 			}
-			
+
 		}
 		return result;
 	}
@@ -866,7 +873,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 正则表达式验证
-	 * 
+	 *
 	 * @param cell
 	 * @param resultMap
 	 * @param valRegExp
@@ -898,7 +905,7 @@ public class ExcelImportUtil {
 	}
 	/**
 	 * 在原有的failMsg中加入sheet名称 行数 列数信息
-	 * 
+	 *
 	 * @param sheetName
 	 * @param rowNum
 	 * @param colNum
@@ -911,12 +918,12 @@ public class ExcelImportUtil {
 		}else {
 			return "工作表：" + sheetName + "，第" + (rowIndex + 1) + "行， 第" + ExcelImportUtil.colNumToColName(colIndex + 1) + "列，" + failMsg;
 		}
-		
+
 	}
-	
+
 	/**
 	 * 在原有的failMsg中加入sheet名称 行数 列数信息
-	 * 
+	 *
 	 * @param sheetName
 	 * @param rowNum
 	 * @param colNum
@@ -929,7 +936,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 给定值与的给定的正则表达式是否匹配
-	 * 
+	 *
 	 * @param valRegExp
 	 *            给定的正则表达式
 	 * @param value
@@ -944,7 +951,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 根据类型组成sql
-	 * 
+	 *
 	 * @param sql
 	 * @param fieldType
 	 *            插入表中的类型
@@ -952,7 +959,7 @@ public class ExcelImportUtil {
 	 *            单元格的值
 	 * @param isInsert
 	 *            是否是insert操作
-	 * 
+	 *
 	 */
 	private static void makeFullSqlByType(Row row, StringBuffer sql, Element colEle, String cellValue,
 			Map<String, String> resultMap, Boolean isInsert) throws Exception {
@@ -970,7 +977,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 将单元格中的值转换为sql形式
-	 * 
+	 *
 	 * @param colEle
 	 * @param cellValue
 	 * @param resultMap
@@ -1013,7 +1020,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 获得excel单元格的值
-	 * 
+	 *
 	 * @param cell
 	 * @return
 	 */
@@ -1043,14 +1050,14 @@ public class ExcelImportUtil {
 		}
 		return cellValue;
 	}
-	
+
 	/**
 	 * 检查单元格类型是否为字符，数字或者空，若不为此三种类型均返回false
 	 * @param impCell
 	 * @param resultMap
 	 * @return
 	 */
-	private static boolean checkCellType(Cell impCell, Map<String, String>resultMap){
+	public static boolean checkCellType(Cell impCell, Map<String, String>resultMap){
 		boolean result = true;
 		if (impCell != null) {
 			int cellType = impCell.getCellType();
@@ -1066,7 +1073,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 检查文件或目录的路径以及文件是否存在若存在则返回该文件或目录的文件对象
-	 * 
+	 *
 	 * @param FilePath
 	 *            文件路径
 	 * @param isDir
@@ -1095,7 +1102,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 生成exce 工作簿对象
-	 * 
+	 *
 	 * @param excelFile
 	 * @return
 	 * @throws Exception
@@ -1162,7 +1169,7 @@ public class ExcelImportUtil {
 	}
 	/**
 	 * 获得文件扩展名
-	 * 
+	 *
 	 * @param fileName
 	 * @return 返回文件扩展名
 	 */
@@ -1176,7 +1183,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 返回Excel2007工作簿对象
-	 * 
+	 *
 	 * @param excelFilePath
 	 *            文件路径
 	 * @param document
@@ -1189,7 +1196,7 @@ public class ExcelImportUtil {
 	 */
 	public static Workbook genPOIXSSFWorkBook(File excelFile, boolean isProt,Element templateE,
 			Map<String, String> resultMap) throws Exception {
-		
+
 		FileInputStream fis = null;
 		Workbook workbook = null;
 		try {
@@ -1225,7 +1232,7 @@ public class ExcelImportUtil {
 			}
 			//验证Excel文件是否为基于系统提供的模板
 			certificateWorkbook(resultMap, templateE, workbook);
-			
+
 		} catch (FileNotFoundException e) {
 			throw e;
 		} catch (IOException e) {
@@ -1242,7 +1249,7 @@ public class ExcelImportUtil {
 		if(!ExcelConstants.FAIL.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))){
 			resultMap.put(ExcelConstants.RESULT_KEY, ExcelConstants.SUCCESS);
 		}
-		
+
 		logger.debug("---成功获得workbook---");
 		return workbook;
 	}
@@ -1267,7 +1274,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 返回Excel2007工作簿对象
-	 * 
+	 *
 	 * @param excelFilePath
 	 *            excel文件路径
 	 */
@@ -1283,7 +1290,7 @@ public class ExcelImportUtil {
 			if (d.verifyPassword(Decryptor.DEFAULT_PASSWORD)) {
 				workbook = WorkbookFactory.create(d.getDataStream(fsys));
 			}else {
-				
+
 			}
 
 			resultMap.put(ExcelConstants.RESULT_KEY, ExcelConstants.SUCCESS);
@@ -1323,7 +1330,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 返回Excel97-2003的工作簿对象
-	 * 
+	 *
 	 * @param excelFilePath
 	 */
 	public static Workbook genPOIHSSFWorkBook(File excelFile, Document document,String templateId, Map<String, String>resultMap) throws Exception {
@@ -1363,7 +1370,7 @@ public class ExcelImportUtil {
 
 	/**
 	 * 认证工作簿是否为基于系统提供的导入模板
-	 * 
+	 *
 	 * @param workbook
 	 * @return
 	 */
@@ -1409,7 +1416,7 @@ public class ExcelImportUtil {
 //		}
 		System.out.println(colNumToColName(26));
 	}
-	
+
 	/**
 	 * 将中的列号转换为列名称（A，B...）
 	 * @param colNum
@@ -1433,8 +1440,8 @@ public class ExcelImportUtil {
 		}
 		return bf.toString();
 	}
-	    
-	    
+
+
 	private static char dig2Char(final int dig) {
 		int acs = dig - 1 + 'A';
 		return (char) acs;

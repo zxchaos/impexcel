@@ -25,10 +25,8 @@
 			 			标签col为 模板中要导入的列信息 
 			 			colNum 导入的Excel列号 第几列 
 			 			
-			 			#+++新加+++
 			 			colName 列名称，即excel列的表头名称 目前没用
 			 			isCondition 是否作为sql语句的条件（目前只和sheet标签的operation属性一起使用，即当operation为UPDATE时在生成的sql语句最后增加条件）将此属性设为false或不设置该属性则不当做条件
-			 			#+++++++新加++++++
 			 			
 			 			tabField 对应插入表中的字段名称 
 			 			fieldType 导入字段的类型支持类型： STRING | NUM | DATE （注：在excel表中填写日期格式的形式为：yyyy-MM-dd）
@@ -36,6 +34,7 @@
 			 			regExpChecker feildType为STRING时可配置正则表达式检验器来检验是否符合特定格式
 			 			unique 若该属性设置为true则表示此列中的值是否唯一在该列中的所有值中不能重复;若设置为false或不设置则表示不增加此限制
 			 			maxLength 字符串的最大长度按英文字符算即汉字算为2个字符
+			 			ignore 在解析生成sql的时候是否忽略这一列，true为忽略该列，不填或false为不忽略该列，该列作用只是判断所配置的列是否均为空（为防止整行为空而报导入错误的情况）
 							<validation valType="">
 				 				标签validation：当sheet标签中的validate为true时该标签起作用 其属性valType支持类型：NOTNULL（非空）| NUM（非空数字）| POSITIVENUM（正浮点数） 
 							</validation> 
@@ -530,6 +529,7 @@
 	<!-- 城市公交受益人 -->
 	<template id="csgjsyr" certificate="70b8b815c7084ed9bb99c094bf2da100c2ee68c6" workbookProtect="true">
 		<sheet name="csgjsyr" operation="MULTINSERT" colCount="4" tableName="T_GRGZT_BTSYRJCB" isValidate="true"  dataStartRowNum="4">
+			<col colNum="1" tabField="_CPHM" fieldType="STRING" colName="车牌号码" ignore="true"/>
 			<col colNum="8" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100">
 				<validation valType="NOTNULL"/>
 			</col>
@@ -557,6 +557,7 @@
 	<!-- 农村客运受益人 -->
 	<template id="nckysyr" certificate="4fb78be85c34580f2f3bdd4568d067b08adddd98" workbookProtect="true">
 		<sheet name="nckysyr" operation="MULTINSERT" colCount="4" tableName="T_GRGZT_BTSYRJCB" isValidate="true" dataStartRowNum="4">
+			<col colNum="1" tabField="_CPHM" fieldType="STRING" colName="车牌号码" ignore="true"/>
 			<col colNum="8" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100">
 				<validation valType="NOTNULL"/>
 			</col>
@@ -582,8 +583,10 @@
 		</sheet>
 	</template>
 	<!-- 出租汽车受益人 -->
-	<template id="czqcsyr" certificate="43e07d10aa36e90b1230382744be94aad09c0bb9" workbookProtect="true">
-		<sheet name="czqcsyr" operation="MULTINSERT" colCount="4" tableName="T_GRGZT_BTSYRJCB" isValidate="true"  dataStartRowNum="4">
+	<template id="czqcsyr" certificate="43e07d10aa36e90b1230382744be94aad09c0bb9" workbookProtect="true" >
+		<sheet name="czqcsyr" operation="MULTINSERT" colCount="4" tableName="T_GRGZT_BTSYRJCB" isValidate="true"  dataStartRowNum="4" wholeRow="true">
+			<col colNum="1" tabField="_CPHM" fieldType="STRING" colName="车牌号码" ignore="true"/>
+			
 			<col colNum="8" tabField="XM" fieldType="STRING" colName="姓名" maxLength="100">
 				<validation valType="NOTNULL"/>
 			</col>

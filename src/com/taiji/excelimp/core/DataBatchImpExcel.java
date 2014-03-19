@@ -25,7 +25,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 导入excelDir目录下的excel文件
-	 * 
+	 *
 	 * @param excelDir
 	 */
 	public void importExcel(Properties sysConfig, DBAccess dbAccess) throws Exception {
@@ -76,18 +76,18 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 					}
 					ExcelImportUtil.importExcel(workbook, document, templateId, resultMap);// 生成updatesql
 				}
-				
+
 				String insertSqls = resultMap.get(ExcelConstants.SQLS_KEY);
 				if (!ExcelConstants.FAIL.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY)) && StringUtils.isBlank(insertSqls)) {
 					logger.info("+++生成的sql为空+++可能是模板中没有数据");
 					ExcelImportUtil.setFailMsg(resultMap, "导入的模板中不包含数据");
 					isSuccess = false;
 				}
-				
+
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
 					String[] updateSqls = remakeUpdateSql(resultMap, excelFile, fileNameParts);
 					logger.info("---文件---" + excelFile.getName() + "---解析成功---");
-					
+
 					//批量更新和调用存储过程
 					dbAccess.updateAndCallprocedure(updateSqls, fileNameParts,hylb);
 					super.insertImpInfo(dbAccess, resultMap, infoFieldMap, true, super.getType());
@@ -119,7 +119,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 重新组成update语句
-	 * 
+	 *
 	 * @param resultMap
 	 * @param excelFile
 	 * @param fileNameParts
@@ -157,7 +157,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 将错误信息写入日志
-	 * 
+	 *
 	 * @param dbAccess
 	 * @param resultMap
 	 * @param fileNameParts
@@ -182,7 +182,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 根据解析后的updateMap中的当月行驶里程值计算日均行驶里程
-	 * 
+	 *
 	 * @param updateMap
 	 */
 	private static void calRJXSLC(Map<String, String> updateMap) {
@@ -192,7 +192,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 根据解析后的update语句中的值和当月行驶里程计算日均行驶里程
-	 * 
+	 *
 	 * @param dyxslc
 	 * @param updateMap
 	 */
@@ -209,7 +209,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 重新组合update语句
-	 * 
+	 *
 	 * @param origUpdateSql
 	 * @param updateMap
 	 */
@@ -249,7 +249,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 计算当月行驶里程
-	 * 
+	 *
 	 * @param updateMap
 	 * @return
 	 */
@@ -265,7 +265,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 	/**
 	 * 将update sql中的set之后的要更新的字段和值放到map中 update 语句形式为 UPDATE TABLENAME SET
 	 * FIELD1=VALUE1,FIELD2=VALUE2...
-	 * 
+	 *
 	 * @param updateSql
 	 * @return
 	 */
@@ -291,7 +291,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 根据业务预先检验
-	 * 
+	 *
 	 * @param sysConfig
 	 *            系统配置
 	 * @param type
@@ -313,7 +313,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 规则检查
-	 * 
+	 *
 	 * @param ruleString
 	 *            类似于：11-混合燃料:(22|23)&(24|25|26);11-双燃料:(22|23) 表示两类规则用;隔开
 	 * @param excelFile
@@ -326,16 +326,19 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 		Sheet sheet = workbook.getSheet(type);
 		for (int i = dataStartRowNum - 1; i <= sheet.getLastRowNum(); i++) {
 			checkRowRules(resultMap, checkRules, sheet, i);
+		}
+		if (logger.isDebugEnabled()) {
 			if (ExcelConstants.FAIL.equals(resultMap.get(ExcelConstants.RESULT_KEY))) {
 				String failMsg = resultMap.get(ExcelConstants.MSG_KEY);
-				logger.warn("检查规则失败：" + failMsg);
+				logger.debug("检查规则失败：" + failMsg);
 			}
 		}
+
 	}
 
 	/**
 	 * 对每一行应用检查规则
-	 * 
+	 *
 	 * @param resultMap
 	 * @param checkRules
 	 * @param sheet
@@ -345,7 +348,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 		logger.debug("---预先检验的行号---"+rowIndex);
 		Row row = sheet.getRow(rowIndex);
 		if (row == null) {
-			logger.warn("+++行："+(rowIndex+1)+"---为空+++");
+			logger.debug("+++行："+(rowIndex+1)+"---为空+++");
 			return;
 		}else {
 			Cell cphmCell = row.getCell(0);//获得每一行的第一列即车牌号码
@@ -354,14 +357,14 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 				return;
 			}
 		}
-		
+
 		for (int i = 0; i < checkRules.length; i++) {// 验证规则
 			String[] ruleCell = checkRules[i].split(":");
 			String[] typeCell = ruleCell[0].split("-");// ruleCell[0]为类型部分，例如：11-混合燃料
 			Integer colIndex = Integer.valueOf(typeCell[0]) - 1;// typeCell[0]为类型部分的列号
 			Cell tCell = row.getCell(colIndex);// 类型部分单元格
-			if (tCell != null && StringUtils.isNotBlank(ExcelImportUtil.getCellValue(tCell))) {
-				String cellValue = ExcelImportUtil.getCellValue(tCell);
+			String cellValue = ExcelImportUtil.getCellValue(tCell);
+			if (StringUtils.isNotBlank(cellValue)) {
 
 				if (cellValue.equals(typeCell[1])) {// 若单元格的值与配置的类型值（typeCell[1]）相等则进行条件校验
 					if (ruleCell[1].contains("@")) {// @后面的列号代表该列不能有值
@@ -376,10 +379,6 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 						ruleCell[1] = ruleCheckCols;
 					}
 
-					if (ExcelConstants.FAIL.equals(resultMap.get(ExcelConstants.RESULT_KEY))) {
-						logger.warn("检查规则失败");
-						break;
-					}
 
 					if (ruleCell[1].contains("&")) {
 						// ruleCell[1]为条件部分，其中包涵“并且”结构
@@ -391,18 +390,19 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 								String condition = conditions[j].replace("(", "").replace(")", "");// 去掉括号
 								checkOr(resultMap, row, condition);
 								if (ExcelConstants.FAIL.equals(resultMap.get(ExcelConstants.RESULT_KEY))) {
-									logger.warn(resultMap.get(ExcelConstants.MSG_KEY));
 									break;
 								}
 							} else {// 若不包涵括号则为单值
 								String nullCellNum = "";// 单元格为空的列号用逗号分割
 								String colNum = conditions[j];
 								Cell cCell = row.getCell(Integer.valueOf(colNum) - 1);
-								if (cCell == null || StringUtils.isBlank(ExcelImportUtil.getCellValue(cCell))) {
-									nullCellNum += ExcelImportUtil.colNumToColName(Integer.valueOf(colNum)) + ",";
+								if (!ExcelImportUtil.checkCellType(cCell, resultMap)) {
+									continue;
+								}
+								if (StringUtils.isBlank(ExcelImportUtil.getCellValue(cCell))) {
+									nullCellNum = ExcelImportUtil.colNumToColName(Integer.valueOf(colNum)) ;
 									ExcelImportUtil.setFailMsg(resultMap, "根据燃料类型判断，第" + (rowIndex + 1) + "行，第"
-											+ nullCellNum + "列中都没有值");
-									logger.warn(resultMap.get(ExcelConstants.MSG_KEY));
+											+ nullCellNum + "列，必须有值");
 									break;
 								}
 							}
@@ -416,7 +416,6 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 							if (cCell == null || StringUtils.isBlank(ExcelImportUtil.getCellValue(cCell))) {
 								String failMsg = ExcelImportUtil.makeFailMsg(rowIndex, cellIndex, "必须有值");
 								ExcelImportUtil.setFailMsg(resultMap, "根据燃料类型判断，" + failMsg);
-								logger.warn(resultMap.get(ExcelConstants.MSG_KEY));
 							}
 						}
 					}
@@ -425,7 +424,6 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 			} else {
 				String failMsg = ExcelImportUtil.makeFailMsg(rowIndex, colIndex, "必须有值");
 				ExcelImportUtil.setFailMsg(resultMap, failMsg);
-				logger.warn(resultMap.get(ExcelConstants.MSG_KEY));
 				break;
 			}
 		}
@@ -448,30 +446,24 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 				// nonInc[j]);
 
 				Cell cCell = row.getCell(Integer.valueOf(nonInc[j]) - 1);
-
-				if (cCell != null) {
-					boolean isNull = true;
-					switch (cCell.getCellType()) {
-					case Cell.CELL_TYPE_BLANK:
-						isNull = true;
-						break;
-					case Cell.CELL_TYPE_STRING:
-						isNull = StringUtils.isBlank(cCell.getRichStringCellValue().getString());
-						break;
-					case Cell.CELL_TYPE_NUMERIC:
-						isNull = StringUtils.isBlank(String.valueOf(cCell.getNumericCellValue()));
-						break;
-					default:
-						break;
-					}
-					if (!isNull) {
-						nonCellNum += ExcelImportUtil.colNumToColName(Integer.valueOf(nonInc[j])) + ",";
-						isFail = true;
-					}
-
+				if (!ExcelImportUtil.checkCellType(cCell, resultMap)) {
+					continue;
+				}
+				String cellValue = ExcelImportUtil.getCellValue(cCell);
+				boolean isNull = true;
+				if (StringUtils.isNotBlank(cellValue)) {
+					isNull = false;
+				}
+				if (!isNull) {
+					nonCellNum += ExcelImportUtil.colNumToColName(Integer.valueOf(nonInc[j])) + ",";
+					isFail = true;
 				}
 			}
 			if (isFail) {
+				if (nonCellNum.contains(",")) {
+					nonCellNum = nonCellNum.substring(0, nonCellNum.lastIndexOf(","));
+				}
+
 				failMsg.append("根据油料类型判断，第" + (rowIndex + 1) + "行，第" + nonCellNum + "列中不能有值");
 				ExcelImportUtil.setFailMsg(resultMap, failMsg.toString());
 				logger.warn(resultMap.get(ExcelConstants.MSG_KEY));
@@ -489,7 +481,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 验证规则中的“或”结构的验证
-	 * 
+	 *
 	 * @param resultMap
 	 * @param rowIndex
 	 * @param row
@@ -503,6 +495,9 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 		int orCount = 0;// “或”结构中不为空的单元格的个数
 		for (int k = 0; k < colNum.length; k++) {
 			Cell cCell = row.getCell(Integer.valueOf(colNum[k]) - 1);
+			if (!ExcelImportUtil.checkCellType(cCell, resultMap)) {
+				continue;
+			}
 			if (cCell != null && StringUtils.isNotBlank(ExcelImportUtil.getCellValue(cCell))) {
 				orCount++;
 				notNullCellNum += ExcelImportUtil.colNumToColName(Integer.valueOf(colNum[k])) + "或";
@@ -515,7 +510,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 			ExcelImportUtil.setFailMsg(resultMap, "根据燃料类型判断，第" + (row.getRowNum() + 1) + "行，第" + notNullCellNum
 					+ "列中只能有一列有值");
 			logger.warn(resultMap.get(ExcelConstants.MSG_KEY));
-		} else if (orCount == 0) {
+		} else if (orCount == 0 && StringUtils.isNotBlank(nullCellNum)) {
 			nullCellNum = StringUtils.substring(nullCellNum, 0, StringUtils.lastIndexOf(nullCellNum, "或"));
 			ExcelImportUtil.setFailMsg(resultMap, "根据燃料类型判断，第" + (row.getRowNum() + 1) + "行，第" + nullCellNum
 					+ "列中必须有一列有值");
@@ -523,12 +518,12 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 		}
 	}
 
-	
+
 
 
 	/**
 	 * 计算各燃料的百公里平均单耗
-	 * 
+	 *
 	 * @param updateMap
 	 *            计算时取得的各字段的值来源，以及计算完毕后各燃料的百公里平均单耗保存的map
 	 */
@@ -539,7 +534,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 根据燃料类型计算各燃料的百公里平均单耗
-	 * 
+	 *
 	 * @param dyxslc
 	 *            当月行驶里程
 	 * @param updateMap
@@ -577,7 +572,7 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 
 	/**
 	 * 正常燃料类型（汽油，柴油，LNG，LPG,CNG）计算百公里平均单耗
-	 * 
+	 *
 	 * @param dyxhl
 	 *            读取当月消耗量字段名称
 	 * @param bglpjdh
@@ -597,9 +592,9 @@ public class DataBatchImpExcel extends AbstractImpExcel{
 			}else {
 				updateMap.put(bglpjdh, "0");// 百公里平均单耗
 			}
-			
+
 		}
 	}
 
-	
+
 }
