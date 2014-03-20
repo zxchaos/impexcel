@@ -10,6 +10,8 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import oracle.jdbc.OracleTypes;
 
@@ -49,7 +51,7 @@ public class DBAccess {
 
 	/**
 	 * 批量执行sql
-	 * 
+	 *
 	 * @param sqls
 	 */
 	public void batchExecuteSqls(String[] sqls) throws Exception {
@@ -81,7 +83,7 @@ public class DBAccess {
 
 	/**
 	 * 批量执行sql
-	 * 
+	 *
 	 * @param sqls
 	 */
 	public void batchExecuteSqls(String[] sqls, Connection conn) throws Exception {
@@ -107,7 +109,7 @@ public class DBAccess {
 
 	/**
 	 * 执行sql
-	 * 
+	 *
 	 * @param sql
 	 * @return
 	 * @throws Exception
@@ -138,7 +140,7 @@ public class DBAccess {
 
 	/**
 	 * 执行sql
-	 * 
+	 *
 	 * @param sql
 	 * @return
 	 * @throws Exception
@@ -189,7 +191,7 @@ public class DBAccess {
 	 *            县名称
 	 * @param v_company
 	 *            公司名称
-	 * 
+	 *
 	 * */
 	public String updateSjhzCSGJ(int v_jb, int v_xzjb, long v_proviceid, long v_cityid, long v_countyid,
 			String v_companyid, int v_year, int v_month, String v_province, String v_city, String v_county,
@@ -273,7 +275,7 @@ public class DBAccess {
 	 *            县名称
 	 * @param v_company
 	 *            公司名称
-	 * 
+	 *
 	 * */
 	public String updateSjhzNCKY(int v_jb, int v_xzjb, long v_proviceid, long v_cityid, long v_countyid,
 			String v_companyid, int v_year, int v_month, String v_province, String v_city, String v_county,
@@ -358,7 +360,7 @@ public class DBAccess {
 	 *            县名称
 	 * @param v_company
 	 *            公司名称
-	 * 
+	 *
 	 * */
 	public String updateSjhzCZQC(int v_jb, int v_xzjb, long v_proviceid, long v_cityid, long v_countyid,
 			String v_companyid, int v_year, int v_month, String v_province, String v_city, String v_county,
@@ -421,7 +423,7 @@ public class DBAccess {
 
 	/**
 	 * 执行批量更新和调用存储过程
-	 * 
+	 *
 	 * @param dbAccess
 	 * @param updateSqls
 	 * @param fileNameParts
@@ -470,7 +472,7 @@ public class DBAccess {
 
 	/**
 	 * 释放Statement Connection资源
-	 * 
+	 *
 	 * @param stmt
 	 *            要被释放的Statement
 	 * @param conn
@@ -483,7 +485,7 @@ public class DBAccess {
 
 	/**
 	 * 释放conn
-	 * 
+	 *
 	 * @param conn
 	 */
 	public void release(Connection conn) {
@@ -499,7 +501,7 @@ public class DBAccess {
 
 	/**
 	 * 释放Statement
-	 * 
+	 *
 	 * @param stmt
 	 *            要被释放的Statement
 	 */
@@ -516,7 +518,7 @@ public class DBAccess {
 
 	/**
 	 * 释放资源
-	 * 
+	 *
 	 * @param rs
 	 *            要被释放的ResultSet
 	 */
@@ -533,7 +535,7 @@ public class DBAccess {
 
 	/**
 	 * 释放资源
-	 * 
+	 *
 	 * @param rs
 	 *            要被释放的ResultSet
 	 * @param stmt
@@ -568,7 +570,7 @@ public class DBAccess {
 
 	/**
 	 * 取得数据库一条记录，适用于sql语句中只查询一个字段
-	 * 
+	 *
 	 * @param sql
 	 *            SQL语句
 	 * @param conn
@@ -615,7 +617,7 @@ public class DBAccess {
 
 	/**
 	 * 获得当前时间yyyyMMdd
-	 * 
+	 *
 	 * @return 返回当前时间yyyyMMdd格式
 	 */
 	private String getNowDateString() {
@@ -625,7 +627,7 @@ public class DBAccess {
 
 	/**
 	 * 将解析出错信息插入数据库
-	 * 
+	 *
 	 * @param dwid
 	 * @param hylb
 	 * @param sj
@@ -661,35 +663,38 @@ public class DBAccess {
 	}
 
 	/**
-	 * 判断某字段的值是否在某表中有重复
-	 * 
+	 * map中的字段的值为查询条件是否在某表中有重复记录
+	 *
 	 * @param fieldName
-	 * @param value
+	 * @param valueMap  包含查询条件map，map的key为字段名称，value为字段值
 	 * @return
 	 */
-	public boolean isFieldValueDup(String tableName, String fieldName, String value, Connection conn) throws Exception {
+	public boolean isFieldValueDup(String tableName, Map<String, String> valueMap, Connection conn) throws Exception {
 		boolean result = true;
-		PreparedStatement psmt = null;
+		Statement stmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT SJID FROM " + tableName + " WHERE " + fieldName + "=?";
+		String sql = "SELECT SJID FROM " + tableName + " WHERE ";
+		for(Entry<String, String> entry : valueMap.entrySet()){
+			sql+=entry.getKey()+"='"+entry.getValue()+"' and ";
+		}
+		sql = sql.substring(0,sql.lastIndexOf("and"));
 		logger.debug("---查重sql---" + sql);
+
 		try {
-			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, value);
-			rs = psmt.executeQuery();
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
 			if (rs.next()) {
 				result = true;
-				logger.debug("---有" + fieldName + "为" + value + "的重复的记录---");
 			} else {
 				result = false;
-				logger.debug("---没有" + fieldName + "为" + value + "的记录---");
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw e;
 		} finally {
 			release(rs);
-			release(psmt);
+			release(stmt);
 		}
 		return result;
 	}
@@ -727,7 +732,7 @@ public class DBAccess {
 
 	/**
 	 * 插入受益人表 和 基础表
-	 * 
+	 *
 	 * @param conn
 	 * @param multInsertSql
 	 * @param pks
