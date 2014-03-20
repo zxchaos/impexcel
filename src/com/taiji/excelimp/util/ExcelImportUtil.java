@@ -1044,7 +1044,7 @@ public class ExcelImportUtil {
 				}
 				break;
 			case Cell.CELL_TYPE_STRING:
-				cellValue = cell.getRichStringCellValue().toString().trim();
+				cellValue = cell.getRichStringCellValue().toString().replace("¡¡", " ").trim();
 				break;
 			}
 		}
