@@ -23,9 +23,9 @@ import com.taiji.excelimp.util.ExcelImportUtil;
 
 /**
  * 车辆信息批量注册导入功能
- * 
+ *
  * @author zhangxin
- * 
+ *
  */
 public class RegisterBatchImpExcel extends AbstractImpExcel {
 
@@ -71,24 +71,24 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 					// 开始解析文件
 					ExcelImportUtil.importExcel(workbook, document, templateId, resultMap);
 				}
-				
+
 				insertSqls = resultMap.get(ExcelConstants.SQLS_KEY);
 				if (!ExcelConstants.FAIL.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY)) && StringUtils.isBlank(insertSqls)) {
 					logger.info("+++生成的sql为空+++可能是模板中没有数据");
 					ExcelImportUtil.setFailMsg(resultMap, "导入的模板中不包含数据");
 				}
-				
+
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
 					// 根据车牌号码查重
-					isSuccess = !checkDuplicateCPHM(insertSqls, resultMap, dbAccess, hylb);
+					isSuccess = !checkDuplicate(insertSqls, resultMap, dbAccess, hylb);
 				}
-				
+
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY)) && ("csgj".equalsIgnoreCase(hylb)||"ncky".equalsIgnoreCase(hylb))) {
 					// 根据线路名称查询线路表中的线路是否存在
 					insertSqls = xlmcCheck(insertSqls, resultMap, dbAccess, hylb);
 					logger.debug("---线路检查完成后重组sql---"+insertSqls);
 				}
-				
+
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
 					// 若生成insert语句成功则执行插入操作
 					Map<String, Object> fieldValueMap = new HashMap<String, Object>();
@@ -184,7 +184,7 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 		}
 		return result.toString();
 	}
-	
+
 	/**
 	 * 根据线路名称获得线路id
 	 * @param xlmc
@@ -197,8 +197,8 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 		return result;
 	}
 	/**
-	 * 查询车牌号码字段是否有重复
-	 * 
+	 * 根据车牌号码 车牌颜色 变更情况 查询车辆信息是否有重复
+	 *
 	 * @param insertSqls
 	 *            解析excel生成的insert语句
 	 * @param resultMap
@@ -206,7 +206,7 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 	 * @param dbAccess
 	 *            数据库访问对象
 	 */
-	private boolean checkDuplicateCPHM(String insertSqls, Map<String, String> resultMap, DBAccess dbAccess, String type) throws Exception{
+	private boolean checkDuplicate(String insertSqls, Map<String, String> resultMap, DBAccess dbAccess, String type) throws Exception{
 		logger.debug("---查询重复车牌号码---");
 		boolean result = false;
 		String[] inserts = insertSqls.split(ExcelConstants.SQL_TAIL);
@@ -226,11 +226,20 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 				logger.debug("---insert语句---" + inserts[i]);
 				String valuePart = inserts[i].substring(inserts[i].lastIndexOf(ExcelConstants.SQL_INSERT_VALUE_FLAG))
 						.replace(ExcelConstants.SQL_INSERT_VALUE_FLAG, "");
+				String [] valueParts = valuePart.split(",");
 				// 获得cphm字段对应的值
-				String cphmVal = valuePart.split(",")[0].replace("'", "");
-				logger.debug("---cphm---对应的值为---" + cphmVal);
-				if (dbAccess.isFieldValueDup(tableName, "CPHM", cphmVal,conn)) {
-					ExcelImportUtil.setFailMsg(resultMap, "车牌号码为" + cphmVal + "的记录已经存在无法导入");
+				String cphmVal = valueParts[0].replace("'", "");
+				//车牌颜色
+				String cpysVal = valueParts[1].replace("'", "");
+				//变更情况
+				String bgqkVal = valueParts[2].replace("'", "");
+				Map<String, String> valueMap = new HashMap<String, String>();
+				valueMap.put("CPHM", cphmVal);
+				valueMap.put("CPYS", cpysVal);
+				valueMap.put("BGQK", bgqkVal);
+				logger.debug("---车牌号码---" + cphmVal+"---车牌颜色---"+cpysVal+"---变更情况---"+bgqkVal);
+				if (dbAccess.isFieldValueDup(tableName, valueMap, conn)) {
+					ExcelImportUtil.setFailMsg(resultMap, "车牌号码为" + cphmVal + "，车牌颜色为"+cpysVal+"，变更情况为"+bgqkVal+"的记录已经存在无法导入");
 					result = true;
 				}
 			}
@@ -255,15 +264,15 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 		//计算车龄
 		valuePart = calCL(valuePart);
 		statePart += "," + "CL";
-		
+
 		String[] valueParts = valuePart.split(",");
-		
+
 		//根据燃料类型取舍燃料类型相关字段
 		result = calRllx(statePart, valuePart, insertPreFix, valueParts);
 		logger.debug("---预先重组生成的insert语句---" + result);
 		return result;
 	}
-	
+
 	/**
 	 * 计算车龄
 	 * @param valuePart
@@ -308,7 +317,7 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 		}else if (StringUtils.containsIgnoreCase(insertPreFix, "CZQCJCB")) {
 			rllx = valueParts[23];
 		}
-		
+
 		if ("'汽油'".equals(rllx)) {
 			statePart = StringUtils.replace(statePart, "RLLX*1,", "");
 			valuePart = StringUtils.replace(valuePart, ",'单燃料-汽油'", "");
