@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.taiji.excelimp.util.RegionUtil;
 
 /**
- * ÏØÃû³Æ±àÂë×ª»»Æ÷
+ * å¿åç§°ç¼–ç è½¬æ¢å™¨
  * @author zhangxin
  *
  */
@@ -17,19 +17,19 @@ public class XianName2CodeConverter extends StringSelectAbstractConverter {
 	private Logger logger = LoggerFactory.getLogger(XianName2CodeConverter.class);
 	@Override
 	public String getCellValue(String cellValue) {
-		logger.debug("---ÏØÃû³Æ±àÂë×ª»»Æ÷---");
-		logger.debug("---µ¥Ôª¸ñÃû³Æ---"+cellValue);
+		logger.debug("---å¿åç§°ç¼–ç è½¬æ¢å™¨---");
+		logger.debug("---å•å…ƒæ ¼åç§°---"+cellValue);
 		String result = "";
-		if (StringUtils.isNotBlank(cellValue) && !"ÊĞÖ±".equals(cellValue)) {
+		if (StringUtils.isNotBlank(cellValue) && !"å¸‚ç›´".equals(cellValue)) {
 			HashMap<String, Long> xianMap = RegionUtil.getXianMap();
 			Long converted = xianMap.get(cellValue);
 			if (converted != null) {
 				result = String.valueOf(converted);
 			}
-		}else if ("ÊĞÖ±".equals(cellValue)) {
+		}else if ("å¸‚ç›´".equals(cellValue)) {
 			result = "-1";
 		}
-		logger.debug("---×ª»»ºóÖµ---"+result);
+		logger.debug("---è½¬æ¢åå€¼---"+result);
 		return result;
 	}
 

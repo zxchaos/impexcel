@@ -2,7 +2,7 @@ package com.taiji.excelimp.util;
 
 import java.io.Serializable;
 /**
- * excelµÄµ¼Èë¹¤¾ßµÄ³£Á¿ÅäÖÃ
+ * excelçš„å¯¼å…¥å·¥å…·çš„å¸¸é‡é…ç½®
  * @author zhangxin
  *
  */
@@ -11,24 +11,24 @@ public class ExcelConstants implements Serializable {
 	private static final long serialVersionUID = -2093316439392651132L;
 	public static final String EXCEL_FILE_TYPE = "xls";
 	public static final String EXCEL2007_FILE_TYPE = "xlsx";
-	// ÒÔÏÂÎª½á¹ûmapÖĞ´æ·ÅµÄkeyÖµ
+	// ä»¥ä¸‹ä¸ºç»“æœmapä¸­å­˜æ”¾çš„keyå€¼
 	public static final String RESULT_KEY = "result";
 	public static final String MSG_KEY = "msg";
 	public static final String SQLS_KEY = "sqls";
 	public static final String FILENAME_KEY = "fileName";
 
-	// ÒÔÏÂÎªÅäÖÃÎÄ¼şÖĞµÄ±êÇ©Ãû³ÆÓëÊôĞÔÃû³Æ
+	// ä»¥ä¸‹ä¸ºé…ç½®æ–‡ä»¶ä¸­çš„æ ‡ç­¾åç§°ä¸å±æ€§åç§°
 	public static final String ELEMENT_TEMPLATE = "template";
 	public static final String ELEMENT_SHEET = "sheet";
 	public static final String ELEMENT_COL = "col";
 	public static final String ELEMENT_VALIDATION = "validation";
 	
-	//ÒÔÏÂÎªÅäÖÃÎÄ¼şÖĞµÄ¸÷±êÇ©µÄÊôĞÔÃû³Æ
+	//ä»¥ä¸‹ä¸ºé…ç½®æ–‡ä»¶ä¸­çš„å„æ ‡ç­¾çš„å±æ€§åç§°
 	public static final String TEMPLATE_ATTR_ID = "id";
 	public static final String TEMPLATE_ATTR_WORKBOOKPROTECT = "workbookProtect";
 	public static final String TEMPLATE_ATTR_CERTIFICATE = "certificate";
 	
-	//sheet±êÇ©ÊôĞÔ
+	//sheetæ ‡ç­¾å±æ€§
 	public static final String SHEET_ATTR_NAME = "name";
 	public static final String SHEET_ATTR_TABLENAME = "tableName";
 	public static final String SHEET_ATTR_DATASTARTROWNUM = "dataStartRowNum";
@@ -37,12 +37,12 @@ public class ExcelConstants implements Serializable {
 	public static final String SHEET_ATTR_WHOLEROW = "wholeRow";
 	public static final String SHEET_ATTR_COLCOUNT = "colCount";
 	
-	//sheet²Ù×÷ÀàĞÍ
+	//sheetæ“ä½œç±»å‹
 	public static final String OPERATION_TYPE_INSERT = "INSERT";
 	public static final String OPERATION_TYPE_UPDATE= "UPDATE";
 	public static final String OPERATION_TYPE_MULTINSERT = "MULTINSERT";
 	
-	//col±êÇ©ÊôĞÔ
+	//colæ ‡ç­¾å±æ€§
 	public static final String COL_ATTR_COLNUM = "colNum";
 	public static final String COL_ATTR_TABFIELD = "tabField";
 	public static final String COL_ATTR_FIELDTYPE = "fieldType";
@@ -53,44 +53,44 @@ public class ExcelConstants implements Serializable {
 	public static final String COL_ATTR_MAXLENGTH = "maxLength";
 	public static final String COL_ATTR_IGNORE = "ignore";
 	
-	//validation±êÇ©ÊôĞÔ
+	//validationæ ‡ç­¾å±æ€§
 	public static final String VALIDATION_ATTR_VALTYPE = "valType";
 	
 
-	// ÒÔÏÂÎªµ¼ÈëÊ±±íÖĞµÄµÄ×Ö¶ÎÀàĞÍ
+	// ä»¥ä¸‹ä¸ºå¯¼å…¥æ—¶è¡¨ä¸­çš„çš„å­—æ®µç±»å‹
 	public static final String FIELD_TYPE_STRING = "STRING";
 	public static final String FIELD_TYPE_NUM = "NUM";
 	public static final String FIELD_TYPE_DATE = "DATE";
 
-	// ÒÔÏÂÎªµ¼ÈëÊ±µÄÑéÖ¤ÀàĞÍ
-	public static final String VALIDATION_NOTNULL = "NOTNULL";// ·Ç¿ÕÑéÖ¤
-	public static final String VALIDATION_ISNUM = "NUM";// Êı×ÖÑéÖ¤
-	public static final String VALIDATION_IS_POSITIVE_NUM = "POSITIVENUM";// Õı¸¡µãÊı×ÖÑéÖ¤
-	public static final String VALIDATION_EMAIL = "EMAIL";// µç×ÓÓÊ¼şÑéÖ¤
-	public static final String VALIDATION_IDCARD = "IDCARD";// Éí·İÖ¤ºÅÂëÑéÖ¤
-	//ÒÔÏÂÎª¸÷ÑéÖ¤ÀàĞÍµÄÕıÔò±í´ïÊ½
+	// ä»¥ä¸‹ä¸ºå¯¼å…¥æ—¶çš„éªŒè¯ç±»å‹
+	public static final String VALIDATION_NOTNULL = "NOTNULL";// éç©ºéªŒè¯
+	public static final String VALIDATION_ISNUM = "NUM";// æ•°å­—éªŒè¯
+	public static final String VALIDATION_IS_POSITIVE_NUM = "POSITIVENUM";// æ­£æµ®ç‚¹æ•°å­—éªŒè¯
+	public static final String VALIDATION_EMAIL = "EMAIL";// ç”µå­é‚®ä»¶éªŒè¯
+	public static final String VALIDATION_IDCARD = "IDCARD";// èº«ä»½è¯å·ç éªŒè¯
+	//ä»¥ä¸‹ä¸ºå„éªŒè¯ç±»å‹çš„æ­£åˆ™è¡¨è¾¾å¼
 	public static final String REGEXP_ISNUM = "^(-?\\d+)(\\.\\d+)?";
-	public static final String REGEXP_IS_POSITIVE_NUM = "^[1-9]\\d*|^[1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*$";//Õı¸¡µãÊı
+	public static final String REGEXP_IS_POSITIVE_NUM = "^[1-9]\\d*|^[1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*$";//æ­£æµ®ç‚¹æ•°
 	
-	public static final String REGEXP_DATE = "^(\\d{4})-(0\\d{1}|1[0-2])-(0\\d{1}|[12]\\d{1}|3[01])$";//ÈÕÆÚ¸ñÊ½Ğ£Ñé ¸ñÊ½Îª£ºyyyy-MM-dd
+	public static final String REGEXP_DATE = "^(\\d{4})-(0\\d{1}|1[0-2])-(0\\d{1}|[12]\\d{1}|3[01])$";//æ—¥æœŸæ ¼å¼æ ¡éªŒ æ ¼å¼ä¸ºï¼šyyyy-MM-dd
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	
-	//ÒÔÏÂÎªÑéÖ¤Ê§°ÜÔ­Òò
-	public static final String VAL_FAIL_MSG_ISNUM = "Öµ²»ÎªÊı×Ö"; 
-	public static final String VAL_FAIL_MSG_ISPOSITIVENUM = "Öµ²»ÎªÕıÊı"; 
-	public static final String VAL_FAIL_MSG_EMAIL = "emailÑéÖ¤Ê§°Ü";
-	public static final String VAL_FAIL_MSG_IDCARD="Éí·İÖ¤ÑéÖ¤Ê§°Ü";
-	public static final String VAL_FAIL_MSG_NOTNULL="ÖµÎª¿Õ";		
+	//ä»¥ä¸‹ä¸ºéªŒè¯å¤±è´¥åŸå› 
+	public static final String VAL_FAIL_MSG_ISNUM = "å€¼ä¸ä¸ºæ•°å­—"; 
+	public static final String VAL_FAIL_MSG_ISPOSITIVENUM = "å€¼ä¸ä¸ºæ­£æ•°"; 
+	public static final String VAL_FAIL_MSG_EMAIL = "emailéªŒè¯å¤±è´¥";
+	public static final String VAL_FAIL_MSG_IDCARD="èº«ä»½è¯éªŒè¯å¤±è´¥";
+	public static final String VAL_FAIL_MSG_NOTNULL="å€¼ä¸ºç©º";		
 	
 	
 	
-	public static final String SUCCESS = "success";// ³É¹¦
-	public static final String FAIL = "fail";// Ê§°Ü
-	public static final String SQL_TAIL = ";\n";//sqlÓï¾ä½áÎ²×Ö·û
-	public static final String SQL_INSERT_VALUE_FLAG=") @%&#VALUES#&%@ (";//²ğ·ÖinsertÓï¾äµÄvalue±êÊ¶
-	public static final String SQL_INSERT_VALUE = ") VALUES (";//insert Óï¾äÖĞµÄvalues±êÊ¶
-	public static final String SQL_MULTINSERT_FROM_DUAL_FLAG = "@%&FROM@%&DUAL@%&";//multinsert²Ù×÷½âÎöÍêºóÉú³ÉµÄ±êÊ¶ ÓÃÓÚÉú³ÉÕæÕıµÄsqlÊ±Ìæ»»
-	public static final String SQL_MULTINSERT_UNION_SELECT_FLAG = "@%&UNION@%&SELECT@%&";//multinsert²Ù×÷½âÎöÍêºóÉú³ÉµÄ±êÊ¶ ÓÃÓÚÉú³ÉÕæÕıµÄsqlÊ±
-	public static final String SQL_MULTINSERT_FROM_DUAL = " FROM DUAL ";//Ò»Ìõinsert²åÈë¶àÌõ¼ÇÂ¼Ê±¹Ì¶¨Ğ´·¨ from dual
-	public static final String SQL_MULTINSERT_UNION_SELECT = " UNION SELECT ";//Ò»Ìõinsert²åÈë¶àÌõ¼ÇÂ¼Ê±¹Ì¶¨Ğ´·¨ union select
+	public static final String SUCCESS = "success";// æˆåŠŸ
+	public static final String FAIL = "fail";// å¤±è´¥
+	public static final String SQL_TAIL = ";\n";//sqlè¯­å¥ç»“å°¾å­—ç¬¦
+	public static final String SQL_INSERT_VALUE_FLAG=") @%&#VALUES#&%@ (";//æ‹†åˆ†insertè¯­å¥çš„valueæ ‡è¯†
+	public static final String SQL_INSERT_VALUE = ") VALUES (";//insert è¯­å¥ä¸­çš„valuesæ ‡è¯†
+	public static final String SQL_MULTINSERT_FROM_DUAL_FLAG = "@%&FROM@%&DUAL@%&";//multinsertæ“ä½œè§£æå®Œåç”Ÿæˆçš„æ ‡è¯† ç”¨äºç”ŸæˆçœŸæ­£çš„sqlæ—¶æ›¿æ¢
+	public static final String SQL_MULTINSERT_UNION_SELECT_FLAG = "@%&UNION@%&SELECT@%&";//multinsertæ“ä½œè§£æå®Œåç”Ÿæˆçš„æ ‡è¯† ç”¨äºç”ŸæˆçœŸæ­£çš„sqlæ—¶
+	public static final String SQL_MULTINSERT_FROM_DUAL = " FROM DUAL ";//ä¸€æ¡insertæ’å…¥å¤šæ¡è®°å½•æ—¶å›ºå®šå†™æ³• from dual
+	public static final String SQL_MULTINSERT_UNION_SELECT = " UNION SELECT ";//ä¸€æ¡insertæ’å…¥å¤šæ¡è®°å½•æ—¶å›ºå®šå†™æ³• union select
 }

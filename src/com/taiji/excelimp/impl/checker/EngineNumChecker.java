@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import com.taiji.excelimp.api.IRegExpChecker;
 /**
- * ·¢¶¯»úºÅ¹æÔò¼ì²é£º·¢¶¯»úºÅÎª6µ½14Î»µÄºº×Ö»ò×ÖÄ¸»òÊı×ÖµÄ×éºÏ
+ * å‘åŠ¨æœºå·è§„åˆ™æ£€æŸ¥ï¼šå‘åŠ¨æœºå·ä¸º6åˆ°14ä½çš„æ±‰å­—æˆ–å­—æ¯æˆ–æ•°å­—çš„ç»„åˆ
  * @author zhangxin
  *
  */

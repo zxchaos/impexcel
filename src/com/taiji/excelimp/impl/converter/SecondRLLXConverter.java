@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.taiji.excelimp.api.IConverter;
 
 /**
- * È¼ÁÏÀàĞÍÃ÷Ï¸×ª»»Æ÷
+ * ç‡ƒæ–™ç±»å‹æ˜ç»†è½¬æ¢å™¨
  * 
  * @author zhangxin
  * 
@@ -21,30 +21,30 @@ public class SecondRLLXConverter implements IConverter {
 		String result = "";
 		if (cell != null && Cell.CELL_TYPE_STRING == cell.getCellType()) {
 			String cellValue = cell.getRichStringCellValue().getString();
-			logger.debug("---È¼ÁÏÃ÷Ï¸µ¥Ôª¸ñÖµ---"+cellValue);
-			Cell rllxCell = cell.getRow().getCell(cell.getColumnIndex()-1);//»ñµÃÈ¼ÁÏÀàĞÍµ¥Ôª¸ñ
+			logger.debug("---ç‡ƒæ–™æ˜ç»†å•å…ƒæ ¼å€¼---"+cellValue);
+			Cell rllxCell = cell.getRow().getCell(cell.getColumnIndex()-1);//è·å¾—ç‡ƒæ–™ç±»å‹å•å…ƒæ ¼
 			if (rllxCell == null || Cell.CELL_TYPE_STRING != rllxCell.getCellType()) {
 				return result;
 			}
 			String rllx = rllxCell.getRichStringCellValue().getString();
-			logger.debug("---Ö®Ç°µÄÈ¼ÁÏÀàĞÍµ¥Ôª¸ñÖµ---"+rllx);
-			if ("ÆûÓÍ".equals(rllx) && "µ¥È¼ÁÏ-ÆûÓÍ".equals(cellValue)) {
+			logger.debug("---ä¹‹å‰çš„ç‡ƒæ–™ç±»å‹å•å…ƒæ ¼å€¼---"+rllx);
+			if ("æ±½æ²¹".equals(rllx) && "å•ç‡ƒæ–™-æ±½æ²¹".equals(cellValue)) {
 				result = cellValue;
-			} else if ("²ñÓÍ".equals(rllx) && "µ¥È¼ÁÏ-²ñÓÍ".equals(cellValue)) {
+			} else if ("æŸ´æ²¹".equals(rllx) && "å•ç‡ƒæ–™-æŸ´æ²¹".equals(cellValue)) {
 				result = cellValue;
-			} else if ("LPG".equals(rllx) && "µ¥È¼ÁÏ-LPG".equals(cellValue)) {
+			} else if ("LPG".equals(rllx) && "å•ç‡ƒæ–™-LPG".equals(cellValue)) {
 				result = cellValue;
-			} else if ("CNG".equals(rllx) && "µ¥È¼ÁÏ-CNG".equals(cellValue)) {
+			} else if ("CNG".equals(rllx) && "å•ç‡ƒæ–™-CNG".equals(cellValue)) {
 				result = cellValue;
-			} else if ("LNG".equals(rllx) && "µ¥È¼ÁÏ-LNG".equals(cellValue)) {
+			} else if ("LNG".equals(rllx) && "å•ç‡ƒæ–™-LNG".equals(cellValue)) {
 				result = cellValue;
-			} else if ("Ë«È¼ÁÏ".equals(rllx)) {
-				String [] doubleFuel = new String []{"ÆûÓÍ+LPG","ÆûÓÍ+CNG","ÆûÓÍ+LNG","²ñÓÍ+LPG","²ñÓÍ+CNG","²ñÓÍ+LNG"};
+			} else if ("åŒç‡ƒæ–™".equals(rllx)) {
+				String [] doubleFuel = new String []{"æ±½æ²¹+LPG","æ±½æ²¹+CNG","æ±½æ²¹+LNG","æŸ´æ²¹+LPG","æŸ´æ²¹+CNG","æŸ´æ²¹+LNG"};
 				if (Arrays.asList(doubleFuel).contains(cellValue)) {
 					result = cellValue;
 				}
-			} else if ("»ìºÏ¶¯Á¦".equals(rllx)) {
-				String [] mixFuel = new String [] {"ÆûÓÍ+µç","²ñÓÍ+µç"};
+			} else if ("æ··åˆåŠ¨åŠ›".equals(rllx)) {
+				String [] mixFuel = new String [] {"æ±½æ²¹+ç”µ","æŸ´æ²¹+ç”µ"};
 				if (Arrays.asList(mixFuel).contains(cellValue)) {
 					result = cellValue;
 				}

@@ -13,14 +13,14 @@ import com.taiji.excelimp.db.DBAccess;
 import com.taiji.excelimp.util.ExcelConstants;
 import com.taiji.excelimp.util.ExcelImportUtil;
 /**
- * Å©´å¿ÍÔËÏßÂ·ÅúÁ¿µ¼ÈëÒµÎñÀà
+ * å†œæ‘å®¢è¿çº¿è·¯æ‰¹é‡å¯¼å…¥ä¸šåŠ¡ç±»
  * @author zhangxin
  *
  */
 public class NckyxlBatchImpExcel extends AbstractImpExcel {
 	@Override
 	public void importExcel(Properties sysConfig, DBAccess dbAccess) throws Exception {
-		logger.debug("---Å©´å¿ÍÔËÏßÂ·ÅúÁ¿µ¼Èë¿ªÊ¼---");
+		logger.debug("---å†œæ‘å®¢è¿çº¿è·¯æ‰¹é‡å¯¼å…¥å¼€å§‹---");
 		boolean isSuccess = false;
 		String baseDir = sysConfig.getProperty("impDir");
 		File nckyDir = new File(baseDir + File.separator + sysConfig.getProperty("nckyxlBatchImpDirName"));
@@ -32,9 +32,9 @@ public class NckyxlBatchImpExcel extends AbstractImpExcel {
 		
 		for (int i = 0; i < impFiles.length; i++) {
 			String fileName = impFiles[i].getName();
-			// ³µÁ¾ĞÅÏ¢µ¼ÈëµÄExcelÎÄ¼şÃüÃû¹æ·¶£ºUUID_²Ù×÷Àà±ğ_µ¥Î»Id_µØÊĞ´úÂë.xlsx(.xls)
-			// ²Ù×÷Àà±ğ°üÀ¨£ºnckyxlgl
-			// Ò²¶ÔÓ¦×ÅÅäÖÃÎÄ¼şÖĞµÄtemplateÔªËØÖĞµÄtemplateIdÊôĞÔ
+			// è½¦è¾†ä¿¡æ¯å¯¼å…¥çš„Excelæ–‡ä»¶å‘½åè§„èŒƒï¼šUUID_æ“ä½œç±»åˆ«_å•ä½Id_åœ°å¸‚ä»£ç .xlsx(.xls)
+			// æ“ä½œç±»åˆ«åŒ…æ‹¬ï¼šnckyxlgl
+			// ä¹Ÿå¯¹åº”ç€é…ç½®æ–‡ä»¶ä¸­çš„templateå…ƒç´ ä¸­çš„templateIdå±æ€§
 			String excelFileName = fileName.substring(0, fileName.lastIndexOf("."));
 			String [] fileNameParts = excelFileName.split("_");
 			String insertSqls = "";
@@ -51,48 +51,48 @@ public class NckyxlBatchImpExcel extends AbstractImpExcel {
 				String configFilePath = sysConfig.getProperty("configFilePath");
 				document = ExcelImportUtil.getConfigFileDoc(configFilePath);
 				
-				//»ñµÃÒªµ¼ÈëµÄÎÄ¼şµÄ¹¤×÷²¾¶ÔÏó²¢¼ì²éÎÄ¼şµÄÓĞĞ§ĞÔ
+				//è·å¾—è¦å¯¼å…¥çš„æ–‡ä»¶çš„å·¥ä½œç°¿å¯¹è±¡å¹¶æ£€æŸ¥æ–‡ä»¶çš„æœ‰æ•ˆæ€§
 				workbook = ExcelImportUtil.genWorkbook(impFiles[i], document, templateId, resultMap);
 				
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
-					//¿ªÊ¼½âÎöÎÄ¼ş
+					//å¼€å§‹è§£ææ–‡ä»¶
 					ExcelImportUtil.importExcel(workbook, document, templateId, resultMap);
 				}
 				
 				insertSqls = resultMap.get(ExcelConstants.SQLS_KEY);
 				if (!ExcelConstants.FAIL.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY)) && StringUtils.isBlank(insertSqls)) {
-					logger.info("+++Éú³ÉµÄsqlÎª¿Õ+++¿ÉÄÜÊÇÄ£°åÖĞÃ»ÓĞÊı¾İ");
-					ExcelImportUtil.setFailMsg(resultMap, "µ¼ÈëµÄÄ£°åÖĞ²»°üº¬Êı¾İ");
+					logger.info("+++ç”Ÿæˆçš„sqlä¸ºç©º+++å¯èƒ½æ˜¯æ¨¡æ¿ä¸­æ²¡æœ‰æ•°æ®");
+					ExcelImportUtil.setFailMsg(resultMap, "å¯¼å…¥çš„æ¨¡æ¿ä¸­ä¸åŒ…å«æ•°æ®");
 				}
 				
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
-					//ÈôÉú³ÉinsertÓï¾ä³É¹¦ÔòÖ´ĞĞ²åÈë²Ù×÷
+					//è‹¥ç”Ÿæˆinsertè¯­å¥æˆåŠŸåˆ™æ‰§è¡Œæ’å…¥æ“ä½œ
 					Map<String, Object>fieldValueMap = new HashMap<String, Object>();
 					fieldValueMap.put("XS", Double.valueOf(0.1));
 					fieldValueMap.put("ZT", Long.valueOf(0));
 					fieldValueMap.put("SHENG", Long.valueOf(650000));
-					fieldValueMap.put("SHI", Long.valueOf(fileNameParts[3]));//´ÓÎÄ¼şÃû³ÆÖĞÈ¡µÃµØÊĞ´úÂë
+					fieldValueMap.put("SHI", Long.valueOf(fileNameParts[3]));//ä»æ–‡ä»¶åç§°ä¸­å–å¾—åœ°å¸‚ä»£ç 
 					String [] inserts = super.remakeInsert(insertSqls, fieldValueMap,"BXID",dbAccess);
-					//½øĞĞÅúÁ¿²åÈë
+					//è¿›è¡Œæ‰¹é‡æ’å…¥
 					dbAccess.batchExecuteSqls(inserts);
 					super.insertImpInfo(dbAccess, resultMap, infoFieldMap,true,super.getType());
 					isSuccess = true;
 				}else{
-					//ÈôÉú³ÉÊ§°Ü½«´íÎóĞÅÏ¢Ğ´ÈëÊı¾İ¿â
+					//è‹¥ç”Ÿæˆå¤±è´¥å°†é”™è¯¯ä¿¡æ¯å†™å…¥æ•°æ®åº“
 					isSuccess = false;
 					super.insertImpInfo(dbAccess, resultMap, infoFieldMap, isSuccess,super.getType());
 				}
 			} catch (Exception e) {
-				logger.info("+++µ¼Èë³öÏÖÒì³£+++");
+				logger.info("+++å¯¼å…¥å‡ºç°å¼‚å¸¸+++");
 				logger.error(e.getMessage(), e);
 				isSuccess = false;
 				resultMap.remove(ExcelConstants.MSG_KEY);
-				ExcelImportUtil.setFailMsg(resultMap, "µ¼ÈëÒì³£,ÇëÁªÏµ¹ÜÀíÈËÔ±");
+				ExcelImportUtil.setFailMsg(resultMap, "å¯¼å…¥å¼‚å¸¸,è¯·è”ç³»ç®¡ç†äººå‘˜");
 				super.insertImpInfo(dbAccess, resultMap, infoFieldMap, isSuccess, super.getType());
-				logger.info("+++¼ÌĞøµ¼ÈëÏÂÒ»¸öÎÄ¼ş+++");
+				logger.info("+++ç»§ç»­å¯¼å…¥ä¸‹ä¸€ä¸ªæ–‡ä»¶+++");
 				continue;
 			}finally{
-				//½«´¦ÀíÍê³ÉµÄÎÄ¼şÒÆ¶¯µ½±¸·İÄ¿Â¼
+				//å°†å¤„ç†å®Œæˆçš„æ–‡ä»¶ç§»åŠ¨åˆ°å¤‡ä»½ç›®å½•
 				backupFile(impFiles[i], backupDir, isSuccess);
 			}
 		}

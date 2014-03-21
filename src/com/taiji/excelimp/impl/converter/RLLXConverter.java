@@ -3,7 +3,7 @@ package com.taiji.excelimp.impl.converter;
 import java.util.Arrays;
 
 /**
- * È¼ÁÏÀàĞÍ×ª»»Æ÷
+ * ç‡ƒæ–™ç±»å‹è½¬æ¢å™¨
  * @author zhangxin
  *
  */
@@ -11,7 +11,7 @@ public class RLLXConverter extends StringSelectAbstractConverter {
 
 	@Override
 	public String getCellValue(String cellValue) {
-		String [] rllxArray = new String[]{"ÆûÓÍ", "²ñÓÍ", "LPG","CNG", "LNG", "Ë«È¼ÁÏ","»ìºÏ¶¯Á¦"};
+		String [] rllxArray = new String[]{"æ±½æ²¹", "æŸ´æ²¹", "LPG","CNG", "LNG", "åŒç‡ƒæ–™","æ··åˆåŠ¨åŠ›"};
 		String result = "";
 		if (Arrays.asList(rllxArray).contains(cellValue)) {
 			result = cellValue;

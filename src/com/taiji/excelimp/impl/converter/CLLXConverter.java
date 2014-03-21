@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * ³µÁ¾ÀàĞÍ×ª»»Æ÷
+ * è½¦è¾†ç±»å‹è½¬æ¢å™¨
  * @author zhangxin
  *
  */
@@ -13,7 +13,7 @@ public class CLLXConverter extends StringSelectAbstractConverter {
 	@Override
 	public String getCellValue(String cellValue) {
 		String result = "";
-		String[] clxhArray = new String[] { "´óĞÍ¿Í³µ", "ÖĞĞÍ¿Í³µ", "Ğ¡ĞÍ¿Í³µ", "½Î³µ", "´óĞÍÎÔÆÌ¿Í³µ", "ÖĞĞÍÎÔÆÌ¿Í³µ", "´óĞÍË«²ã¿Í³µ", "´óĞÍ½Â½Ó¿Í³µ", "ÆäËû" };
+		String[] clxhArray = new String[] { "å¤§å‹å®¢è½¦", "ä¸­å‹å®¢è½¦", "å°å‹å®¢è½¦", "è½¿è½¦", "å¤§å‹å§é“ºå®¢è½¦", "ä¸­å‹å§é“ºå®¢è½¦", "å¤§å‹åŒå±‚å®¢è½¦", "å¤§å‹é“°æ¥å®¢è½¦", "å…¶ä»–" };
 		ArrayList<String>clxhList = new ArrayList<String>();
 		if (Arrays.asList(clxhArray).contains(cellValue)) {
 			result = cellValue;

@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Ê¹ÓÃĞÔÖÊ×ª»»Æ÷
+ * ä½¿ç”¨æ€§è´¨è½¬æ¢å™¨
  * @author zhangxin
  *
  */
@@ -12,10 +12,10 @@ public class SYXZConverter extends StringSelectAbstractConverter {
 	private Logger logger = LoggerFactory.getLogger(SYXZConverter.class);
 	@Override
 	public String getCellValue(String cellValue) {
-		logger.debug("---Ê¹ÓÃĞÔÖÊ×ª»»Æ÷----´«ÈëµÄÖµÎª"+cellValue+"---");
+		logger.debug("---ä½¿ç”¨æ€§è´¨è½¬æ¢å™¨----ä¼ å…¥çš„å€¼ä¸º"+cellValue+"---");
 		String result = "";
-		if ("·ÇÓªÔË".equals(cellValue) || "¹«Â·¿ÍÔË".equals(cellValue) || "¹«½»¿ÍÔË".equals(cellValue) || "³ö×â¿ÍÔË".equals(cellValue)
-				|| "ÂÃÓÎ¿ÍÔË".equals(cellValue)||"×âÁŞ".equals(cellValue) || "Óª×ª·Ç".equals(cellValue) || "³ö×â×ª·Ç".equals(cellValue) || "ÆäËû".equals(cellValue)) {
+		if ("éè¥è¿".equals(cellValue) || "å…¬è·¯å®¢è¿".equals(cellValue) || "å…¬äº¤å®¢è¿".equals(cellValue) || "å‡ºç§Ÿå®¢è¿".equals(cellValue)
+				|| "æ—…æ¸¸å®¢è¿".equals(cellValue)||"ç§Ÿèµ".equals(cellValue) || "è¥è½¬é".equals(cellValue) || "å‡ºç§Ÿè½¬é".equals(cellValue) || "å…¶ä»–".equals(cellValue)) {
 			result = cellValue;
 		}
 		logger.debug("---result---"+result);

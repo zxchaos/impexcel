@@ -1,7 +1,7 @@
 package com.taiji.excelimp.impl.converter;
 
 /**
- * °àÏßÀàĞÍ×ª»»Æ÷
+ * ç­çº¿ç±»å‹è½¬æ¢å™¨
  * @author zhangxin
  *
  */
@@ -10,9 +10,9 @@ public class BXLXConverter extends StringSelectAbstractConverter {
 	@Override
 	public String getCellValue(String cellValue) {
 		String result = "";
-		if ("ÆÕÍ¨".equals(cellValue)) {
+		if ("æ™®é€š".equals(cellValue)) {
 			result = "1";
-		}else if ("Ö±´ï".equals(cellValue)) {
+		}else if ("ç›´è¾¾".equals(cellValue)) {
 			result = "2";
 		}
 		return result;

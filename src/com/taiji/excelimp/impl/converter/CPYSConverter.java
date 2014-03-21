@@ -2,7 +2,7 @@ package com.taiji.excelimp.impl.converter;
 
 
 /**
- * ³µÅÆÑÕÉ«×ª»»Æ÷
+ * è½¦ç‰Œé¢œè‰²è½¬æ¢å™¨
  * 
  * @author zhangxin
  * 
@@ -12,7 +12,7 @@ public class CPYSConverter extends StringSelectAbstractConverter {
 	@Override
 	public String getCellValue(String cellValue) {
 		String result = "";
-		if ("À¶É«".equals(cellValue) || "»ÆÉ«".equals(cellValue) || "ÆäËû".equals(cellValue)) {
+		if ("è“è‰²".equals(cellValue) || "é»„è‰²".equals(cellValue) || "å…¶ä»–".equals(cellValue)) {
 			result = cellValue;
 		}
 		return result;

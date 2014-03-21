@@ -24,7 +24,7 @@ import com.taiji.excelimp.ImpCheck;
 import com.taiji.excelimp.db.DBAccess;
 
 /**
- * ĞĞÕşÇø»®¹¤¾ßÀà
+ * è¡Œæ”¿åŒºåˆ’å·¥å…·ç±»
  * 
  * @author zhangxin
  * 
@@ -35,7 +35,7 @@ public class RegionUtil {
 	private static HashMap<String, Long> xianMap;
 	
 	/**
-	 * ³õÊ¼»¯shiMap ºÍ xianMap
+	 * åˆå§‹åŒ–shiMap å’Œ xianMap
 	 * @param sMap
 	 * @param xMap
 	 */
@@ -45,20 +45,20 @@ public class RegionUtil {
 	}
 
 	/**
-	 * »ñµÃµØÊĞ»º´æMap
+	 * è·å¾—åœ°å¸‚ç¼“å­˜Map
 	 */
 	public static HashMap<String, Long> getShiMap(){
 		return shiMap;
 	}
 	/**
-	 * »ñµÃÏØ»º´æMap
+	 * è·å¾—å¿ç¼“å­˜Map
 	 */
 	public static HashMap<String, Long>getXianMap(){
 		return xianMap;
 	}
 	
 	/**
-	 * ¸Ã·½·¨ÓÃÓÚ¶¨ÆÚ¸üĞÂÅ©´å¿ÍÔËÄ£°åÖĞµÄÏØÊĞĞĞÕşÇø»®µÄÊı¾İÔ´
+	 * è¯¥æ–¹æ³•ç”¨äºå®šæœŸæ›´æ–°å†œæ‘å®¢è¿æ¨¡æ¿ä¸­çš„å¿å¸‚è¡Œæ”¿åŒºåˆ’çš„æ•°æ®æº
 	 * 
 	 * @param excelDataSourceFile
 	 * @param dbAccess
@@ -98,12 +98,12 @@ public class RegionUtil {
 					}
 					Cell xianCell = xianRow.createCell(i);
 					if (0==j) {
-						xianCell.setCellValue(new XSSFRichTextString("ÊĞÖ±"));
+						xianCell.setCellValue(new XSSFRichTextString("å¸‚ç›´"));
 					}else {
 						xianCell.setCellValue(new XSSFRichTextString(rsXian.getString(2)));
 					}
 				}
-				//µØÊĞÃû³ÆÏÂ·½ÎªµØÊĞ´úÂë-µØÊĞÏÂµÄÏØÊıÄ¿£ºÈç£º652700_3
+				//åœ°å¸‚åç§°ä¸‹æ–¹ä¸ºåœ°å¸‚ä»£ç -åœ°å¸‚ä¸‹çš„å¿æ•°ç›®ï¼šå¦‚ï¼š652700_3
 				cell = shiCodeRow.createCell(i);
 				cell.setCellValue(new XSSFRichTextString(rs.getString(1)+"_"+xianCount));
 				

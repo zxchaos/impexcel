@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.taiji.excelimp.util.RegionUtil;
 /**
- * ÊĞÃû³Æ±àÂë×ª»»Æ÷
+ * å¸‚åç§°ç¼–ç è½¬æ¢å™¨
  * @author zhangxin
  *
  */
@@ -16,8 +16,8 @@ public class ShiName2CodeConverter extends StringSelectAbstractConverter {
 	private static Logger logger = LoggerFactory.getLogger(ShiName2CodeConverter.class);
 	@Override
 	public String getCellValue(String cellValue) {
-		logger.debug("---ÊĞÃû³Æ±àÂë×ª»»Æ÷---");
-		logger.debug("---µ¥Ôª¸ñÖµ---"+cellValue);
+		logger.debug("---å¸‚åç§°ç¼–ç è½¬æ¢å™¨---");
+		logger.debug("---å•å…ƒæ ¼å€¼---"+cellValue);
 		String result = "";
 		if (StringUtils.isNotBlank(cellValue)) {
 			HashMap<String, Long> shiMap = RegionUtil.getShiMap();
@@ -26,7 +26,7 @@ public class ShiName2CodeConverter extends StringSelectAbstractConverter {
 				result = String.valueOf(shiMap.get(cellValue));
 			}
 		}
-		logger.debug("---×ª»»ºóÖµ---"+result);
+		logger.debug("---è½¬æ¢åå€¼---"+result);
 		return result;
 	}
 

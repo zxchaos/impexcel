@@ -1,6 +1,6 @@
 package com.taiji.excelimp.impl.converter;
 /**
- * ¾­Óª·½Ê½×ª»»Æ÷
+ * ç»è¥æ–¹å¼è½¬æ¢å™¨
  * @author zhangxin
  *
  */
@@ -9,7 +9,7 @@ public class JYFSConverter extends StringSelectAbstractConverter {
 	@Override
 	public String getCellValue(String cellValue) {
 		String result = "";
-		if ("×ÔÓª".equals(cellValue) || "·Ç×ÔÓª".equals(cellValue)) {
+		if ("è‡ªè¥".equals(cellValue) || "éè‡ªè¥".equals(cellValue)) {
 			result = cellValue;
 		}
 		return result;

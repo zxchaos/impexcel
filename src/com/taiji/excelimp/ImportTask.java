@@ -12,7 +12,7 @@ import com.taiji.excelimp.factory.api.ImpExcelFactory;
 
 
 /**
- * ÂÖÑ¯¶¨Ê±ÈÎÎñ³éÏóÀà
+ * è½®è¯¢å®šæ—¶ä»»åŠ¡æŠ½è±¡ç±»
  * @author zhangxin
  *
  */
@@ -48,13 +48,13 @@ public class ImportTask extends TimerTask {
 	
 	@Override
 	public void run() {
-		logger.info("+++ÂÖÑ¯¿ªÊ¼+++");
+		logger.info("+++è½®è¯¢å¼€å§‹+++");
 		try {
 			AbstractImpExcel impExcel = impExcelFactory.getImpExcelInstance();
 			impExcel.importExcel(this.getImpConfig(), this.getDbAccess());
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		}
-		logger.info("+++½áÊøÂÖÑ¯+++\n\n");
+		logger.info("+++ç»“æŸè½®è¯¢+++\n\n");
 	}
 }

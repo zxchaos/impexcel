@@ -2,7 +2,7 @@ package com.taiji.excelimp.impl.converter;
 
 
 /**
- * ±ä¸üÇé¿ö×ª»»Æ÷
+ * å˜æ›´æƒ…å†µè½¬æ¢å™¨
  * @author zhangxin
  *
  */
@@ -11,7 +11,7 @@ public class BGQKConverter extends StringSelectAbstractConverter {
 	@Override
 	public String getCellValue(String cellValue) {
 		String result = "";
-		if ("ĞÂÔö".equals(cellValue) || "¹ı»§×ªÈë".equals(cellValue)) {
+		if ("æ–°å¢".equals(cellValue) || "è¿‡æˆ·è½¬å…¥".equals(cellValue)) {
 			result = cellValue;
 		}
 		return result;

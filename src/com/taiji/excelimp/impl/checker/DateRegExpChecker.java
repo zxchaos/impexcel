@@ -9,7 +9,7 @@ import com.taiji.excelimp.api.IRegExpChecker;
 import com.taiji.excelimp.util.ExcelConstants;
 
 /**
- * ÈÕÆÚÕıÔò±í´ïÊ½¼ìÑé
+ * æ—¥æœŸæ­£åˆ™è¡¨è¾¾å¼æ£€éªŒ
  * @author zhangxin
  *
  */
@@ -17,11 +17,11 @@ public class DateRegExpChecker implements IRegExpChecker {
 	private Logger logger = LoggerFactory.getLogger(DateRegExpChecker.class);
 	@Override
 	public boolean check(String cellValue) {
-		logger.debug("---ÈÕÆÚÊäÈëÖµ---"+cellValue);
+		logger.debug("---æ—¥æœŸè¾“å…¥å€¼---"+cellValue);
 		boolean result = false;
 		Pattern pattern = Pattern.compile(ExcelConstants.REGEXP_DATE);
 		result = pattern.matcher(cellValue).matches();
-		logger.debug("---ÑéÖ¤½á¹û---"+result);
+		logger.debug("---éªŒè¯ç»“æœ---"+result);
 		return result;
 	}
 	

@@ -23,7 +23,7 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 	private String hylb;
 	@Override
 	public void importExcel(Properties sysConfig, DBAccess dbAccess) throws Exception {
-		logger.debug("---ÊÜÒæÈËĞÅÏ¢ÅúÁ¿µ¼Èë¿ªÊ¼---");
+		logger.debug("---å—ç›Šäººä¿¡æ¯æ‰¹é‡å¯¼å…¥å¼€å§‹---");
 		boolean isSuccess = false;
 		String baseDir = sysConfig.getProperty("impDir");
 		File registerDir = new File(baseDir + File.separator + sysConfig.getProperty("syrInfoBatchImpDirName"));
@@ -36,9 +36,9 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 		
 		for (int i = 0; i < impFiles.length; i++) {
 			String fileName = impFiles[i].getName();
-			// ÊÜÒæÈËĞÅÏ¢µ¼ÈëµÄExcelÎÄ¼şÃüÃû¹æ·¶£ºUUID_²Ù×÷Àà±ğ_µ¥Î»Id.xlsx(.xls)
-			// ²Ù×÷Àà±ğ°üÀ¨£ºcsgjsyr,nckysyr,czqcsyr
-			// Ò²¶ÔÓ¦×ÅÅäÖÃÎÄ¼şÖĞµÄtemplateÔªËØÖĞµÄtemplateIdÊôĞÔ
+			// å—ç›Šäººä¿¡æ¯å¯¼å…¥çš„Excelæ–‡ä»¶å‘½åè§„èŒƒï¼šUUID_æ“ä½œç±»åˆ«_å•ä½Id.xlsx(.xls)
+			// æ“ä½œç±»åˆ«åŒ…æ‹¬ï¼šcsgjsyr,nckysyr,czqcsyr
+			// ä¹Ÿå¯¹åº”ç€é…ç½®æ–‡ä»¶ä¸­çš„templateå…ƒç´ ä¸­çš„templateIdå±æ€§
 			String excelFileName = fileName.substring(0, fileName.lastIndexOf("."));
 			String[] fileNameParts = excelFileName.split("_");
 			String insertSqls = "";
@@ -55,18 +55,18 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 				String configFilePath = sysConfig.getProperty("configFilePath");
 				document = ExcelImportUtil.getConfigFileDoc(configFilePath);
 
-				// »ñµÃÒªµ¼ÈëµÄÎÄ¼şµÄ¹¤×÷²¾¶ÔÏó²¢¼ì²éÎÄ¼şµÄÓĞĞ§ĞÔ
+				// è·å¾—è¦å¯¼å…¥çš„æ–‡ä»¶çš„å·¥ä½œç°¿å¯¹è±¡å¹¶æ£€æŸ¥æ–‡ä»¶çš„æœ‰æ•ˆæ€§
 				workbook = ExcelImportUtil.genWorkbook(impFiles[i], document, templateId, resultMap);
 
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
-					// ¿ªÊ¼½âÎöÎÄ¼ş
+					// å¼€å§‹è§£ææ–‡ä»¶
 					ExcelImportUtil.importExcel(workbook, document, templateId, resultMap);
 				}
 				
 				insertSqls = resultMap.get(ExcelConstants.SQLS_KEY);
 				if (!ExcelConstants.FAIL.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY)) && StringUtils.isBlank(insertSqls)) {
-					logger.info("+++Éú³ÉµÄsqlÎª¿Õ+++¿ÉÄÜÊÇÄ£°åÖĞÃ»ÓĞÊı¾İ");
-					ExcelImportUtil.setFailMsg(resultMap, "µ¼ÈëµÄÄ£°åÖĞ²»°üº¬Êı¾İ");
+					logger.info("+++ç”Ÿæˆçš„sqlä¸ºç©º+++å¯èƒ½æ˜¯æ¨¡æ¿ä¸­æ²¡æœ‰æ•°æ®");
+					ExcelImportUtil.setFailMsg(resultMap, "å¯¼å…¥çš„æ¨¡æ¿ä¸­ä¸åŒ…å«æ•°æ®");
 				}
 				
 				String [] inserts = null;
@@ -78,94 +78,94 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 				
 				
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
-					// ÈôÉú³ÉinsertÓï¾ä³É¹¦ÔòÖ´ĞĞ²åÈë²Ù×÷
+					// è‹¥ç”Ÿæˆinsertè¯­å¥æˆåŠŸåˆ™æ‰§è¡Œæ’å…¥æ“ä½œ
 					Map<String, Object> fieldValueMap = new HashMap<String, Object>();
 					fieldValueMap.put("QYID", dwid);
 					doMultInsert(inserts, fieldValueMap, "ID", dbAccess,sysConfig,jcbList);
 					super.insertImpInfo(dbAccess, resultMap, infoFieldMap, true, super.getType());
 					isSuccess = true;
 				} else {
-					// ÈôÉú³ÉÊ§°Ü½«´íÎóĞÅÏ¢Ğ´ÈëÊı¾İ¿â
+					// è‹¥ç”Ÿæˆå¤±è´¥å°†é”™è¯¯ä¿¡æ¯å†™å…¥æ•°æ®åº“
 					isSuccess = false;
 					super.insertImpInfo(dbAccess, resultMap, infoFieldMap, isSuccess, super.getType());
 				}
 			} catch (Exception e) {
-				logger.info("+++µ¼Èë³öÏÖÒì³£+++");
+				logger.info("+++å¯¼å…¥å‡ºç°å¼‚å¸¸+++");
 				logger.error(e.getMessage(), e);
 				isSuccess = false;
 				resultMap.remove(ExcelConstants.MSG_KEY);
-				ExcelImportUtil.setFailMsg(resultMap, "µ¼ÈëÒì³£,ÇëÁªÏµ¹ÜÀíÈËÔ±");
+				ExcelImportUtil.setFailMsg(resultMap, "å¯¼å…¥å¼‚å¸¸,è¯·è”ç³»ç®¡ç†äººå‘˜");
 				super.insertImpInfo(dbAccess, resultMap, infoFieldMap, isSuccess, super.getType());
-				logger.info("+++¼ÌĞøµ¼ÈëÏÂÒ»¸öÎÄ¼ş+++");
+				logger.info("+++ç»§ç»­å¯¼å…¥ä¸‹ä¸€ä¸ªæ–‡ä»¶+++");
 				continue;
 			} finally {
-				// ½«´¦ÀíÍê³ÉµÄÎÄ¼şÒÆ¶¯µ½±¸·İÄ¿Â¼
+				// å°†å¤„ç†å®Œæˆçš„æ–‡ä»¶ç§»åŠ¨åˆ°å¤‡ä»½ç›®å½•
 				backupFile(impFiles[i], backupDir, isSuccess);
 			}
 		}
 	}
 
 	/**
-	 * »ñµÃÄ£°åÖĞµÄÃ¿Ò»ĞĞµÄÇ°ÈıÁĞ¼´£º³µÅÆºÅÂë£¬³µÅÆÑÕÉ«£¬±ä¸üÇé¿öµÄlist
+	 * è·å¾—æ¨¡æ¿ä¸­çš„æ¯ä¸€è¡Œçš„å‰ä¸‰åˆ—å³ï¼šè½¦ç‰Œå·ç ï¼Œè½¦ç‰Œé¢œè‰²ï¼Œå˜æ›´æƒ…å†µçš„list
 	 * @param resultMap
 	 * @return
 	 * @throws Exception
 	 */
 	private List<Map<String, String>> getJcbList(Map<String, String> resultMap, Properties config, Integer sqlCount) throws Exception {
 		List<Map<String, String>> jcbList = new ArrayList<Map<String,String>>();
-		logger.debug("---»ñÈ¡¹¤×÷²¾ÖĞµÄ³µÅÆºÅÂë-³µÅÆÑÕÉ«-±ä¸üÇé¿ö---");
+		logger.debug("---è·å–å·¥ä½œç°¿ä¸­çš„è½¦ç‰Œå·ç -è½¦ç‰Œé¢œè‰²-å˜æ›´æƒ…å†µ---");
 		if (workbook != null) {
 			Sheet sheet = workbook.getSheet(hylb+"syr");
 			Integer startNum = Integer.valueOf(config.getProperty("syrInfoDataRowStartNum"));
 			for (int i = 0; i < sqlCount; i++) {
 				Map<String, String>jcbMap = new HashMap<String, String>();
 				Row row = sheet.getRow(i+startNum-1);
-				logger.debug("---½âÎöĞĞ---"+row.getRowNum());
+				logger.debug("---è§£æè¡Œ---"+row.getRowNum());
 				String cphmValue = ExcelImportUtil.getCellValue(row.getCell(0));
 				String cpysValue = ExcelImportUtil.getCellValue(row.getCell(1));
 				String bgqkValue = ExcelImportUtil.getCellValue(row.getCell(2));
 				if (StringUtils.isBlank(cphmValue)) {
-					String failMsg = "µÚ"+(row.getRowNum()+1)+"ĞĞ£¬µÚAÁĞ£¬²»ÄÜÎª¿Õ";
+					String failMsg = "ç¬¬"+(row.getRowNum()+1)+"è¡Œï¼Œç¬¬Aåˆ—ï¼Œä¸èƒ½ä¸ºç©º";
 					logger.debug(failMsg);
 					ExcelImportUtil.setFailMsg(resultMap, failMsg);
 					continue;
 				}
 				if (StringUtils.isBlank(cpysValue)) {
-					String failMsg = "µÚ"+(row.getRowNum()+1)+"ĞĞ£¬µÚBÁĞ£¬²»ÄÜÎª¿Õ";
+					String failMsg = "ç¬¬"+(row.getRowNum()+1)+"è¡Œï¼Œç¬¬Båˆ—ï¼Œä¸èƒ½ä¸ºç©º";
 					logger.debug(failMsg);
 					ExcelImportUtil.setFailMsg(resultMap, failMsg);
 					continue;
 				}
 				if (StringUtils.isBlank(bgqkValue)) {
-					String failMsg = "µÚ"+(row.getRowNum()+1)+"ĞĞ£¬µÚCÁĞ£¬²»ÄÜÎª¿Õ";
+					String failMsg = "ç¬¬"+(row.getRowNum()+1)+"è¡Œï¼Œç¬¬Cåˆ—ï¼Œä¸èƒ½ä¸ºç©º";
 					logger.debug(failMsg);
 					ExcelImportUtil.setFailMsg(resultMap, failMsg);
 					continue;
 				}
 				
-				jcbMap.put("cphm", cphmValue);//³µÅÆºÅÂë
-				jcbMap.put("cpys", cpysValue);//³µÅÆÑÕÉ«
-				jcbMap.put("bgqk", bgqkValue);//±ä¸üÇé¿ö
+				jcbMap.put("cphm", cphmValue);//è½¦ç‰Œå·ç 
+				jcbMap.put("cpys", cpysValue);//è½¦ç‰Œé¢œè‰²
+				jcbMap.put("bgqk", bgqkValue);//å˜æ›´æƒ…å†µ
 				jcbList.add(jcbMap);
-				logger.debug("---¹¤×÷²¾---³µÅÆºÅÂë--"+cphmValue+"---ÑÕÉ«--"+cpysValue+"---±ä¸üÇé¿ö--"+bgqkValue+"---¶ÁÈ¡Íê±Ï---");
+				logger.debug("---å·¥ä½œç°¿---è½¦ç‰Œå·ç --"+cphmValue+"---é¢œè‰²--"+cpysValue+"---å˜æ›´æƒ…å†µ--"+bgqkValue+"---è¯»å–å®Œæ¯•---");
 			}
 		}else {
-			throw new Exception("¹¤×÷²¾Îª¿Õ£¡");
+			throw new Exception("å·¥ä½œç°¿ä¸ºç©ºï¼");
 		}
 		return jcbList;
 	}
 	
 	/**
-	 * ÖØ×éinsertSqls ²¢Ö´ĞĞ ÖØ×éºóµÄinsertÓï¾ä²¢ÇÒÏò»ù´¡±íÖĞ²åÈë²åÈëµÄÊÜÒæÈËid
+	 * é‡ç»„insertSqls å¹¶æ‰§è¡Œ é‡ç»„åçš„insertè¯­å¥å¹¶ä¸”å‘åŸºç¡€è¡¨ä¸­æ’å…¥æ’å…¥çš„å—ç›Šäººid
 	 * 
 	 * @param insertSqls
-	 *            Éú³ÉµÄinsertÓï¾ä
+	 *            ç”Ÿæˆçš„insertè¯­å¥
 	 * @param fieldValueMap
-	 *            ´æ·ÅÒªÌí¼Óµ½Éú³ÉµÄinsertÓï¾äÖĞµÄfieldºÍvalue¸ÃmapÖĞkey£º×Ö¶ÎÃû³Æ,value:×Ö¶ÎÖµ
+	 *            å­˜æ”¾è¦æ·»åŠ åˆ°ç”Ÿæˆçš„insertè¯­å¥ä¸­çš„fieldå’Œvalueè¯¥mapä¸­keyï¼šå­—æ®µåç§°,value:å­—æ®µå€¼
 	 * @param pkName
-	 *            Ö÷¼üÃû³Æ
-	 * @param dbAccess Êı¾İ¿â·ÃÎÊ¶ÔÏó
-	 * @param config ÏµÍ³ÅäÖÃ¶ÔÏó
+	 *            ä¸»é”®åç§°
+	 * @param dbAccess æ•°æ®åº“è®¿é—®å¯¹è±¡
+	 * @param config ç³»ç»Ÿé…ç½®å¯¹è±¡
 	 * @return
 	 */
 	public void doMultInsert(String [] inserts, Map<String, Object> fieldValueMap, String pkName, DBAccess dbAccess, Properties config, List<Map<String, String>>jcbList) throws Exception{
@@ -174,11 +174,11 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 		try {
 			conn.setAutoCommit(false);
 			for (int i = 0; i < inserts.length; i++) {
-				logger.debug("---multinsert---»ñµÃµ¥¸öinsertÓï¾ä---" + inserts[i]);
+				logger.debug("---multinsert---è·å¾—å•ä¸ªinsertè¯­å¥---" + inserts[i]);
 				String prefix = getMultInsertSqlPrefix(inserts[i]);
 				String [] selects = getMultInsertsSelects(inserts[i], prefix);
 				prefix = prefix.replace(" (", " (ID,QYID,");
-				logger.debug("---multinsert---Ìí¼ÓÍêÖ÷¼üid---qyidºó---prefix---"+prefix);
+				logger.debug("---multinsert---æ·»åŠ å®Œä¸»é”®id---qyidå---prefix---"+prefix);
 				String selectPart = "";
 				String pks="";
 				
@@ -188,7 +188,7 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 					noSelect = pk+","+fieldValueMap.get("QYID")+","+noSelect;
 					selects[j] = "SELECT@%&"+noSelect;
 					if (logger.isDebugEnabled()) {
-						logger.debug("---multinsert---Éú³ÉÖ÷¼ü---Ôö¼Óµ¥Î»id---ºóµÄselectÎª---"+selects[j]);
+						logger.debug("---multinsert---ç”Ÿæˆä¸»é”®---å¢åŠ å•ä½id---åçš„selectä¸º---"+selects[j]);
 					}
 					pks += pk+",";
 					selectPart+= selects[j]+"@%&UNION@%&";
@@ -196,16 +196,16 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 				selectPart = selectPart.substring(0, selectPart.lastIndexOf("@%&UNION@%&"));
 				pks = pks.substring(0, pks.lastIndexOf(","));
 				inserts[i] = prefix+ " " + selectPart;
-				logger.debug("---multinsert---ÖØ×éºóµÄinsertÓï¾äÎª"+inserts[i]);
+				logger.debug("---multinsert---é‡ç»„åçš„insertè¯­å¥ä¸º"+inserts[i]);
 				
 				Map<String, String> jcbMap = jcbList.get(i);
 				String filter = " CPHM='"+jcbMap.get("cphm")+"' AND CPYS='"+jcbMap.get("cpys")+"' AND BGQK='"+jcbMap.get("bgqk")+"'";
 				String order = " SJID desc";
 				String sql = "SELECT SJID FROM "+hylb+"JCB WHERE"+filter+" ORDER BY "+order;
-				logger.debug("---multinsert---²éÑ¯»ù´¡±íµÄsql---"+sql);
+				logger.debug("---multinsert---æŸ¥è¯¢åŸºç¡€è¡¨çš„sql---"+sql);
 				String sjid = dbAccess.getOneFieldContent(sql, conn);
 				inserts[i] = inserts[i].replace(ExcelConstants.SQL_MULTINSERT_FROM_DUAL_FLAG, ExcelConstants.SQL_MULTINSERT_FROM_DUAL).replace(ExcelConstants.SQL_MULTINSERT_UNION_SELECT_FLAG, ExcelConstants.SQL_MULTINSERT_UNION_SELECT).replace("SELECT@%&", "SELECT ");
-				logger.debug("---multinsert---Ìæ»»Íê³É±êÊ¶Õ¼Î»ºóµÄsql---"+inserts[i]);
+				logger.debug("---multinsert---æ›¿æ¢å®Œæˆæ ‡è¯†å ä½åçš„sql---"+inserts[i]);
 				dbAccess.multInsertSyrAndJCB(conn, inserts[i], pks, sjid, hylb);
 			}
 			conn.commit();
@@ -219,7 +219,7 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 	}
 
 	/**
-	 * »ñµÃÒ»Ìõinsert¶àÌõ¼ÇÂ¼µÄsqlÇ°×º
+	 * è·å¾—ä¸€æ¡insertå¤šæ¡è®°å½•çš„sqlå‰ç¼€
 	 * @param multInsertSql
 	 * @return
 	 */
@@ -231,7 +231,7 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 	}
 	
 	/**
-	 * »ñµÃÒ»Ìõinsert²åÈë¶àÌõ¼ÇÂ¼Óï¾äÖĞµÄselect×Ó¾ä
+	 * è·å¾—ä¸€æ¡insertæ’å…¥å¤šæ¡è®°å½•è¯­å¥ä¸­çš„selectå­å¥
 	 * @param multInsertSql
 	 * @param prefix
 	 * @return
@@ -240,7 +240,7 @@ public class SyrInfoBatchImpExcel extends AbstractImpExcel {
 		String selectPart = multInsertSql.replace(prefix, "");
 		String [] result = selectPart.split("@%&UNION@%&");
 		if (logger.isDebugEnabled()) {
-			logger.debug("---multinsert---select²¿·Ö·Ö¸îºó---");
+			logger.debug("---multinsert---selectéƒ¨åˆ†åˆ†å‰²å---");
 			for (int i = 0; i < result.length; i++) {
 				logger.debug(result[i]);
 			}

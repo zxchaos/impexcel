@@ -3,7 +3,7 @@ package com.taiji.excelimp.api;
 import org.apache.poi.ss.usermodel.Cell;
 
 /**
- * excel 中单元格字段转换接口
+ * excel 涓崟鍏冩牸瀛楁杞崲鎺ュ彛
  * @author zhangxin
  *
  */

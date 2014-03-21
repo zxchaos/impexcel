@@ -16,7 +16,7 @@ import com.taiji.excelimp.factory.api.ImpExcelFactory;
 import com.taiji.excelimp.util.RegionUtil;
 
 /**
- * µ¼ÈëÄ¿Â¼ÂÖÑ¯²é¿´
+ * å¯¼å…¥ç›®å½•è½®è¯¢æŸ¥çœ‹
  * 
  * @author zhangxin
  * 
@@ -35,7 +35,7 @@ public class ImpCheck {
 			
 			String impFactoriesPropVal = config.getProperty("impExcelFactories");
 			if (StringUtils.isBlank(impFactoriesPropVal)) {
-				throw new Exception(configFilePath + "ÖĞÃ»ÓĞÅäÖÃimpExcelFactoriesÊôĞÔ³ÌĞòÒâÍâÍË³ö");
+				throw new Exception(configFilePath + "ä¸­æ²¡æœ‰é…ç½®impExcelFactorieså±æ€§ç¨‹åºæ„å¤–é€€å‡º");
 			}
 			
 			initRegionCache(new DBAccess(config.getProperty("dburl"), config.getProperty("username"),
@@ -54,13 +54,13 @@ public class ImpCheck {
 	}
 
 	/**
-	 * ³õÊ¼»¯¾²Ì¬ÊôĞÔ
+	 * åˆå§‹åŒ–é™æ€å±æ€§
 	 * @param configFilePath
 	 * @throws Exception
 	 */
 	private static void initProp(String configFilePath) throws Exception {
 		timer = new Timer();
-		logger.debug("---ÂÖÑ¯ÏµÍ³ÅäÖÃÎÄ¼şÂ·¾¶---" + configFilePath);
+		logger.debug("---è½®è¯¢ç³»ç»Ÿé…ç½®æ–‡ä»¶è·¯å¾„---" + configFilePath);
 		config = ImpCheck.readProperties(configFilePath);
 		period = Long.valueOf(config.getProperty("period"));
 		firstTimeDelay = Long.valueOf(config.getProperty("firstTimeDelay"));
@@ -68,7 +68,7 @@ public class ImpCheck {
 	}
 
 	/**
-	 * Æô¶¯¶¨Ê±ÈÎÎñ
+	 * å¯åŠ¨å®šæ—¶ä»»åŠ¡
 	 * @param factoryClass
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
@@ -81,28 +81,28 @@ public class ImpCheck {
 		importTask.setDBAccess(new DBAccess(config.getProperty("dburl"), config.getProperty("username"), config
 				.getProperty("password"), config.getProperty("driverClassName")));
 		ImpExcelFactory impExcelFactory = (ImpExcelFactory) Class.forName(factoryClass).newInstance();
-		logger.debug("---µ¼ÈëExcel¹¦ÄÜÄ£¿é¹¤³§¶ÔÓ¦µÄÀà---" + impExcelFactory.getClass().getName());
+		logger.debug("---å¯¼å…¥ExcelåŠŸèƒ½æ¨¡å—å·¥å‚å¯¹åº”çš„ç±»---" + impExcelFactory.getClass().getName());
 		importTask.setImpExcelFactory(impExcelFactory);
 		timer.schedule(importTask, firstTimeDelay, period);
 	}
 
 	/**
-	 * ³õÊ¼»¯ĞĞÕßÇø»®»º´æ
+	 * åˆå§‹åŒ–è¡Œè€…åŒºåˆ’ç¼“å­˜
 	 * 
 	 * @param dbAccess
 	 */
 	private static void initRegionCache(DBAccess dbAccess) {
-		String shiSQL = "select distinct(shi),shiname,shengname from t_sys_user_count t where t.shengname='ĞÂ½®' and shiname is not null";
+		String shiSQL = "select distinct(shi),shiname,shengname from t_sys_user_count t where t.shengname='æ–°ç–†' and shiname is not null";
 		HashMap<String, Long> shiMap = dbAccess.initHashMap(shiSQL);
-		String xianSQL = "select xian,xianname from t_sys_user_count t where t.shengname='ĞÂ½®' and xianname is not null";
+		String xianSQL = "select xian,xianname from t_sys_user_count t where t.shengname='æ–°ç–†' and xianname is not null";
 		HashMap<String, Long> xianMap = dbAccess.initHashMap(xianSQL);
 		RegionUtil.initShiXianMap(shiMap, xianMap);
-		logger.debug("---»º´æÊĞÏØmapÍê±Ï---");
+		logger.debug("---ç¼“å­˜å¸‚å¿mapå®Œæ¯•---");
 
 	}
 
 	/**
-	 * ¶ÁÈ¡ÏµÍ³ÅäÖÃ
+	 * è¯»å–ç³»ç»Ÿé…ç½®
 	 * 
 	 * @return
 	 * @throws Exception
@@ -111,8 +111,8 @@ public class ImpCheck {
 		Properties sysConfig = new Properties();
 		File propFile = new File(propPath);
 		if (!propFile.exists()) {
-			logger.error("ÎÄ¼ş:" + propFile.getAbsolutePath() + "²»´æÔÚ");
-			throw new Exception("ÎÄ¼ş:" + propFile.getAbsolutePath() + "²»´æÔÚ");
+			logger.error("æ–‡ä»¶:" + propFile.getAbsolutePath() + "ä¸å­˜åœ¨");
+			throw new Exception("æ–‡ä»¶:" + propFile.getAbsolutePath() + "ä¸å­˜åœ¨");
 		}
 		FileInputStream fis = new FileInputStream(propFile);
 		sysConfig.load(fis);

@@ -21,7 +21,7 @@ import com.taiji.excelimp.util.ExcelImportUtil;
 
 public abstract class AbstractImpExcel {
 	public static Logger logger = LoggerFactory.getLogger(AbstractImpExcel.class);
-	/**Ä£¿éÀà±ğ£ºÄ¿Ç°typeÈ¡ËÄ¸öÖµ£¬1£ºÊı¾İÅúÁ¿µ¼Èë£¬2£º³µÁ¾×¢²áĞÅÏ¢ÅúÁ¿µ¼Èë£¬3£ºÅ©´å¿ÍÔËÏßÂ·ÅúÁ¿µ¼Èë£¬4£ºÊÜÒæÈËĞÅÏ¢ÅúÁ¿µ¼Èë*/
+	/**æ¨¡å—ç±»åˆ«ï¼šç›®å‰typeå–å››ä¸ªå€¼ï¼Œ1ï¼šæ•°æ®æ‰¹é‡å¯¼å…¥ï¼Œ2ï¼šè½¦è¾†æ³¨å†Œä¿¡æ¯æ‰¹é‡å¯¼å…¥ï¼Œ3ï¼šå†œæ‘å®¢è¿çº¿è·¯æ‰¹é‡å¯¼å…¥ï¼Œ4ï¼šå—ç›Šäººä¿¡æ¯æ‰¹é‡å¯¼å…¥*/
 	private String type;
 
 	public String getType() {
@@ -33,7 +33,7 @@ public abstract class AbstractImpExcel {
 	}
 
 	/**
-	 * µ¼ÈëexcelDirÄ¿Â¼ÏÂµÄexcelÎÄ¼ş
+	 * å¯¼å…¥excelDirç›®å½•ä¸‹çš„excelæ–‡ä»¶
 	 * 
 	 * @param excelDir
 	 */
@@ -41,97 +41,97 @@ public abstract class AbstractImpExcel {
 
 	/**
 	 * @param impDir
-	 * @return impDirÏÂµÄÎÄ¼ş Èô¸ÃÄ¿Â¼ÏÂÎŞÎÄ¼şÔò·µ»Ønull
+	 * @return impDirä¸‹çš„æ–‡ä»¶ è‹¥è¯¥ç›®å½•ä¸‹æ— æ–‡ä»¶åˆ™è¿”å›null
 	 * @throws Exception
 	 */
 	public File[] checkImpDir(String impDir) throws Exception {
 		File excelDir = new File(impDir);
 		if (!excelDir.exists()) {
-			// µ¼ÈëÄ¿Â¼²»´æÔÚÔò×Ô¶¯´´½¨
+			// å¯¼å…¥ç›®å½•ä¸å­˜åœ¨åˆ™è‡ªåŠ¨åˆ›å»º
 			excelDir.mkdirs();
 		} else if (!excelDir.isDirectory()) {
-			logger.error("Â·¾¶£º" + impDir + "²»ÊÇÄ¿Â¼");
-			throw new Exception("Â·¾¶£º" + impDir + "²»ÊÇÄ¿Â¼");
+			logger.error("è·¯å¾„ï¼š" + impDir + "ä¸æ˜¯ç›®å½•");
+			throw new Exception("è·¯å¾„ï¼š" + impDir + "ä¸æ˜¯ç›®å½•");
 		}
-		logger.info("+++ÂÖÑ¯Ä¿Â¼+++" + excelDir);
-		// Ñ¡Ôñexcel 2003 Óë 2007µÄÎÄ¼ş
+		logger.info("+++è½®è¯¢ç›®å½•+++" + excelDir);
+		// é€‰æ‹©excel 2003 ä¸ 2007çš„æ–‡ä»¶
 		File[] excelFiles = ExcelImportUtil.getDirFiles(excelDir);
 		if (excelFiles.length == 0) {
-			logger.info("+++Ä¿Â¼" + excelDir.getAbsolutePath() + "ÖĞÎŞÎÄ¼ş+++");
+			logger.info("+++ç›®å½•" + excelDir.getAbsolutePath() + "ä¸­æ— æ–‡ä»¶+++");
 			return null;
 		}
-		logger.info("+++Ä¿Â¼ÖĞµÄExcelÎÄ¼ş¸öÊı+++" + excelFiles.length);
+		logger.info("+++ç›®å½•ä¸­çš„Excelæ–‡ä»¶ä¸ªæ•°+++" + excelFiles.length);
 		return excelFiles;
 	}
 
 	/**
-	 * ½«´íÎóĞÅÏ¢Ğ´ÈëÈÕÖ¾
+	 * å°†é”™è¯¯ä¿¡æ¯å†™å…¥æ—¥å¿—
 	 * 
 	 * @param dbAccess
 	 * @param resultMap
-	 * @param infoFieldsMap Òª²åÈëÈÕÖ¾µÄ×Ö¶ÎÒÔ¼°ÖµµÄmap¡£key£ºÎª×Ö¶ÎÃû³Æ£¬value£º×Ö¶ÎÖµ
-	 * @param type Ä£¿éÀàĞÍ£º1£ºÊı¾İÅúÁ¿Â¼Èë£»2£º³µÁ¾×¢²áĞÅÏ¢ÅúÁ¿µ¼Èë
+	 * @param infoFieldsMap è¦æ’å…¥æ—¥å¿—çš„å­—æ®µä»¥åŠå€¼çš„mapã€‚keyï¼šä¸ºå­—æ®µåç§°ï¼Œvalueï¼šå­—æ®µå€¼
+	 * @param type æ¨¡å—ç±»å‹ï¼š1ï¼šæ•°æ®æ‰¹é‡å½•å…¥ï¼›2ï¼šè½¦è¾†æ³¨å†Œä¿¡æ¯æ‰¹é‡å¯¼å…¥
 	 *            
 	 */
 	public void insertImpInfo(DBAccess dbAccess, Map<String, String> resultMap, Map<String, String> infoFieldsMap,
 			boolean isSuccess,String type) throws Exception {
-		logger.debug("---½«µ¼Èë½á¹ûĞÅÏ¢Ğ´ÈëÊı¾İ¿â---");
+		logger.debug("---å°†å¯¼å…¥ç»“æœä¿¡æ¯å†™å…¥æ•°æ®åº“---");
 		long dwid = Long.valueOf(infoFieldsMap.get("dwid"));
 		String hylb = infoFieldsMap.get("hylb");
-		String sj = getNowDateString("yyyyÄêMMÔÂddÈÕHHÊ±mm·Ö");
+		String sj = getNowDateString("yyyyå¹´MMæœˆddæ—¥HHæ—¶mmåˆ†");
 		String info = "";
 		if (isSuccess) {
-			info = "Äúµ¼ÈëµÄĞÅÏ¢³É¹¦";
+			info = "æ‚¨å¯¼å…¥çš„ä¿¡æ¯æˆåŠŸ";
 		} else {
 			info = resultMap.get(ExcelConstants.MSG_KEY);
 		}
-		logger.info("+++µ¼Èë½á¹ûĞÅÏ¢+++\n" + info);
-		if (StringUtils.isNotBlank(info) && info.length()>2000) {//Èô´íÎóĞÅÏ¢³¤¶È³¬¹ı2000Ôò×Ô¶¯½Ø¶ÏÎª2000¸ö×Ö
-			logger.info("+++´íÎóĞÅÏ¢³¬¹ı2000¸ö×Ö·û+++");
+		logger.info("+++å¯¼å…¥ç»“æœä¿¡æ¯+++\n" + info);
+		if (StringUtils.isNotBlank(info) && info.length()>2000) {//è‹¥é”™è¯¯ä¿¡æ¯é•¿åº¦è¶…è¿‡2000åˆ™è‡ªåŠ¨æˆªæ–­ä¸º2000ä¸ªå­—
+			logger.info("+++é”™è¯¯ä¿¡æ¯è¶…è¿‡2000ä¸ªå­—ç¬¦+++");
 			info = info.substring(0,2001);
-			logger.debug("---½Ø¶Ï³¬¹ı³¤¶ÈµÄ´íÎóĞÅÏ¢ºó---"+info);
+			logger.debug("---æˆªæ–­è¶…è¿‡é•¿åº¦çš„é”™è¯¯ä¿¡æ¯å---"+info);
 		}
 		dbAccess.insertErrorInfo(dwid, hylb, sj, info, type);
-		logger.debug("---µ¼Èë½á¹ûĞÅÏ¢Ğ´ÈëÊı¾İ¿âÍê³É---");
+		logger.debug("---å¯¼å…¥ç»“æœä¿¡æ¯å†™å…¥æ•°æ®åº“å®Œæˆ---");
 	}
 
 	/**
-	 * ¼ì²éÎÄ¼şÊÇ·ñÎªÏµÍ³Ìá¹©µÄÄ£°å
+	 * æ£€æŸ¥æ–‡ä»¶æ˜¯å¦ä¸ºç³»ç»Ÿæä¾›çš„æ¨¡æ¿
 	 * 
 	 * @param resultMap
-	 *            ¼ì²é½á¹û
+	 *            æ£€æŸ¥ç»“æœ
 	 * @param configFilePath
-	 *            ÅäÖÃÎÄ¼şÂ·¾¶
+	 *            é…ç½®æ–‡ä»¶è·¯å¾„
 	 * @param excelFile
-	 *            Òª¼ì²éµÄexcelÎÄ¼ş
+	 *            è¦æ£€æŸ¥çš„excelæ–‡ä»¶
 	 * @param type
-	 *            ÀàĞÍ£º³ÇÊĞ¹«½»£¬Å©´å¿ÍÔË£¬³ö×âÆû³µ
+	 *            ç±»å‹ï¼šåŸå¸‚å…¬äº¤ï¼Œå†œæ‘å®¢è¿ï¼Œå‡ºç§Ÿæ±½è½¦
 	 * @throws Exception
 	 */
 	public void checkSysTemplate(Map<String, String> resultMap, String configFilePath, File excelFile, String type)
 			throws Exception {
-		logger.debug("---¿ªÊ¼¼ì²éÄ£°åĞ£Ñé×Ö·û´®---");
+		logger.debug("---å¼€å§‹æ£€æŸ¥æ¨¡æ¿æ ¡éªŒå­—ç¬¦ä¸²---");
 		Document document = ExcelImportUtil.getConfigFileDoc(configFilePath);
 		ExcelImportUtil.genWorkbook(excelFile, document, type, resultMap);
-		logger.debug("---½áÊø¼ì²éÄ£°åĞ£Ñé×Ö·û´®---");
+		logger.debug("---ç»“æŸæ£€æŸ¥æ¨¡æ¿æ ¡éªŒå­—ç¬¦ä¸²---");
 	}
 
 	/**
-	 * ½«update sqlÖĞµÄsetÖ®ºóµÄÒª¸üĞÂµÄ×Ö¶ÎºÍÖµ·Åµ½mapÖĞ update Óï¾äĞÎÊ½Îª UPDATE TABLENAME SET
+	 * å°†update sqlä¸­çš„setä¹‹åçš„è¦æ›´æ–°çš„å­—æ®µå’Œå€¼æ”¾åˆ°mapä¸­ update è¯­å¥å½¢å¼ä¸º UPDATE TABLENAME SET
 	 * FIELD1=VALUE1,FIELD2=VALUE2...
 	 * 
 	 * @param updateSql
 	 * @return
 	 */
 	public Map<String, String> updateToMap(String updateSql) {
-		// logger.debug("---½«updateÓï¾äÖĞµÄset²¿·Ö·ÅÖÃµ½mapÖĞ----");
+		// logger.debug("---å°†updateè¯­å¥ä¸­çš„setéƒ¨åˆ†æ”¾ç½®åˆ°mapä¸­----");
 		Map<String, String> resultMap = new HashMap<String, String>();
 		String convertUpdate = updateSql.substring(updateSql.lastIndexOf("SET") + 3)
 				.replace(ExcelConstants.SQL_TAIL, "").trim();
-		// logger.debug("---È¥µôupdateÓï¾äÍ·ºó---" + convertUpdate);
-		// È¥µôWHERE×Ó¾ä
+		// logger.debug("---å»æ‰updateè¯­å¥å¤´å---" + convertUpdate);
+		// å»æ‰WHEREå­å¥
 		convertUpdate = convertUpdate.substring(0, convertUpdate.lastIndexOf("WHERE")).trim();
-		// logger.debug("---È¥µôwhere×Ó¾äºó---" + convertUpdate);
+		// logger.debug("---å»æ‰whereå­å¥å---" + convertUpdate);
 		String[] fieldsValues = convertUpdate.split(",");
 		for (String fv : fieldsValues) {
 			String[] updatedFieldValue = fv.split("=");
@@ -141,12 +141,12 @@ public abstract class AbstractImpExcel {
 	}
 
 	/**
-	 * ½«fieldValueMapÖĞµÄ×Ö¶ÎÃû³ÆºÍ×Ö¶ÎÖµÌí¼Óµ½ËùÓĞµÄinsertSqlÖĞ
+	 * å°†fieldValueMapä¸­çš„å­—æ®µåç§°å’Œå­—æ®µå€¼æ·»åŠ åˆ°æ‰€æœ‰çš„insertSqlä¸­
 	 * 
 	 * @param insertSqls
-	 *            Éú³ÉµÄinsertÓï¾ä
+	 *            ç”Ÿæˆçš„insertè¯­å¥
 	 * @param fieldValueMap
-	 *            ´æ·ÅÒªÌí¼Óµ½Éú³ÉµÄinsertÓï¾äÖĞµÄfieldºÍvalue¸ÃmapÖĞkey£º×Ö¶ÎÃû³Æ,value:×Ö¶ÎÖµ
+	 *            å­˜æ”¾è¦æ·»åŠ åˆ°ç”Ÿæˆçš„insertè¯­å¥ä¸­çš„fieldå’Œvalueè¯¥mapä¸­keyï¼šå­—æ®µåç§°,value:å­—æ®µå€¼
 	 * @return
 	 */
 	public String[] remakeInsert(String insertSqls, Map<String, Object> fieldValueMap) throws Exception{
@@ -154,14 +154,14 @@ public abstract class AbstractImpExcel {
 	}
 
 	/**
-	 * ½«fieldValueMapÖĞµÄ×Ö¶ÎÃû³ÆºÍ×Ö¶ÎÖµÌí¼Óµ½ËùÓĞµÄinsertSqlÖĞ
+	 * å°†fieldValueMapä¸­çš„å­—æ®µåç§°å’Œå­—æ®µå€¼æ·»åŠ åˆ°æ‰€æœ‰çš„insertSqlä¸­
 	 * 
 	 * @param insertSqls
-	 *            Éú³ÉµÄinsertÓï¾ä
+	 *            ç”Ÿæˆçš„insertè¯­å¥
 	 * @param fieldValueMap
-	 *            ´æ·ÅÒªÌí¼Óµ½Éú³ÉµÄinsertÓï¾äÖĞµÄfieldºÍvalue¸ÃmapÖĞkey£º×Ö¶ÎÃû³Æ,value:×Ö¶ÎÖµ
+	 *            å­˜æ”¾è¦æ·»åŠ åˆ°ç”Ÿæˆçš„insertè¯­å¥ä¸­çš„fieldå’Œvalueè¯¥mapä¸­keyï¼šå­—æ®µåç§°,value:å­—æ®µå€¼
 	 * @param pkName
-	 *            Ö÷¼üÃû³Æ
+	 *            ä¸»é”®åç§°
 	 * @return
 	 */
 	public String[] remakeInsert(String insertSqls, Map<String, Object> fieldValueMap, String pkName, DBAccess dbAccess) throws Exception{
@@ -169,15 +169,15 @@ public abstract class AbstractImpExcel {
 		Connection conn = dbAccess.getConnection();
 		try {
 			for (int i = 0; i < inserts.length; i++) {
-				logger.debug("---·Ö¸îºóµÄinsertÓï¾ä---" + inserts[i]);
-				//Ô¤ÏÈÖØ×éÓëÒµÎñÏà¹Ø
+				logger.debug("---åˆ†å‰²åçš„insertè¯­å¥---" + inserts[i]);
+				//é¢„å…ˆé‡ç»„ä¸ä¸šåŠ¡ç›¸å…³
 				inserts[i] = preRemake(inserts[i]);
 				
 				String firstPart = inserts[i].substring(0, inserts[i].lastIndexOf(ExcelConstants.SQL_INSERT_VALUE_FLAG));
 				String secPart = inserts[i].substring(inserts[i].lastIndexOf(ExcelConstants.SQL_INSERT_VALUE_FLAG),
 						inserts[i].lastIndexOf(")"));
 				
-				// ÓëÒµÎñÏà¹ØµÄ×Ö¶ÎÃû³ÆºÍÖµÌí¼Óµ½insertÖĞ
+				// ä¸ä¸šåŠ¡ç›¸å…³çš„å­—æ®µåç§°å’Œå€¼æ·»åŠ åˆ°insertä¸­
 				for (Map.Entry<String, Object> entry : fieldValueMap.entrySet()) {
 					firstPart += "," + entry.getKey();
 					if (entry.getValue() instanceof Long || entry.getValue() instanceof Float || entry.getValue() instanceof Double ) {
@@ -191,10 +191,10 @@ public abstract class AbstractImpExcel {
 					firstPart += ","+pkName;
 					secPart +=","+dbAccess.getSequence(conn);
 				}
-				// Ìí¼ÓÍê±ÏºóÖØ×éinsertÓï¾ä
+				// æ·»åŠ å®Œæ¯•åé‡ç»„insertè¯­å¥
 				inserts[i] = firstPart
 						+ secPart.replace(ExcelConstants.SQL_INSERT_VALUE_FLAG, ExcelConstants.SQL_INSERT_VALUE) + ")";
-				logger.debug("---ÖØ×éºóµÄinsert---" + inserts[i]);
+				logger.debug("---é‡ç»„åçš„insert---" + inserts[i]);
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
@@ -206,37 +206,37 @@ public abstract class AbstractImpExcel {
 	}
 	
 	/**
-	 * Ô¤ÏÈÖØ×éinsertÓï¾ä£¬¸Ã·½·¨ÓëÒµÎñÏà¹Ø£¬¸÷Ä£¿éĞèÒªÖØĞ´
-	 * @param insertSql ¸ñÊ½Îª£ºINSERT INTO TABLENAME (FIELD1,FIELD2...) @%&#VALUES#&%@ (VALUE1,VALUE2)
-	 * @return Ô¤ÏÈÖØ×éÍê³ÉºóµÄinsertÓï¾ä
+	 * é¢„å…ˆé‡ç»„insertè¯­å¥ï¼Œè¯¥æ–¹æ³•ä¸ä¸šåŠ¡ç›¸å…³ï¼Œå„æ¨¡å—éœ€è¦é‡å†™
+	 * @param insertSql æ ¼å¼ä¸ºï¼šINSERT INTO TABLENAME (FIELD1,FIELD2...) @%&#VALUES#&%@ (VALUE1,VALUE2)
+	 * @return é¢„å…ˆé‡ç»„å®Œæˆåçš„insertè¯­å¥
 	 */
 	public String preRemake(String insertSql){
 		String result = insertSql;
 		return result;
 	}
 	/**
-	 * ±¸·İexcelÎÄ¼şµ½Ö¸¶¨Ä¿Â¼
+	 * å¤‡ä»½excelæ–‡ä»¶åˆ°æŒ‡å®šç›®å½•
 	 * 
 	 * @param excelFile
-	 *            Òª±¸·İµÄexcelÎÄ¼ş
+	 *            è¦å¤‡ä»½çš„excelæ–‡ä»¶
 	 * @param backupDir
-	 *            ±¸·İÄ¿Â¼
+	 *            å¤‡ä»½ç›®å½•
 	 * @param isSuccess
-	 *            ±¸·İµÄÎÄ¼şÊÇ·ñÎªµ¼Èë³É¹¦µÄÎÄ¼ş£ºÌåÏÖÔÚ×îºóÖØÃüÃûµÄÎÄ¼şÃûÖĞ
+	 *            å¤‡ä»½çš„æ–‡ä»¶æ˜¯å¦ä¸ºå¯¼å…¥æˆåŠŸçš„æ–‡ä»¶ï¼šä½“ç°åœ¨æœ€åé‡å‘½åçš„æ–‡ä»¶åä¸­
 	 */
 	public void backupFile(File excelFile, String backupDir, boolean isSuccess) {
-		logger.debug("---ÒÆ¶¯---" + excelFile.getName() + "---µ½---" + backupDir);
+		logger.debug("---ç§»åŠ¨---" + excelFile.getName() + "---åˆ°---" + backupDir);
 		File bDir = new File(backupDir);
 		try {
 			FileUtils.moveFileToDirectory(excelFile, bDir, true);
 			String backupFileName = backupDir + excelFile.getName();
-			if (isSuccess) {// ½âÎö²¢µ¼Èë³É¹¦µÄÎÄ¼ş
+			if (isSuccess) {// è§£æå¹¶å¯¼å…¥æˆåŠŸçš„æ–‡ä»¶
 				backupFileName = backupFileName + "_success";
-				logger.info("---½âÎöÎÄ¼ş³É¹¦---±¸·İÎÄ¼şÃû³Æ£º" + backupFileName + "\n");
+				logger.info("---è§£ææ–‡ä»¶æˆåŠŸ---å¤‡ä»½æ–‡ä»¶åç§°ï¼š" + backupFileName + "\n");
 				FileUtils.moveFile(new File(backupDir + excelFile.getName()), new File(backupFileName));
-			} else {// ½âÎö¹ı³ÌÖĞÊ§°ÜµÄÎÄ¼ş
+			} else {// è§£æè¿‡ç¨‹ä¸­å¤±è´¥çš„æ–‡ä»¶
 				backupFileName = backupFileName + "_fail";
-				logger.info("---½âÎöÎÄ¼şÊ§°Ü---±¸·İÎÄ¼şÃû³Æ£º" + backupFileName + "\n");
+				logger.info("---è§£ææ–‡ä»¶å¤±è´¥---å¤‡ä»½æ–‡ä»¶åç§°ï¼š" + backupFileName + "\n");
 				FileUtils.moveFile(new File(backupDir + excelFile.getName()), new File(backupFileName));
 			}
 
@@ -246,16 +246,16 @@ public abstract class AbstractImpExcel {
 	}
 
 	/**
-	 * »ñµÃµ±Ç°Ê±¼ä¹Ì¶¨¸ñÊ½yyyyMMdd
+	 * è·å¾—å½“å‰æ—¶é—´å›ºå®šæ ¼å¼yyyyMMdd
 	 * 
-	 * @return ·µ»Øµ±Ç°Ê±¼äyyyyMMdd¸ñÊ½
+	 * @return è¿”å›å½“å‰æ—¶é—´yyyyMMddæ ¼å¼
 	 */
 	public String getNowDateString() {
 		return getNowDateString("yyyyMMdd");
 	}
 
 	/**
-	 * Ö¸¶¨ÈÕÆÚÀàĞÍ·µ»ØÈÕÆÚ×Ö·û´®
+	 * æŒ‡å®šæ—¥æœŸç±»å‹è¿”å›æ—¥æœŸå­—ç¬¦ä¸²
 	 * 
 	 * @param datePattern
 	 * @return
@@ -266,35 +266,35 @@ public abstract class AbstractImpExcel {
 	}
 	
 	/**
-	 * »ñµÃinsertÓï¾äÖĞµÄvaluesºóÃæ²¿·Ö
+	 * è·å¾—insertè¯­å¥ä¸­çš„valuesåé¢éƒ¨åˆ†
 	 * @param insertSql
-	 * @return valuesºóÃæ²¿·Ö
+	 * @return valuesåé¢éƒ¨åˆ†
 	 */
 	public String getSqlValuePart(String insertSql) {
 		String tempVPart = insertSql.substring(insertSql.lastIndexOf(ExcelConstants.SQL_INSERT_VALUE_FLAG)).replace(ExcelConstants.SQL_INSERT_VALUE_FLAG,"");
-		String valuePart = tempVPart.substring(0, StringUtils.lastIndexOf(tempVPart, ")"));// insertµÄÖµ²¿·Ö
+		String valuePart = tempVPart.substring(0, StringUtils.lastIndexOf(tempVPart, ")"));// insertçš„å€¼éƒ¨åˆ†
 		return valuePart;
 	}
 
 	/**
-	 * »ñµÃinsertÓï¾äÖĞµÄÇ°×º¼´ INSERT INTO TABLENAME ²¿·Ö
+	 * è·å¾—insertè¯­å¥ä¸­çš„å‰ç¼€å³ INSERT INTO TABLENAME éƒ¨åˆ†
 	 * @param insertSql
 	 * @return
 	 */
 	public String getSqlInsertPrefix(String insertSql) {
 		String tempSPart = insertSql.substring(0, insertSql.lastIndexOf(ExcelConstants.SQL_INSERT_VALUE_FLAG));
-		String insertPreFix = tempSPart.substring(0, StringUtils.indexOf(tempSPart, "(")+1);// INSERT INTO TABLENAME ²¿·Ö
+		String insertPreFix = tempSPart.substring(0, StringUtils.indexOf(tempSPart, "(")+1);// INSERT INTO TABLENAME éƒ¨åˆ†
 		return insertPreFix;
 	}
 
 	/**
-	 * »ñµÃinsertÓï¾äÖĞµÄÉùÃ÷²¿·Ö¼´£ºinsertÓï¾äÖĞµÄtablenameºóÃæ values Ç°ÃæµÄ²¿·Ö£¨²»°üÀ¨À¨ºÅ£©
+	 * è·å¾—insertè¯­å¥ä¸­çš„å£°æ˜éƒ¨åˆ†å³ï¼šinsertè¯­å¥ä¸­çš„tablenameåé¢ values å‰é¢çš„éƒ¨åˆ†ï¼ˆä¸åŒ…æ‹¬æ‹¬å·ï¼‰
 	 * @param insertSql
 	 * @return
 	 */
 	public String getSqlStatePart(String insertSql) {
 		String tempSPart = insertSql.substring(0, insertSql.lastIndexOf(ExcelConstants.SQL_INSERT_VALUE_FLAG));
-		String statePart = tempSPart.substring(StringUtils.indexOf(tempSPart, "(")).replace("(", "");// insertÉùÃ÷²¿·Ö
+		String statePart = tempSPart.substring(StringUtils.indexOf(tempSPart, "(")).replace("(", "");// insertå£°æ˜éƒ¨åˆ†
 		return statePart;
 	}
 

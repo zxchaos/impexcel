@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import com.taiji.excelimp.api.IConverter;
 
 /**
- * ĞĞÊ»Àï³ÌÊı¾İÀ´Ô´×ª»»Æ÷
+ * è¡Œé©¶é‡Œç¨‹æ•°æ®æ¥æºè½¬æ¢å™¨
  * 
  * @author zhangxin
  * 
@@ -31,9 +31,9 @@ public class XSLCDataSourceConverter implements IConverter {
 				return result;
 			}
 			
-			// ĞĞÊ»Àï³ÌÊı¾İÀ´Ô´£ºGPS Ì¨ÕÊ µç×ÓÂ·µ¥ ĞĞÊ»¼ÇÂ¼ÒÇ ¾­Ñé¹ÀËã
-			if ("GPS".equals(cellValue) || "Ì¨ÕÊ".equals(cellValue) || "µç×ÓÂ·µ¥".equals(cellValue)
-					|| "ĞĞÊ»¼ÇÂ¼ÒÇ".equals(cellValue) || "¾­Ñé¹ÀËã".equals(cellValue)) {
+			// è¡Œé©¶é‡Œç¨‹æ•°æ®æ¥æºï¼šGPS å°å¸ ç”µå­è·¯å• è¡Œé©¶è®°å½•ä»ª ç»éªŒä¼°ç®—
+			if ("GPS".equals(cellValue) || "å°å¸".equals(cellValue) || "ç”µå­è·¯å•".equals(cellValue)
+					|| "è¡Œé©¶è®°å½•ä»ª".equals(cellValue) || "ç»éªŒä¼°ç®—".equals(cellValue)) {
 				result = cellValue;
 			}
 		}

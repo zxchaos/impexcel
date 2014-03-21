@@ -1,6 +1,6 @@
 package com.taiji.excelimp.impl.converter;
 /**
- * ÊÇ·ñÑ¡Ïî×ª»»Æ÷
+ * æ˜¯å¦é€‰é¡¹è½¬æ¢å™¨
  * @author zxchaos
  *
  */
@@ -9,7 +9,7 @@ public class TrueFlaseConverter extends StringSelectAbstractConverter {
 	@Override
 	public String getCellValue(String cellValue) {
 		String result = "";
-		if ("ÊÇ".equals(cellValue) || "·ñ".equals(cellValue)) {
+		if ("æ˜¯".equals(cellValue) || "å¦".equals(cellValue)) {
 			result = cellValue;
 		}
 		return result;

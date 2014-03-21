@@ -22,7 +22,7 @@ import com.taiji.excelimp.util.ExcelConstants;
 import com.taiji.excelimp.util.ExcelImportUtil;
 
 /**
- * ³µÁ¾ĞÅÏ¢ÅúÁ¿×¢²áµ¼Èë¹¦ÄÜ
+ * è½¦è¾†ä¿¡æ¯æ‰¹é‡æ³¨å†Œå¯¼å…¥åŠŸèƒ½
  *
  * @author zhangxin
  *
@@ -33,7 +33,7 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 
 	@Override
 	public void importExcel(Properties sysConfig, DBAccess dbAccess) throws Exception {
-		logger.debug("---³µÁ¾ĞÅÏ¢ÅúÁ¿µ¼Èë¿ªÊ¼---");
+		logger.debug("---è½¦è¾†ä¿¡æ¯æ‰¹é‡å¯¼å…¥å¼€å§‹---");
 		boolean isSuccess = false;
 		String baseDir = sysConfig.getProperty("impDir");
 		File registerDir = new File(baseDir + File.separator + sysConfig.getProperty("registerBatchImpDirName"));
@@ -45,9 +45,9 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 		}
 		for (int i = 0; i < impFiles.length; i++) {
 			String fileName = impFiles[i].getName();
-			// ³µÁ¾ĞÅÏ¢µ¼ÈëµÄExcelÎÄ¼şÃüÃû¹æ·¶£ºUUID_²Ù×÷Àà±ğ_µ¥Î»Id_Ê¡´úÂë_ÊĞ´úÂë_ÏØ´úÂë_µ¥Î»Ãû³Æ.xlsx(.xls)
-			// ²Ù×÷Àà±ğ°üÀ¨£ºcsgjplzc,nckyplzc,czqcplzc
-			// Ò²¶ÔÓ¦×ÅÅäÖÃÎÄ¼şÖĞµÄtemplateÔªËØÖĞµÄtemplateIdÊôĞÔ
+			// è½¦è¾†ä¿¡æ¯å¯¼å…¥çš„Excelæ–‡ä»¶å‘½åè§„èŒƒï¼šUUID_æ“ä½œç±»åˆ«_å•ä½Id_çœä»£ç _å¸‚ä»£ç _å¿ä»£ç _å•ä½åç§°.xlsx(.xls)
+			// æ“ä½œç±»åˆ«åŒ…æ‹¬ï¼šcsgjplzc,nckyplzc,czqcplzc
+			// ä¹Ÿå¯¹åº”ç€é…ç½®æ–‡ä»¶ä¸­çš„templateå…ƒç´ ä¸­çš„templateIdå±æ€§
 			String excelFileName = fileName.substring(0, fileName.lastIndexOf("."));
 			String[] fileNameParts = excelFileName.split("_");
 			String insertSqls = "";
@@ -64,33 +64,33 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 				String configFilePath = sysConfig.getProperty("configFilePath");
 				document = ExcelImportUtil.getConfigFileDoc(configFilePath);
 
-				// »ñµÃÒªµ¼ÈëµÄÎÄ¼şµÄ¹¤×÷²¾¶ÔÏó²¢¼ì²éÎÄ¼şµÄÓĞĞ§ĞÔ
+				// è·å¾—è¦å¯¼å…¥çš„æ–‡ä»¶çš„å·¥ä½œç°¿å¯¹è±¡å¹¶æ£€æŸ¥æ–‡ä»¶çš„æœ‰æ•ˆæ€§
 				workbook = ExcelImportUtil.genWorkbook(impFiles[i], document, templateId, resultMap);
 
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
-					// ¿ªÊ¼½âÎöÎÄ¼ş
+					// å¼€å§‹è§£ææ–‡ä»¶
 					ExcelImportUtil.importExcel(workbook, document, templateId, resultMap);
 				}
 
 				insertSqls = resultMap.get(ExcelConstants.SQLS_KEY);
 				if (!ExcelConstants.FAIL.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY)) && StringUtils.isBlank(insertSqls)) {
-					logger.info("+++Éú³ÉµÄsqlÎª¿Õ+++¿ÉÄÜÊÇÄ£°åÖĞÃ»ÓĞÊı¾İ");
-					ExcelImportUtil.setFailMsg(resultMap, "µ¼ÈëµÄÄ£°åÖĞ²»°üº¬Êı¾İ");
+					logger.info("+++ç”Ÿæˆçš„sqlä¸ºç©º+++å¯èƒ½æ˜¯æ¨¡æ¿ä¸­æ²¡æœ‰æ•°æ®");
+					ExcelImportUtil.setFailMsg(resultMap, "å¯¼å…¥çš„æ¨¡æ¿ä¸­ä¸åŒ…å«æ•°æ®");
 				}
 
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
-					// ¸ù¾İ³µÅÆºÅÂë²éÖØ
+					// æ ¹æ®è½¦ç‰Œå·ç æŸ¥é‡
 					isSuccess = !checkDuplicate(insertSqls, resultMap, dbAccess, hylb);
 				}
 
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY)) && ("csgj".equalsIgnoreCase(hylb)||"ncky".equalsIgnoreCase(hylb))) {
-					// ¸ù¾İÏßÂ·Ãû³Æ²éÑ¯ÏßÂ·±íÖĞµÄÏßÂ·ÊÇ·ñ´æÔÚ
+					// æ ¹æ®çº¿è·¯åç§°æŸ¥è¯¢çº¿è·¯è¡¨ä¸­çš„çº¿è·¯æ˜¯å¦å­˜åœ¨
 					insertSqls = xlmcCheck(insertSqls, resultMap, dbAccess, hylb);
-					logger.debug("---ÏßÂ·¼ì²éÍê³ÉºóÖØ×ésql---"+insertSqls);
+					logger.debug("---çº¿è·¯æ£€æŸ¥å®Œæˆåé‡ç»„sql---"+insertSqls);
 				}
 
 				if (ExcelConstants.SUCCESS.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
-					// ÈôÉú³ÉinsertÓï¾ä³É¹¦ÔòÖ´ĞĞ²åÈë²Ù×÷
+					// è‹¥ç”Ÿæˆinsertè¯­å¥æˆåŠŸåˆ™æ‰§è¡Œæ’å…¥æ“ä½œ
 					Map<String, Object> fieldValueMap = new HashMap<String, Object>();
 					fieldValueMap.put("RZZT", Long.valueOf(3));
 					fieldValueMap.put("CLDJLX", Long.valueOf(1));
@@ -101,38 +101,38 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 					fieldValueMap.put("DWMC", fileNameParts[6]);
 					String[] inserts = super.remakeInsert(insertSqls, fieldValueMap, "SJID", dbAccess);
 					if (logger.isDebugEnabled()) {
-						logger.debug("---×îÖÕÉú³ÉµÄÖ´ĞĞsql---");
+						logger.debug("---æœ€ç»ˆç”Ÿæˆçš„æ‰§è¡Œsql---");
 						for (int j = 0; j < inserts.length; j++) {
 							logger.debug(inserts[j]);
 						}
 					}
-					// ½øĞĞÅúÁ¿²åÈë
+					// è¿›è¡Œæ‰¹é‡æ’å…¥
 					dbAccess.batchExecuteSqls(inserts);
 					super.insertImpInfo(dbAccess, resultMap, infoFieldMap, true, super.getType());
 					isSuccess = true;
 				} else {
-					// ÈôÉú³ÉÊ§°Ü½«´íÎóĞÅÏ¢Ğ´ÈëÊı¾İ¿â
+					// è‹¥ç”Ÿæˆå¤±è´¥å°†é”™è¯¯ä¿¡æ¯å†™å…¥æ•°æ®åº“
 					isSuccess = false;
 					super.insertImpInfo(dbAccess, resultMap, infoFieldMap, isSuccess, super.getType());
 				}
 			} catch (Exception e) {
-				logger.info("+++µ¼Èë³öÏÖÒì³£+++");
+				logger.info("+++å¯¼å…¥å‡ºç°å¼‚å¸¸+++");
 				logger.error(e.getMessage(), e);
 				isSuccess = false;
 				resultMap.remove(ExcelConstants.MSG_KEY);
-				ExcelImportUtil.setFailMsg(resultMap, "µ¼ÈëÒì³£,ÇëÁªÏµ¹ÜÀíÈËÔ±");
+				ExcelImportUtil.setFailMsg(resultMap, "å¯¼å…¥å¼‚å¸¸,è¯·è”ç³»ç®¡ç†äººå‘˜");
 				super.insertImpInfo(dbAccess, resultMap, infoFieldMap, isSuccess, super.getType());
-				logger.info("+++¼ÌĞøµ¼ÈëÏÂÒ»¸öÎÄ¼ş+++");
+				logger.info("+++ç»§ç»­å¯¼å…¥ä¸‹ä¸€ä¸ªæ–‡ä»¶+++");
 				continue;
 			} finally {
-				// ½«´¦ÀíÍê³ÉµÄÎÄ¼şÒÆ¶¯µ½±¸·İÄ¿Â¼
+				// å°†å¤„ç†å®Œæˆçš„æ–‡ä»¶ç§»åŠ¨åˆ°å¤‡ä»½ç›®å½•
 				backupFile(impFiles[i], backupDir, isSuccess);
 			}
 		}
 	}
 
 	/**
-	 * ¼ì²éÏßÂ·Ãû³Æ
+	 * æ£€æŸ¥çº¿è·¯åç§°
 	 * @param insertSqls
 	 * @param resultMap
 	 * @param dbAccess
@@ -152,24 +152,24 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 				String xlmc = "";
 				String tableName = "";
 				if ("csgj".equalsIgnoreCase(hylb)) {
-					xlmc = valueParts[13];// »ñµÃ³ÇÊĞ¹«½»ÏßÂ·Ãû³Æ
+					xlmc = valueParts[13];// è·å¾—åŸå¸‚å…¬äº¤çº¿è·¯åç§°
 					tableName = "T_CSGJ_XLGL";
 				} else if ("ncky".equalsIgnoreCase(hylb)) {
-					xlmc = valueParts[13];// »ñµÃÅ©´å¿ÍÔËÏßÂ·Ãû³Æ
+					xlmc = valueParts[13];// è·å¾—å†œæ‘å®¢è¿çº¿è·¯åç§°
 					tableName = "T_NCKY_XLGL";
 				}
-				logger.debug("---ÔÚinsertÓï¾äÖĞ»ñµÃµÄÏßÂ·Ãû³Æ---"+xlmc);
+				logger.debug("---åœ¨insertè¯­å¥ä¸­è·å¾—çš„çº¿è·¯åç§°---"+xlmc);
 
 				String bxId = getBXIDByXlmc(xlmc, conn, dbAccess, tableName);
-				if (StringUtils.isNotBlank(bxId)) {// ÈôÏßÂ·±íÖĞµÄ¼ÇÂ¼´æÔÚÔò½«ÏßÂ·id¼ÓÈëµ½insertÓï¾äÖĞ
+				if (StringUtils.isNotBlank(bxId)) {// è‹¥çº¿è·¯è¡¨ä¸­çš„è®°å½•å­˜åœ¨åˆ™å°†çº¿è·¯idåŠ å…¥åˆ°insertè¯­å¥ä¸­
 					statePart += "," + "YYXLH";
 					valuePart += "," + bxId;
 					inserts[i] = insertPrefix + statePart + ExcelConstants.SQL_INSERT_VALUE_FLAG + valuePart + ")";
-					logger.debug("---ÏßÂ·¼ì²éÍê±Ï---ÏßÂ·±íÖĞ´æÔÚ¼ÇÂ¼£º" + bxId + "---ÖØ×éµÄinsertÓï¾ä---" + inserts[i]);
+					logger.debug("---çº¿è·¯æ£€æŸ¥å®Œæ¯•---çº¿è·¯è¡¨ä¸­å­˜åœ¨è®°å½•ï¼š" + bxId + "---é‡ç»„çš„insertè¯­å¥---" + inserts[i]);
 					result.append(inserts[i]);
 					result.append(ExcelConstants.SQL_TAIL);
 				} else {
-					String failMsg = "Ãû³ÆÎª£º" + xlmc + "µÄÏßÂ·²»´æÔÚ";
+					String failMsg = "åç§°ä¸ºï¼š" + xlmc + "çš„çº¿è·¯ä¸å­˜åœ¨";
 					logger.info(failMsg);
 					ExcelImportUtil.setFailMsg(resultMap, failMsg);
 					break;
@@ -186,7 +186,7 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 	}
 
 	/**
-	 * ¸ù¾İÏßÂ·Ãû³Æ»ñµÃÏßÂ·id
+	 * æ ¹æ®çº¿è·¯åç§°è·å¾—çº¿è·¯id
 	 * @param xlmc
 	 * @return
 	 */
@@ -197,17 +197,17 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 		return result;
 	}
 	/**
-	 * ¸ù¾İ³µÅÆºÅÂë ³µÅÆÑÕÉ« ±ä¸üÇé¿ö ²éÑ¯³µÁ¾ĞÅÏ¢ÊÇ·ñÓĞÖØ¸´
+	 * æ ¹æ®è½¦ç‰Œå·ç  è½¦ç‰Œé¢œè‰² å˜æ›´æƒ…å†µ æŸ¥è¯¢è½¦è¾†ä¿¡æ¯æ˜¯å¦æœ‰é‡å¤
 	 *
 	 * @param insertSqls
-	 *            ½âÎöexcelÉú³ÉµÄinsertÓï¾ä
+	 *            è§£æexcelç”Ÿæˆçš„insertè¯­å¥
 	 * @param resultMap
-	 *            ½á¹û¼¯ºÏ
+	 *            ç»“æœé›†åˆ
 	 * @param dbAccess
-	 *            Êı¾İ¿â·ÃÎÊ¶ÔÏó
+	 *            æ•°æ®åº“è®¿é—®å¯¹è±¡
 	 */
 	private boolean checkDuplicate(String insertSqls, Map<String, String> resultMap, DBAccess dbAccess, String type) throws Exception{
-		logger.debug("---²éÑ¯ÖØ¸´³µÅÆºÅÂë---");
+		logger.debug("---æŸ¥è¯¢é‡å¤è½¦ç‰Œå·ç ---");
 		boolean result = false;
 		String[] inserts = insertSqls.split(ExcelConstants.SQL_TAIL);
 		Connection conn = dbAccess.getConnection();
@@ -219,27 +219,27 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 		}else if ("czqc".equalsIgnoreCase(type)) {
 			tableName = "CZQCJCB";
 		}else {
-			throw new Exception("ÎŞ·¨È·¶¨²éÑ¯ÖØ¸´³µÅÆµÄ±íÃû³Æ");
+			throw new Exception("æ— æ³•ç¡®å®šæŸ¥è¯¢é‡å¤è½¦ç‰Œçš„è¡¨åç§°");
 		}
 		try {
 			for (int i = 0; i < inserts.length; i++) {
-				logger.debug("---insertÓï¾ä---" + inserts[i]);
+				logger.debug("---insertè¯­å¥---" + inserts[i]);
 				String valuePart = inserts[i].substring(inserts[i].lastIndexOf(ExcelConstants.SQL_INSERT_VALUE_FLAG))
 						.replace(ExcelConstants.SQL_INSERT_VALUE_FLAG, "");
 				String [] valueParts = valuePart.split(",");
-				// »ñµÃcphm×Ö¶Î¶ÔÓ¦µÄÖµ
+				// è·å¾—cphmå­—æ®µå¯¹åº”çš„å€¼
 				String cphmVal = valueParts[0].replace("'", "");
-				//³µÅÆÑÕÉ«
+				//è½¦ç‰Œé¢œè‰²
 				String cpysVal = valueParts[1].replace("'", "");
-				//±ä¸üÇé¿ö
+				//å˜æ›´æƒ…å†µ
 				String bgqkVal = valueParts[2].replace("'", "");
 				Map<String, String> valueMap = new HashMap<String, String>();
 				valueMap.put("CPHM", cphmVal);
 				valueMap.put("CPYS", cpysVal);
 				valueMap.put("BGQK", bgqkVal);
-				logger.debug("---³µÅÆºÅÂë---" + cphmVal+"---³µÅÆÑÕÉ«---"+cpysVal+"---±ä¸üÇé¿ö---"+bgqkVal);
+				logger.debug("---è½¦ç‰Œå·ç ---" + cphmVal+"---è½¦ç‰Œé¢œè‰²---"+cpysVal+"---å˜æ›´æƒ…å†µ---"+bgqkVal);
 				if (dbAccess.isFieldValueDup(tableName, valueMap, conn)) {
-					ExcelImportUtil.setFailMsg(resultMap, "³µÅÆºÅÂëÎª" + cphmVal + "£¬³µÅÆÑÕÉ«Îª"+cpysVal+"£¬±ä¸üÇé¿öÎª"+bgqkVal+"µÄ¼ÇÂ¼ÒÑ¾­´æÔÚÎŞ·¨µ¼Èë");
+					ExcelImportUtil.setFailMsg(resultMap, "è½¦ç‰Œå·ç ä¸º" + cphmVal + "ï¼Œè½¦ç‰Œé¢œè‰²ä¸º"+cpysVal+"ï¼Œå˜æ›´æƒ…å†µä¸º"+bgqkVal+"çš„è®°å½•å·²ç»å­˜åœ¨æ— æ³•å¯¼å…¥");
 					result = true;
 				}
 			}
@@ -261,26 +261,26 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 		String insertPreFix = super.getSqlInsertPrefix(insertSql);
 		logger.debug("---statePart--"+statePart);
 		logger.debug("---valuePart--"+valuePart);
-		//¼ÆËã³µÁä
+		//è®¡ç®—è½¦é¾„
 		valuePart = calCL(valuePart);
 		statePart += "," + "CL";
 
 		String[] valueParts = valuePart.split(",");
 
-		//¸ù¾İÈ¼ÁÏÀàĞÍÈ¡ÉáÈ¼ÁÏÀàĞÍÏà¹Ø×Ö¶Î
+		//æ ¹æ®ç‡ƒæ–™ç±»å‹å–èˆç‡ƒæ–™ç±»å‹ç›¸å…³å­—æ®µ
 		result = calRllx(statePart, valuePart, insertPreFix, valueParts);
-		logger.debug("---Ô¤ÏÈÖØ×éÉú³ÉµÄinsertÓï¾ä---" + result);
+		logger.debug("---é¢„å…ˆé‡ç»„ç”Ÿæˆçš„insertè¯­å¥---" + result);
 		return result;
 	}
 
 	/**
-	 * ¼ÆËã³µÁä
+	 * è®¡ç®—è½¦é¾„
 	 * @param valuePart
 	 * @return
 	 */
 	private String calCL(String valuePart) {
-		// ¼ÆËã³µÁä
-		String fzDateVal = valuePart.split(",")[6].replace("'", "");// »ñµÃ·¢Ö¤ÈÕÆÚµÄÖµ
+		// è®¡ç®—è½¦é¾„
+		String fzDateVal = valuePart.split(",")[6].replace("'", "");// è·å¾—å‘è¯æ—¥æœŸçš„å€¼
 		try {
 			Date fzDate = DateUtils.parseDate(fzDateVal, "yyyy-MM-dd");
 			Date nowFullYearDate = DateUtils.ceiling(new Date(), Calendar.YEAR);
@@ -291,7 +291,7 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 					.divide(new BigDecimal(24), 5, BigDecimal.ROUND_HALF_UP)
 					.divide(new BigDecimal(365), 1, BigDecimal.ROUND_HALF_UP);
 			valuePart += "," + "'" + cl.doubleValue() + "'";
-			logger.debug("---³µÁä¼ÆËã½á¹û---"+cl);
+			logger.debug("---è½¦é¾„è®¡ç®—ç»“æœ---"+cl);
 		} catch (ParseException e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -299,7 +299,7 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 	}
 
 	/**
-	 * È¼ÁÏÀàĞÍ¼ÆËã
+	 * ç‡ƒæ–™ç±»å‹è®¡ç®—
 	 * @param statePart
 	 * @param valuePart
 	 * @param insertPreFix
@@ -308,7 +308,7 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 	 */
 	private String calRllx(String statePart, String valuePart, String insertPreFix, String[] valueParts) {
 		String result;
-		// ¸ù¾İÈ»Á¾ÀàĞÍ Ëã³ö rllx1»òÕßrllx2»òÕßrllx3×Ö¶Î
+		// æ ¹æ®ç„¶è¾†ç±»å‹ ç®—å‡º rllx1æˆ–è€…rllx2æˆ–è€…rllx3å­—æ®µ
 		String rllx = "";
 		if (StringUtils.containsIgnoreCase(insertPreFix, "CSGJJCB")) {
 			rllx = valueParts[23];
@@ -318,41 +318,41 @@ public class RegisterBatchImpExcel extends AbstractImpExcel {
 			rllx = valueParts[23];
 		}
 
-		if ("'ÆûÓÍ'".equals(rllx)) {
+		if ("'æ±½æ²¹'".equals(rllx)) {
 			statePart = StringUtils.replace(statePart, "RLLX*1,", "");
-			valuePart = StringUtils.replace(valuePart, ",'µ¥È¼ÁÏ-ÆûÓÍ'", "");
-		} else if ("'²ñÓÍ'".equals(rllx)) {
+			valuePart = StringUtils.replace(valuePart, ",'å•ç‡ƒæ–™-æ±½æ²¹'", "");
+		} else if ("'æŸ´æ²¹'".equals(rllx)) {
 			statePart = StringUtils.replace(statePart, "RLLX*1,", "");
-			valuePart = StringUtils.replace(valuePart, ",'µ¥È¼ÁÏ-²ñÓÍ'", "");
+			valuePart = StringUtils.replace(valuePart, ",'å•ç‡ƒæ–™-æŸ´æ²¹'", "");
 		} else if ("'LPG'".equals(rllx)) {
 			statePart = StringUtils.replace(statePart, "RLLX*1,", "");
-			valuePart = StringUtils.replace(valuePart, ",'µ¥È¼ÁÏ-LPG'", "");
+			valuePart = StringUtils.replace(valuePart, ",'å•ç‡ƒæ–™-LPG'", "");
 		} else if ("'CNG'".equals(rllx)) {
 			statePart = StringUtils.replace(statePart, "RLLX*1,", "");
-			valuePart = StringUtils.replace(valuePart, ",'µ¥È¼ÁÏ-CNG'", "");
+			valuePart = StringUtils.replace(valuePart, ",'å•ç‡ƒæ–™-CNG'", "");
 		} else if ("'LNG'".equals(rllx)) {
 			statePart = StringUtils.replace(statePart, "RLLX*1,", "");
-			valuePart = StringUtils.replace(valuePart, ",'µ¥È¼ÁÏ-LNG'", "");
-		} else if ("'Ë«È¼ÁÏ'".equals(rllx)) {
+			valuePart = StringUtils.replace(valuePart, ",'å•ç‡ƒæ–™-LNG'", "");
+		} else if ("'åŒç‡ƒæ–™'".equals(rllx)) {
 			statePart = StringUtils.replace(statePart, "RLLX*1", "RLLX1" + "," + "RLLX2");
-			if (StringUtils.contains(valuePart, "'ÆûÓÍ+LPG'")) {
-				valuePart = StringUtils.replace(valuePart, "'ÆûÓÍ+LPG'", "'ÆûÓÍ','LPG'");
-			} else if (StringUtils.contains(valuePart, "'ÆûÓÍ+CNG'")) {
-				valuePart = StringUtils.replace(valuePart, "'ÆûÓÍ+CNG'", "'ÆûÓÍ','CNG'");
-			} else if (StringUtils.contains(valuePart, "'ÆûÓÍ+LNG'")) {
-				valuePart = StringUtils.replace(valuePart, "'ÆûÓÍ+LNG'", "'ÆûÓÍ','LNG'");
-			} else if (StringUtils.contains(valuePart, "'²ñÓÍ+LPG'")) {
-				valuePart = StringUtils.replace(valuePart, "'²ñÓÍ+LPG'", "'²ñÓÍ','LPG'");
-			} else if (StringUtils.contains(valuePart, "'²ñÓÍ+CNG'")) {
-				valuePart = StringUtils.replace(valuePart, "'²ñÓÍ+CNG'", "'²ñÓÍ','CNG'");
-			} else if (StringUtils.contains(valuePart, "'²ñÓÍ+LNG'")) {
-				valuePart = StringUtils.replace(valuePart, "'²ñÓÍ+LNG'", "'²ñÓÍ','LNG'");
+			if (StringUtils.contains(valuePart, "'æ±½æ²¹+LPG'")) {
+				valuePart = StringUtils.replace(valuePart, "'æ±½æ²¹+LPG'", "'æ±½æ²¹','LPG'");
+			} else if (StringUtils.contains(valuePart, "'æ±½æ²¹+CNG'")) {
+				valuePart = StringUtils.replace(valuePart, "'æ±½æ²¹+CNG'", "'æ±½æ²¹','CNG'");
+			} else if (StringUtils.contains(valuePart, "'æ±½æ²¹+LNG'")) {
+				valuePart = StringUtils.replace(valuePart, "'æ±½æ²¹+LNG'", "'æ±½æ²¹','LNG'");
+			} else if (StringUtils.contains(valuePart, "'æŸ´æ²¹+LPG'")) {
+				valuePart = StringUtils.replace(valuePart, "'æŸ´æ²¹+LPG'", "'æŸ´æ²¹','LPG'");
+			} else if (StringUtils.contains(valuePart, "'æŸ´æ²¹+CNG'")) {
+				valuePart = StringUtils.replace(valuePart, "'æŸ´æ²¹+CNG'", "'æŸ´æ²¹','CNG'");
+			} else if (StringUtils.contains(valuePart, "'æŸ´æ²¹+LNG'")) {
+				valuePart = StringUtils.replace(valuePart, "'æŸ´æ²¹+LNG'", "'æŸ´æ²¹','LNG'");
 			}
-		} else if ("'»ìºÏ¶¯Á¦'".equals(rllx)) {
+		} else if ("'æ··åˆåŠ¨åŠ›'".equals(rllx)) {
 			statePart = StringUtils.replace(statePart, "RLLX*1", "RLLX3");
 		}
 
-		// ÖØĞÂ×éºÏ
+		// é‡æ–°ç»„åˆ
 		result = insertPreFix + statePart + ExcelConstants.SQL_INSERT_VALUE_FLAG + valuePart + ")";
 		return result;
 	}

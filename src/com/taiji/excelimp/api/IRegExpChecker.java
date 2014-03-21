@@ -3,7 +3,7 @@ package com.taiji.excelimp.api;
 import org.apache.poi.ss.usermodel.Cell;
 
 /**
- * ÕıÔò±í´ïÊ½¼ì²é½Ó¿Ú
+ * æ­£åˆ™è¡¨è¾¾å¼æ£€æŸ¥æ¥å£
  * @author zhangxin
  *
  */

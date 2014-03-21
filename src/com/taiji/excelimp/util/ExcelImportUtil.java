@@ -39,7 +39,7 @@ import com.taiji.excelimp.api.IConverter;
 import com.taiji.excelimp.api.IRegExpChecker;
 
 /**
- * Excel µ¼Èë¹¤¾ßÀà ±¾ÀàÍê³É¶ÔËùµ¼ÈëµÄExcelÎÄ¼şµÄ¹¤×÷²¾½áºÏµ¼ÈëÅäÖÃÎÄ¼şimport.xmlÖĞµÄÅäÖÃ½øĞĞµ¼ÈëÓëÑéÖ¤
+ * Excel å¯¼å…¥å·¥å…·ç±» æœ¬ç±»å®Œæˆå¯¹æ‰€å¯¼å…¥çš„Excelæ–‡ä»¶çš„å·¥ä½œç°¿ç»“åˆå¯¼å…¥é…ç½®æ–‡ä»¶import.xmlä¸­çš„é…ç½®è¿›è¡Œå¯¼å…¥ä¸éªŒè¯
  *
  * @author zhangxin
  *
@@ -48,27 +48,27 @@ public class ExcelImportUtil {
 	public static final Logger logger = LoggerFactory.getLogger(ExcelImportUtil.class);
 
 	/**
-	 * µ¼ÈëExcel¹¦ÄÜÈë¿Ú·½·¨ ½«Ä¿Â¼impExcelDirÏÂµÄËùÓĞµÄexcelÎÄ¼ş°´ÕÕÅäÖÃÎÄ¼şÖĞµÄÍ¬Ò»¸öÄ£°åµ¼Èë
+	 * å¯¼å…¥ExcelåŠŸèƒ½å…¥å£æ–¹æ³• å°†ç›®å½•impExcelDirä¸‹çš„æ‰€æœ‰çš„excelæ–‡ä»¶æŒ‰ç…§é…ç½®æ–‡ä»¶ä¸­çš„åŒä¸€ä¸ªæ¨¡æ¿å¯¼å…¥
 	 *
 	 * @param impExcelDir
-	 *            ´æ·ÅExcelÎÄ¼şµÄÄ¿Â¼
+	 *            å­˜æ”¾Excelæ–‡ä»¶çš„ç›®å½•
 	 * @param templateId
-	 *            Òªµ¼ÈëµÄexcelÎÄ¼ş¶ÔÓ¦µÄÅäÖÃÎÄ¼şÖĞtemplate±êÇ©ÖĞµÄidÊôĞÔÖµ
+	 *            è¦å¯¼å…¥çš„excelæ–‡ä»¶å¯¹åº”çš„é…ç½®æ–‡ä»¶ä¸­templateæ ‡ç­¾ä¸­çš„idå±æ€§å€¼
 	 * @param configFilePath
-	 *            ÅäÖÃÎÄ¼şÂ·¾¶
+	 *            é…ç½®æ–‡ä»¶è·¯å¾„
 	 * @param excelFileType
-	 *            Ä¿Â¼ÏÂµÄexcelÎÄ¼şÀàĞÍ ·ÖÎª xls ºÍ xlsx Á½ÖÖ
+	 *            ç›®å½•ä¸‹çš„excelæ–‡ä»¶ç±»å‹ åˆ†ä¸º xls å’Œ xlsx ä¸¤ç§
 	 *
-	 * @return ·µ»ØÖĞµÄMapµÄkey°üº¬"result":±íÊ¾½âÎö³É¹¦»òÊ§°ÜÆäÖµÎª"fail"»ò"success" Èô½âÎöÊ§°Ü¼´result¶ÔÓ¦µÄÖµÎªfailÊ± Ôò°üº¬key£º"msg" ÆäÖĞ°üº¬´íÎóĞÅÏ¢
-	 *         Èô½âÎö³É¹¦¼´result¶ÔÓ¦µÄÖµÎªsuccessÊ± Ôò°üº¬key£º"sqls" ÆäÖĞ°üº¬½âÎö³É¹¦ºóµÄinsert »ò update Óï¾ä insert »ò update Óï¾ä¸ñÊ½Îª:
+	 * @return è¿”å›ä¸­çš„Mapçš„keyåŒ…å«"result":è¡¨ç¤ºè§£ææˆåŠŸæˆ–å¤±è´¥å…¶å€¼ä¸º"fail"æˆ–"success" è‹¥è§£æå¤±è´¥å³resultå¯¹åº”çš„å€¼ä¸ºfailæ—¶ åˆ™åŒ…å«keyï¼š"msg" å…¶ä¸­åŒ…å«é”™è¯¯ä¿¡æ¯
+	 *         è‹¥è§£ææˆåŠŸå³resultå¯¹åº”çš„å€¼ä¸ºsuccessæ—¶ åˆ™åŒ…å«keyï¼š"sqls" å…¶ä¸­åŒ…å«è§£ææˆåŠŸåçš„insert æˆ– update è¯­å¥ insert æˆ– update è¯­å¥æ ¼å¼ä¸º:
 	 *         INSERT INTO TABLENAME (FIELD1,FIELD2...) @%&#VALUES#&%@ (VALUE1,VALUE2);\n
-	 *         »òÕß UPDATE TABLENAME SET FIELD1=VALUE1,FIELD2=VALUE2... WHERE FIELD3=VALUE3 AND FIELD4=VALUE4 ...;\n
+	 *         æˆ–è€… UPDATE TABLENAME SET FIELD1=VALUE1,FIELD2=VALUE2... WHERE FIELD3=VALUE3 AND FIELD4=VALUE4 ...;\n
 	 */
 	public static Map<String, String> importExcel(String impExcelDir, String templateId, String configFilePath,
 			String excelFileType) throws Exception {
 		File excelDir = validateFile(impExcelDir, true);
 		File[] excelFiles = getDirFiles(excelDir, excelFileType);
-		Map<String, String> resultMap = new HashMap<String, String>();// ´æ·Å½âÎö½á¹ûµÄMap
+		Map<String, String> resultMap = new HashMap<String, String>();// å­˜æ”¾è§£æç»“æœçš„Map
 
 		for (File excelFile : excelFiles) {
 			Map<String, String> impMap = importExcel(excelFile, templateId, configFilePath);
@@ -83,28 +83,28 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * µ¼ÈëExcel¹¦ÄÜÈë¿Ú·½·¨ ¸ù¾İÅäÖÃÎÄ¼şÖĞÄ£°åidºÍÅäÖÃÎÄ¼şÂ·¾¶µ¼ÈëExcel
+	 * å¯¼å…¥ExcelåŠŸèƒ½å…¥å£æ–¹æ³• æ ¹æ®é…ç½®æ–‡ä»¶ä¸­æ¨¡æ¿idå’Œé…ç½®æ–‡ä»¶è·¯å¾„å¯¼å…¥Excel
 	 *
 	 * @param excelFile
-	 *            Òªµ¼ÈëµÄexcelÎÄ¼ş
+	 *            è¦å¯¼å…¥çš„excelæ–‡ä»¶
 	 * @param templateId
-	 *            Ä£°åId
+	 *            æ¨¡æ¿Id
 	 * @param configFilePath
-	 *            ÅäÖÃÎÄ¼şÎ»ÖÃ
-	 * @return ·µ»ØÖĞµÄMapµÄkey°üº¬"result":±íÊ¾½âÎö³É¹¦»òÊ§°ÜÆäÖµÎª"fail"»ò"success" Èô½âÎöÊ§°Ü¼´result¶ÔÓ¦µÄÖµÎªfailÊ± Ôò°üº¬key£º"msg" ÆäÖĞ°üº¬´íÎóĞÅÏ¢
-	 *         Èô½âÎö³É¹¦¼´result¶ÔÓ¦µÄÖµÎªsuccessÊ± Ôò°üº¬key£º"sqls" ÆäÖĞ°üº¬½âÎö³É¹¦ºóµÄinsertÓï¾ä insert Óï¾ä¸ñÊ½Îª:
+	 *            é…ç½®æ–‡ä»¶ä½ç½®
+	 * @return è¿”å›ä¸­çš„Mapçš„keyåŒ…å«"result":è¡¨ç¤ºè§£ææˆåŠŸæˆ–å¤±è´¥å…¶å€¼ä¸º"fail"æˆ–"success" è‹¥è§£æå¤±è´¥å³resultå¯¹åº”çš„å€¼ä¸ºfailæ—¶ åˆ™åŒ…å«keyï¼š"msg" å…¶ä¸­åŒ…å«é”™è¯¯ä¿¡æ¯
+	 *         è‹¥è§£ææˆåŠŸå³resultå¯¹åº”çš„å€¼ä¸ºsuccessæ—¶ åˆ™åŒ…å«keyï¼š"sqls" å…¶ä¸­åŒ…å«è§£ææˆåŠŸåçš„insertè¯­å¥ insert è¯­å¥æ ¼å¼ä¸º:
 	 *         INSERT INTO TABLENAME (FIELD1,FIELD2...) @%&#VALUES#&%@ (VALUE1,VALUE2);\n
-	 *         »òÕß
+	 *         æˆ–è€…
 	 *         UPDATE TABLENAME SET FIELD1=VALUE1,FIELD2=VALUE2...;\n
 	 */
 	public static Map<String, String> importExcel(File excelFile, String templateId, String configFilePath)
 			throws Exception {
-		logger.debug("+++¿ªÊ¼---·½·¨---importExcel");
+		logger.debug("+++å¼€å§‹---æ–¹æ³•---importExcel");
 		Map<String, String> resultMap = new HashMap<String, String>();
 		Document document = getConfigFileDoc(configFilePath);
 		Workbook workbook = genWorkbook(excelFile, document, templateId, resultMap);
 		importExcel(workbook, document, templateId);
-		logger.debug("+++½áÊø---·½·¨---importExcel");
+		logger.debug("+++ç»“æŸ---æ–¹æ³•---importExcel");
 		return resultMap;
 	}
 
@@ -115,40 +115,40 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * µ¼ÈëExcel¹¦ÄÜÈë¿Ú·½·¨ ¸ù¾İÅäÖÃÎÄ¼şÖĞÄ£°åidºÍÅäÖÃÎÄ¼şÂ·¾¶µ¼ÈëExcel
+	 * å¯¼å…¥ExcelåŠŸèƒ½å…¥å£æ–¹æ³• æ ¹æ®é…ç½®æ–‡ä»¶ä¸­æ¨¡æ¿idå’Œé…ç½®æ–‡ä»¶è·¯å¾„å¯¼å…¥Excel
 	 *
 	 * @param workbook
-	 *            Òª½âÎöµÄ¹¤×÷²¾¶ÔÏó
-	 * @param configDoc µ¼ÈëÅäÖÃÎÄ¼şµÄÎÄµµ¶ÔÏó
+	 *            è¦è§£æçš„å·¥ä½œç°¿å¯¹è±¡
+	 * @param configDoc å¯¼å…¥é…ç½®æ–‡ä»¶çš„æ–‡æ¡£å¯¹è±¡
 	 * @param templateId
-	 *            Ä£°åId
-	 * @param resultMap ´æ·Å½âÎö½á¹û
-	 * @return ·µ»ØÖĞµÄMapµÄkey°üº¬"result":±íÊ¾½âÎö³É¹¦»òÊ§°ÜÆäÖµÎª"fail"»ò"success" Èô½âÎöÊ§°Ü¼´result¶ÔÓ¦µÄÖµÎªfailÊ± Ôò°üº¬key£º"msg" ÆäÖĞ°üº¬´íÎóĞÅÏ¢
-	 *         Èô½âÎö³É¹¦¼´result¶ÔÓ¦µÄÖµÎªsuccessÊ± Ôò°üº¬key£º"sqls" ÆäÖĞ°üº¬½âÎö³É¹¦ºóµÄinsertÓï¾ä insert Óï¾ä¸ñÊ½Îª:
+	 *            æ¨¡æ¿Id
+	 * @param resultMap å­˜æ”¾è§£æç»“æœ
+	 * @return è¿”å›ä¸­çš„Mapçš„keyåŒ…å«"result":è¡¨ç¤ºè§£ææˆåŠŸæˆ–å¤±è´¥å…¶å€¼ä¸º"fail"æˆ–"success" è‹¥è§£æå¤±è´¥å³resultå¯¹åº”çš„å€¼ä¸ºfailæ—¶ åˆ™åŒ…å«keyï¼š"msg" å…¶ä¸­åŒ…å«é”™è¯¯ä¿¡æ¯
+	 *         è‹¥è§£ææˆåŠŸå³resultå¯¹åº”çš„å€¼ä¸ºsuccessæ—¶ åˆ™åŒ…å«keyï¼š"sqls" å…¶ä¸­åŒ…å«è§£ææˆåŠŸåçš„insertè¯­å¥ insert è¯­å¥æ ¼å¼ä¸º:
 	 *         INSERT INTO TABLENAME (FIELD1,FIELD2...) @%&#VALUES#&%@ (VALUE1,VALUE2);\n
-	 *         »òÕß
+	 *         æˆ–è€…
 	 *         UPDATE TABLENAME SET FIELD1=VALUE1,FIELD2=VALUE2...;\n
-	 *         »òÕß
+	 *         æˆ–è€…
 	 *         INSERT INTO TABLENAME (FIELD1,FIELD2...) SELECT VALUE1,VALUE2... FROM DUAL UNION SELECT ...
 	 */
 	public static Map<String, String> importExcel(Workbook workbook,Document configDoc, String templateId, Map<String, String> resultMap)
 			throws Exception {
-		logger.debug("+++¿ªÊ¼---·½·¨---importExcel");
+		logger.debug("+++å¼€å§‹---æ–¹æ³•---importExcel");
 		if (resultMap == null) {
 			resultMap = new HashMap<String, String>();
 		}
 		doImport(workbook, configDoc, templateId,resultMap);
-		logger.debug("+++½áÊø---·½·¨---importExcel");
+		logger.debug("+++ç»“æŸ---æ–¹æ³•---importExcel");
 		return resultMap;
 	}
 
 	/**
-	 * ÉèÖÃexcelµ¼Èë³É¹¦ĞÅÏ¢
+	 * è®¾ç½®excelå¯¼å…¥æˆåŠŸä¿¡æ¯
 	 *
 	 * @param resultMap
-	 *            ×Ü½á¹ûmap
+	 *            æ€»ç»“æœmap
 	 * @param impMap
-	 *            Ä³´Îµ¼Èëºó´æ·ÅµÄµ¼ÈëĞÅÏ¢map
+	 *            æŸæ¬¡å¯¼å…¥åå­˜æ”¾çš„å¯¼å…¥ä¿¡æ¯map
 	 */
 	public static void setSuccessMsg(Map<String, String> resultMap, Map<String, String> impMap) {
 		if (resultMap.get(ExcelConstants.SQLS_KEY) != null) {
@@ -162,14 +162,14 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ÉèÖÃresultMap²¢×·¼ÓÊ§°ÜĞÅÏ¢µÄÎÄ¼şĞÅÏ¢
+	 * è®¾ç½®resultMapå¹¶è¿½åŠ å¤±è´¥ä¿¡æ¯çš„æ–‡ä»¶ä¿¡æ¯
 	 *
 	 * @param resultMap
-	 *            ½á¹ûmap
+	 *            ç»“æœmap
 	 * @param excelFile
-	 *            µ¼ÈëµÄÎÄ¼şĞÅÏ¢
+	 *            å¯¼å…¥çš„æ–‡ä»¶ä¿¡æ¯
 	 * @param impMap
-	 *            ÎÄ¼şµ¼Èë½á¹û
+	 *            æ–‡ä»¶å¯¼å…¥ç»“æœ
 	 */
 	public static void appendFailMsg(Map<String, String> resultMap, File excelFile, Map<String, String> impMap) {
 		if (resultMap.get(ExcelConstants.MSG_KEY) != null) {
@@ -182,13 +182,13 @@ public class ExcelImportUtil {
 		}
 		resultMap.put(ExcelConstants.RESULT_KEY, ExcelConstants.FAIL);
 		if (null != excelFile ) {
-			resultMap.put(ExcelConstants.FILENAME_KEY, excelFile.getName());// ±£´æÎÄ¼şÃû
+			resultMap.put(ExcelConstants.FILENAME_KEY, excelFile.getName());// ä¿å­˜æ–‡ä»¶å
 		}
 		resultMap.remove(ExcelConstants.SQLS_KEY);
 	}
 
 	/**
-	 * ½«resultMapµÄÊ§°ÜĞÅÏ¢×·¼Óµ½finalResultMapÖĞ
+	 * å°†resultMapçš„å¤±è´¥ä¿¡æ¯è¿½åŠ åˆ°finalResultMapä¸­
 	 * @param finalResultMap
 	 * @param resultMap
 	 */
@@ -196,12 +196,12 @@ public class ExcelImportUtil {
 		appendFailMsg(finalResultMap, null, resultMap);
 	}
 	/**
-	 * »ñµÃÄ¿Â¼ÏÂµÄÖ¸¶¨À©Õ¹ÃûµÄÎÄ¼ş
+	 * è·å¾—ç›®å½•ä¸‹çš„æŒ‡å®šæ‰©å±•åçš„æ–‡ä»¶
 	 *
 	 * @param excelDir
-	 *            Òª»ñµÃÖ¸¶¨ÀàĞÍÎÄ¼şµÄÄ¿Â¼
+	 *            è¦è·å¾—æŒ‡å®šç±»å‹æ–‡ä»¶çš„ç›®å½•
 	 * @param fileExtName
-	 *            Òª»ñµÃµÄÎÄ¼şÀàĞÍµÄÀ©Õ¹Ãû
+	 *            è¦è·å¾—çš„æ–‡ä»¶ç±»å‹çš„æ‰©å±•å
 	 * @return
 	 */
 	public static File[] getDirFiles(File excelDir, final String fileExtName) {
@@ -217,10 +217,10 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * »ñµÃÄ¿Â¼ÏÂµÄµÄexcelÎÄ¼ş°üÀ¨Excel 2007+Óë2003
+	 * è·å¾—ç›®å½•ä¸‹çš„çš„excelæ–‡ä»¶åŒ…æ‹¬Excel 2007+ä¸2003
 	 *
 	 * @param excelDir
-	 *            Òª»ñµÃexcelÎÄ¼şµÄÄ¿Â¼
+	 *            è¦è·å¾—excelæ–‡ä»¶çš„ç›®å½•
 	 * @return
 	 */
 	public static File[] getDirFiles(File excelDir) {
@@ -230,7 +230,7 @@ public class ExcelImportUtil {
 				Pattern pattern2003 = Pattern.compile("[\\s\\S]*.(" + ExcelConstants.EXCEL_FILE_TYPE + ")$");
 				Pattern pattern2007 = Pattern.compile("[\\s\\S]*.(" + ExcelConstants.EXCEL2007_FILE_TYPE + ")$");
 				result = pattern2003.matcher(name).matches();
-				if (!result) {// ÈôÎÄ¼ş²»ÊÇ2003 ½Ó×ÅÅĞ¶ÏÊÇ·ñÎª2007
+				if (!result) {// è‹¥æ–‡ä»¶ä¸æ˜¯2003 æ¥ç€åˆ¤æ–­æ˜¯å¦ä¸º2007
 					result = pattern2007.matcher(name).matches();
 				}
 				return result;
@@ -242,10 +242,10 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * »ñµÃµ¼ÈëÅäÖÃÎÄ¼şµÄÎÄµµ¶ÔÏó
+	 * è·å¾—å¯¼å…¥é…ç½®æ–‡ä»¶çš„æ–‡æ¡£å¯¹è±¡
 	 *
 	 * @param configFilePath
-	 * @return ÅäÖÃÎÄ¼şµÄÎÄµµ¶ÔÏó
+	 * @return é…ç½®æ–‡ä»¶çš„æ–‡æ¡£å¯¹è±¡
 	 * @throws Exception
 	 * @throws DocumentException
 	 */
@@ -255,46 +255,46 @@ public class ExcelImportUtil {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(configFile);
 		long end = System.currentTimeMillis();
-		logger.debug("---³É¹¦»ñµÃÅäÖÃÎÄ¼şÎÄµµ¶ÔÏó---¾­ÀúÊ±¼ä---"+(end-start));
+		logger.debug("---æˆåŠŸè·å¾—é…ç½®æ–‡ä»¶æ–‡æ¡£å¯¹è±¡---ç»å†æ—¶é—´---"+(end-start));
 		return document;
 	}
 
 	/**
-	 * µ¼ÈëExcel ¹¤×÷²¾
+	 * å¯¼å…¥Excel å·¥ä½œç°¿
 	 *
 	 * @param workbook
-	 *            ¹¤×÷²¾¶ÔÏó
+	 *            å·¥ä½œç°¿å¯¹è±¡
 	 * @param doc
-	 *            ÅäÖÃÎÄ¼şµÄxmlÎÄµµ¶ÔÏó
+	 *            é…ç½®æ–‡ä»¶çš„xmlæ–‡æ¡£å¯¹è±¡
 	 * @param templateId
-	 *            ÅäÖÃÎÄ¼şÖĞÄ£°å¶ÔÓ¦µÄidÖµ
+	 *            é…ç½®æ–‡ä»¶ä¸­æ¨¡æ¿å¯¹åº”çš„idå€¼
 	 * @param isValidate
-	 *            ÊÇ·ñ½øĞĞµ¼ÈëÑéÖ¤
-	 * @return µ¼Èë½á¹û¼¯ºÏ(È¡·µ»ØmapÖĞµÄkeyÎª ExcelConstants.RESULT_KEY
-	 *         ¶ÔÓ¦µÄvalueÖµ{"success","fail"}¿ÉÒÔÅĞ¶Ïµ¼ÈëÊÇ·ñ³É¹¦,Èôresult¶ÔÓ¦valueÎª"fail"Ôòµ¼ÈëÊ§°Ü£¬ÔÙ»ñÈ¡mapÖĞµÄkeyÎªExcelConstants.MSG_KEY
-	 *         ¶ÔÓ¦µÄvalue¿É»ñµÃµ¼Èë³ö´íĞÅÏ¢)
+	 *            æ˜¯å¦è¿›è¡Œå¯¼å…¥éªŒè¯
+	 * @return å¯¼å…¥ç»“æœé›†åˆ(å–è¿”å›mapä¸­çš„keyä¸º ExcelConstants.RESULT_KEY
+	 *         å¯¹åº”çš„valueå€¼{"success","fail"}å¯ä»¥åˆ¤æ–­å¯¼å…¥æ˜¯å¦æˆåŠŸ,è‹¥resultå¯¹åº”valueä¸º"fail"åˆ™å¯¼å…¥å¤±è´¥ï¼Œå†è·å–mapä¸­çš„keyä¸ºExcelConstants.MSG_KEY
+	 *         å¯¹åº”çš„valueå¯è·å¾—å¯¼å…¥å‡ºé”™ä¿¡æ¯)
 	 */
 	public static void doImport(Workbook workbook, Document doc, String templateId, Map<String, String> resultMap) throws Exception {
-		logger.debug("---¿ªÊ¼---·½·¨---doImport");
+		logger.debug("---å¼€å§‹---æ–¹æ³•---doImport");
 		List<Element> sheetEleList = getSheetList(doc, templateId);
 
 		for (Element sheetEle : sheetEleList) {
-			String sheetName = sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_NAME);// »ñµÃÅäÖÃÎÄ¼şÖĞtemplate±êÇ©ÏÂµÄsheetµÄÃû³Æ¼´ÔÚÅäÖÃÎÄ¼şÖĞ¿Éµ¼ÈëµÄsheetÃû³Æ
+			String sheetName = sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_NAME);// è·å¾—é…ç½®æ–‡ä»¶ä¸­templateæ ‡ç­¾ä¸‹çš„sheetçš„åç§°å³åœ¨é…ç½®æ–‡ä»¶ä¸­å¯å¯¼å…¥çš„sheetåç§°
 			if (sheetName != null && !"".equals(sheetName)) {
-				Sheet impSheet = workbook.getSheet(sheetName);// Í¨¹ıÃû³Æ»ñµÃworkbookÖĞµÄ½«Òªµ¼ÈëµÄsheet
+				Sheet impSheet = workbook.getSheet(sheetName);// é€šè¿‡åç§°è·å¾—workbookä¸­çš„å°†è¦å¯¼å…¥çš„sheet
 				if (impSheet != null) {
 					impSheet(impSheet, sheetEle,resultMap);
 					if (ExcelConstants.FAIL.equalsIgnoreCase(resultMap.get(ExcelConstants.RESULT_KEY))) {
 						break;
 					}
 				} else {
-					String failMsg = "Ãû³Æ£º" + sheetName + "Ã»ÓĞ¶ÔÓ¦µÄsheet";
+					String failMsg = "åç§°ï¼š" + sheetName + "æ²¡æœ‰å¯¹åº”çš„sheet";
 					setFailMsg(resultMap, failMsg);
 					break;
 				}
 			}
 		}
-		logger.debug("+++½áÊø---·½·¨---doImport");
+		logger.debug("+++ç»“æŸ---æ–¹æ³•---doImport");
 	}
 
 	/**
@@ -308,7 +308,7 @@ public class ExcelImportUtil {
 	/**
 	 * @param resultMap
 	 * @param failMsg
-	 * @param isAppend ÊÇ·ñ×·¼Ó´íÎóĞÅÏ¢
+	 * @param isAppend æ˜¯å¦è¿½åŠ é”™è¯¯ä¿¡æ¯
 	 */
 	public static void setFailMsg(Map<String, String> resultMap, String failMsg,boolean isAppend) {
 		resultMap.put(ExcelConstants.RESULT_KEY, ExcelConstants.FAIL);
@@ -326,7 +326,7 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ¸ù¾İÅäÖÃÎÄ¼şµÄÎÄµµ¶ÔÏóºÍÅäÖÃÎÄ¼şÖĞtemplate±êÇ©idÖµ»ñµÃÄ³Ò»template±êÇ©ÏÂµÄsheet±êÇ©
+	 * æ ¹æ®é…ç½®æ–‡ä»¶çš„æ–‡æ¡£å¯¹è±¡å’Œé…ç½®æ–‡ä»¶ä¸­templateæ ‡ç­¾idå€¼è·å¾—æŸä¸€templateæ ‡ç­¾ä¸‹çš„sheetæ ‡ç­¾
 	 *
 	 * @param doc
 	 * @param templateId
@@ -336,100 +336,100 @@ public class ExcelImportUtil {
 		Element root = doc.getRootElement();
 		Node templatNode = root.selectSingleNode("//template[@" + ExcelConstants.TEMPLATE_ATTR_ID + "='"
 				+ templateId + "']");
-		List<Element> sheetEleList = templatNode.selectNodes("./" + ExcelConstants.ELEMENT_SHEET);// Òªµ¼ÈëµÄsheet
+		List<Element> sheetEleList = templatNode.selectNodes("./" + ExcelConstants.ELEMENT_SHEET);// è¦å¯¼å…¥çš„sheet
 		return sheetEleList;
 	}
 
 	/**
-	 * ¸ù¾İÅäÖÃÎÄ¼şsheet±êÇ©ÖĞµÄÅäÖÃµ¼ÈëexcelÎÄ¼şsheetÖĞµÄÊı¾İ
+	 * æ ¹æ®é…ç½®æ–‡ä»¶sheetæ ‡ç­¾ä¸­çš„é…ç½®å¯¼å…¥excelæ–‡ä»¶sheetä¸­çš„æ•°æ®
 	 *
 	 * @param impSheet
 	 * @param sheetEle
 	 * @param isValidate
-	 *            µ¼ÈëÊ±ÊÇ·ñ½øĞĞĞ£Ñé
-	 * @return insertÓï¾ä¼¯ºÏ
+	 *            å¯¼å…¥æ—¶æ˜¯å¦è¿›è¡Œæ ¡éªŒ
+	 * @return insertè¯­å¥é›†åˆ
 	 */
 	public static Map<String, String> impSheet(Sheet impSheet, Element sheetEle,Map<String, String>resultMap) throws Exception {
-		logger.debug("---¿ªÊ¼---·½·¨---impSheet");
-		StringBuffer genSqls = new StringBuffer();// ´æ·Å×é×°Íê³ÉµÄinsert»òupdateÓï¾ä
+		logger.debug("---å¼€å§‹---æ–¹æ³•---impSheet");
+		StringBuffer genSqls = new StringBuffer();// å­˜æ”¾ç»„è£…å®Œæˆçš„insertæˆ–updateè¯­å¥
 
 		Integer dataStartRowNum = Integer.valueOf(sheetEle
-				.attributeValue(ExcelConstants.SHEET_ATTR_DATASTARTROWNUM)) - 1;// µ¼ÈëÊı¾İÆğÊ¼ĞĞÊı
+				.attributeValue(ExcelConstants.SHEET_ATTR_DATASTARTROWNUM)) - 1;// å¯¼å…¥æ•°æ®èµ·å§‹è¡Œæ•°
 
-		Boolean isValidate = Boolean.valueOf(sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_ISVALIDATE));// µ¼ÈëµÄsheetÊÇ·ñ½øĞĞÑéÖ¤
-		Boolean isWholeRow = Boolean.valueOf(sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_WHOLEROW));//µ¼ÈëµÄÁĞÊÇ·ñÎªÒ»ÕûĞĞ
+		Boolean isValidate = Boolean.valueOf(sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_ISVALIDATE));// å¯¼å…¥çš„sheetæ˜¯å¦è¿›è¡ŒéªŒè¯
+		Boolean isWholeRow = Boolean.valueOf(sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_WHOLEROW));//å¯¼å…¥çš„åˆ—æ˜¯å¦ä¸ºä¸€æ•´è¡Œ
 
 		StringBuffer sql = null;
 		String operation = sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_OPERATION);
 		boolean isInsert = true;
 		int colCount = 0;
-		if (operation.equalsIgnoreCase(ExcelConstants.OPERATION_TYPE_INSERT)) {// ÅäÖÃinsert²Ù×÷
+		if (operation.equalsIgnoreCase(ExcelConstants.OPERATION_TYPE_INSERT)) {// é…ç½®insertæ“ä½œ
 			sql = makePartInsertSql(sheetEle);
-		} else if (operation.equalsIgnoreCase(ExcelConstants.OPERATION_TYPE_UPDATE)) {// ÅäÖÃupdate²Ù×÷
+		} else if (operation.equalsIgnoreCase(ExcelConstants.OPERATION_TYPE_UPDATE)) {// é…ç½®updateæ“ä½œ
 			sql = makePartUpdateSql(sheetEle);
 			isInsert = false;
-		} else if (ExcelConstants.OPERATION_TYPE_MULTINSERT.equalsIgnoreCase(operation)) {//multinser²Ù×÷
+		} else if (ExcelConstants.OPERATION_TYPE_MULTINSERT.equalsIgnoreCase(operation)) {//multinseræ“ä½œ
 			sql = makePartMultInsertSql(sheetEle);
 			colCount = Integer.valueOf(sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_COLCOUNT));
 			isInsert = false;
 		} else {
-			throw new Exception("sheet ±êÇ©µÄoperationÊôĞÔÉèÖÃ´íÎó");
+			throw new Exception("sheet æ ‡ç­¾çš„operationå±æ€§è®¾ç½®é”™è¯¯");
 		}
 
-		List<Element> colList = sheetEle.selectNodes("./" + ExcelConstants.ELEMENT_COL);// »ñµÃsheetÔªËØÏÂËùÓĞµÄcol×ÓÔªËØ
+		List<Element> colList = sheetEle.selectNodes("./" + ExcelConstants.ELEMENT_COL);// è·å¾—sheetå…ƒç´ ä¸‹æ‰€æœ‰çš„colå­å…ƒç´ 
 		List<String> uniqueList = new ArrayList<String>();
 
 		for (int i = dataStartRowNum; i <= impSheet.getLastRowNum(); i++) {
-			StringBuffer rowSql = new StringBuffer(sql);// µ¼ÈëµÄsheetÖĞÃ¿Ò»ĞĞ×é³ÉÒ»¸öinsert »òÕß update Óï¾ä
+			StringBuffer rowSql = new StringBuffer(sql);// å¯¼å…¥çš„sheetä¸­æ¯ä¸€è¡Œç»„æˆä¸€ä¸ªinsert æˆ–è€… update è¯­å¥
 			Map<String, String> rowResultMap = new HashMap<String, String>();
 			Row dataRow = impSheet.getRow(i);
 			if(dataRow == null){
-				logger.warn("+++ĞĞ£º"+(i+1)+"Îª¿Õ+++");
+				logger.warn("+++è¡Œï¼š"+(i+1)+"ä¸ºç©º+++");
 				continue;
 			}
-			logger.debug("---½âÎöĞĞ---" + (dataRow.getRowNum()+1));
-			StringBuffer updateWhere = new StringBuffer("");// update²Ù×÷µÄÌõ¼ş
-			int nullColNum = 0;//ÖµÎª¿ÕµÄÁĞÊı
-			int multInsertCount = 0;//multinsert²Ù×÷Ê±¼ÆÊı
-			int multInsertBlankNum = 0;//multinsert²Ù×÷Ê±µÄ¿ÕÁĞµÄÊıÄ¿
+			logger.debug("---è§£æè¡Œ---" + (dataRow.getRowNum()+1));
+			StringBuffer updateWhere = new StringBuffer("");// updateæ“ä½œçš„æ¡ä»¶
+			int nullColNum = 0;//å€¼ä¸ºç©ºçš„åˆ—æ•°
+			int multInsertCount = 0;//multinsertæ“ä½œæ—¶è®¡æ•°
+			int multInsertBlankNum = 0;//multinsertæ“ä½œæ—¶çš„ç©ºåˆ—çš„æ•°ç›®
 			for (Element colEle : colList) {
-				Integer colNum = Integer.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_COLNUM).trim()) - 1;// »ñµÃÒªµ¼ÈëµÄÁĞµÄÁĞºÅ
+				Integer colNum = Integer.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_COLNUM).trim()) - 1;// è·å¾—è¦å¯¼å…¥çš„åˆ—çš„åˆ—å·
 
 				Cell impCell = dataRow.getCell(colNum);
 
 				if (!checkCellType(impCell, rowResultMap)) {
 					continue;
 				}
-				//Òªµ¼ÈëµÄÁĞÊÇ·ñÎª¿Õ
+				//è¦å¯¼å…¥çš„åˆ—æ˜¯å¦ä¸ºç©º
 				if (null == impCell || StringUtils.isBlank(getCellValue(impCell))) {
 					nullColNum++;
 				}
 
 				if (isValidate != null && isValidate
-						&& !validating(rowResultMap, colEle, impCell, impSheet, dataRow)) {// µ¼ÈëµÄsheetĞèÒªÑéÖ¤
+						&& !validating(rowResultMap, colEle, impCell, impSheet, dataRow)) {// å¯¼å…¥çš„sheetéœ€è¦éªŒè¯
 						continue;
 				}
-				//¼ì²éÕıÔò±í´ïÊ½
+				//æ£€æŸ¥æ­£åˆ™è¡¨è¾¾å¼
 				if (!regExpCheck(colEle, impCell,rowResultMap,dataRow)) {
 					continue;
 				}
 
-				//¼ì²éexcelÖĞµÄÖØ¸´Öµ
+				//æ£€æŸ¥excelä¸­çš„é‡å¤å€¼
 				if (checkUnique(rowResultMap, uniqueList, colEle, impCell)) {
 					continue;
 				}
 
-				//¼ì²éËùÌîÖµµÄ×î´ó³¤¶È
+				//æ£€æŸ¥æ‰€å¡«å€¼çš„æœ€å¤§é•¿åº¦
 				if (!checkLength(rowResultMap, colEle, impCell)) {
 					continue;
 				}
 				Boolean isCondition = Boolean
 						.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_ISCONDITION));
-				if (isCondition != null && isCondition) {// ¸Ãµ¥Ôª¸ñ×÷ÎªupdateÌõ¼ş
+				if (isCondition != null && isCondition) {// è¯¥å•å…ƒæ ¼ä½œä¸ºupdateæ¡ä»¶
 					makeUpdateWhere(dataRow,updateWhere, colEle, impCell, rowResultMap);
-				} else if (ExcelConstants.OPERATION_TYPE_MULTINSERT.equalsIgnoreCase(operation)) {//Èô²Ù×÷Îªmultinsert
+				} else if (ExcelConstants.OPERATION_TYPE_MULTINSERT.equalsIgnoreCase(operation)) {//è‹¥æ“ä½œä¸ºmultinsert
 					Boolean ignore = Boolean.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_IGNORE));
-					if (ignore) {//Èô¸ÃÁĞ±»ºöÂÔÔòÌø¹ı
+					if (ignore) {//è‹¥è¯¥åˆ—è¢«å¿½ç•¥åˆ™è·³è¿‡
 						continue;
 					}
 					multInsertCount++;
@@ -442,9 +442,9 @@ public class ExcelImportUtil {
 						if (multInsertBlankNum < colCount) {
 							makeMultInsertSql(dataRow, rowSql, colEle, impCell, rowResultMap, true);
 						}else {
-							logger.debug("---multinsert---¸Ã×éµÄÖµ¶¼Îª¿Õ---´ËÊ±µÄinsertsqlÎª---"+rowSql);
+							logger.debug("---multinsert---è¯¥ç»„çš„å€¼éƒ½ä¸ºç©º---æ­¤æ—¶çš„insertsqlä¸º---"+rowSql);
 							rowSql.replace(rowSql.lastIndexOf(ExcelConstants.SQL_MULTINSERT_UNION_SELECT_FLAG)+ExcelConstants.SQL_MULTINSERT_UNION_SELECT_FLAG.length(), rowSql.length(), "");
-							logger.debug("---multinsert---È¥µôÈ«²¿Îª¿ÕÒ»×éºóµÄsql---"+rowSql);
+							logger.debug("---multinsert---å»æ‰å…¨éƒ¨ä¸ºç©ºä¸€ç»„åçš„sql---"+rowSql);
 						}
 						multInsertBlankNum = 0;
 					}else {
@@ -455,33 +455,33 @@ public class ExcelImportUtil {
 				}
 			}
 			int configColNum = colList.size();
-			logger.debug("ĞĞ"+(i+1)+"µÄ¿ÕÁĞÊıÄ¿Îª"+nullColNum+"---ÅäÖÃµÄÁĞµÄÊıÄ¿Îª"+configColNum+"---ÅäÖÃÖĞµÄwholeRowÊôĞÔÖµÎª£º"+isWholeRow);
+			logger.debug("è¡Œ"+(i+1)+"çš„ç©ºåˆ—æ•°ç›®ä¸º"+nullColNum+"---é…ç½®çš„åˆ—çš„æ•°ç›®ä¸º"+configColNum+"---é…ç½®ä¸­çš„wholeRowå±æ€§å€¼ä¸ºï¼š"+isWholeRow);
 
-			if (null != isWholeRow && isWholeRow && nullColNum == configColNum) {//ÈôÒ»ÕûĞĞ¶¼Îª¿Õ
-				logger.info("ĞĞ£º"+(i+1)+"Îª¿Õ");
+			if (null != isWholeRow && isWholeRow && nullColNum == configColNum) {//è‹¥ä¸€æ•´è¡Œéƒ½ä¸ºç©º
+				logger.info("è¡Œï¼š"+(i+1)+"ä¸ºç©º");
 				continue;
 			}else if (ExcelConstants.FAIL.equals(rowResultMap.get(ExcelConstants.RESULT_KEY))) {
-				// Ğ£ÑéÊ§°Ü
+				// æ ¡éªŒå¤±è´¥
 					appendFailMsg(resultMap, rowResultMap);
 					continue;
 			}
 
-			if (ExcelConstants.FAIL.equals(resultMap.get(ExcelConstants.RESULT_KEY))) {// Ğ£ÑéÊ§°Ü
+			if (ExcelConstants.FAIL.equals(resultMap.get(ExcelConstants.RESULT_KEY))) {// æ ¡éªŒå¤±è´¥
 				continue;
 			}
-			if (ExcelConstants.OPERATION_TYPE_INSERT.equals(operation)) {// insert²Ù×÷
+			if (ExcelConstants.OPERATION_TYPE_INSERT.equals(operation)) {// insertæ“ä½œ
 				rowSql.replace(rowSql.lastIndexOf(","), rowSql.length(), ")");
-			} else if(ExcelConstants.OPERATION_TYPE_UPDATE.equals(operation)) {// update ²Ù×÷
+			} else if(ExcelConstants.OPERATION_TYPE_UPDATE.equals(operation)) {// update æ“ä½œ
 				makeUpdateRowSql(rowSql, updateWhere);
-				if (!StringUtils.contains(rowSql, "WHERE")) {// ÊÇ·ñ°üº¬where
-					String failMsg = "Éú³ÉµÄupdateÓï¾ä²»°üº¬where×Ó¾ä£¡";
+				if (!StringUtils.contains(rowSql, "WHERE")) {// æ˜¯å¦åŒ…å«where
+					String failMsg = "ç”Ÿæˆçš„updateè¯­å¥ä¸åŒ…å«whereå­å¥ï¼";
 					logger.error(failMsg);
 					setFailMsg(resultMap, failMsg);
 					break;
 				}
-			}else if (ExcelConstants.OPERATION_TYPE_MULTINSERT.equals(operation)) {//Ò»Ìõinsert²åÈë¶àÌõ¼ÇÂ¼
+			}else if (ExcelConstants.OPERATION_TYPE_MULTINSERT.equals(operation)) {//ä¸€æ¡insertæ’å…¥å¤šæ¡è®°å½•
 				rowSql.replace(rowSql.lastIndexOf(ExcelConstants.SQL_MULTINSERT_UNION_SELECT_FLAG), rowSql.length(),"");
-				logger.debug("---multinsert---ÕûĞĞ´¦ÀíÍê±ÏÉú³Ésql---"+rowSql);
+				logger.debug("---multinsert---æ•´è¡Œå¤„ç†å®Œæ¯•ç”Ÿæˆsql---"+rowSql);
 			}
 
 			genSqls.append(rowSql);
@@ -492,16 +492,16 @@ public class ExcelImportUtil {
 			resultMap.put(ExcelConstants.RESULT_KEY, ExcelConstants.SUCCESS);
 			resultMap.put(ExcelConstants.SQLS_KEY, genSqls.toString());
 		}
-		logger.debug("+++½áÊø---·½·¨---impSheet");
+		logger.debug("+++ç»“æŸ---æ–¹æ³•---impSheet");
 		return resultMap;
 	}
 
 	/**
-	 * ¼ìÑé×Ö·û´®³¤¶ÈÊÇ·ñ³¬³ö×î´ó³¤¶È
+	 * æ£€éªŒå­—ç¬¦ä¸²é•¿åº¦æ˜¯å¦è¶…å‡ºæœ€å¤§é•¿åº¦
 	 * @param resultMap
 	 * @param colEle
 	 * @param impCell
-	 * @return true:ÑéÖ¤³É¹¦£»false£ºÑéÖ¤Ê§°Ü
+	 * @return true:éªŒè¯æˆåŠŸï¼›falseï¼šéªŒè¯å¤±è´¥
 	 */
 	private static boolean checkLength(Map<String, String> resultMap, Element colEle, Cell impCell) {
 		boolean result = true;
@@ -509,28 +509,28 @@ public class ExcelImportUtil {
 		if (StringUtils.isNotBlank(maxLength)) {
 			int mLength = Integer.valueOf(maxLength);
 			String cellValue = getCellValue(impCell);
-			//ºº×ÖÆ¥ÅäÄ£Ê½
+			//æ±‰å­—åŒ¹é…æ¨¡å¼
 			Pattern zhCharPattern = Pattern.compile("[\u4E00-\u9FA5\uFF00-\uFFEF\u3000-\u303F]");
 			Matcher zhMatcher = zhCharPattern.matcher(cellValue);
 			int length = cellValue.length();
 			while (zhMatcher.find()) {
-				//ÒòÎª²åÈëÊı¾İ¿âÊ±Ò»¸öºº×ÖµÈÓÚÁ½¸ö×Ö·ûËùÒÔÒª¼Ó1
+				//å› ä¸ºæ’å…¥æ•°æ®åº“æ—¶ä¸€ä¸ªæ±‰å­—ç­‰äºä¸¤ä¸ªå­—ç¬¦æ‰€ä»¥è¦åŠ 1
 				length++;
 			}
 			if (length > mLength) {
-				setFailMsg(impCell, resultMap, "ÖµµÄ³¤¶È³¬³öÏŞÖÆ");
+				setFailMsg(impCell, resultMap, "å€¼çš„é•¿åº¦è¶…å‡ºé™åˆ¶");
 				result = false;
 			}
 		}
 		return result;
 	}
 	/**
-	 * ¼ì²éÄ³ÁĞÖĞµÄÖµÔÚexcel¸ÃÁĞÖĞÊÇ·ñÓĞÖØ¸´
+	 * æ£€æŸ¥æŸåˆ—ä¸­çš„å€¼åœ¨excelè¯¥åˆ—ä¸­æ˜¯å¦æœ‰é‡å¤
 	 * @param resultMap
 	 * @param uniqueList
 	 * @param colEle
 	 * @param impCell
-	 * @return true:´æÔÚÖØ¸´£»false£º²»´æÔÚÖØ¸´
+	 * @return true:å­˜åœ¨é‡å¤ï¼›falseï¼šä¸å­˜åœ¨é‡å¤
 	 */
 	private static boolean checkUnique(Map<String, String> resultMap, List<String> uniqueList, Element colEle,
 			Cell impCell) {
@@ -539,7 +539,7 @@ public class ExcelImportUtil {
 		if (StringUtils.isNotBlank(unique) && Boolean.valueOf(unique)) {
 			String cellValue = getCellValue(impCell);
 			if (uniqueList.contains(cellValue)) {
-				setFailMsg(impCell, resultMap, "'"+cellValue+"'ÔÚ¸ÃÁĞÖĞÒÑ´æÔÚÖØ¸´Öµ");
+				setFailMsg(impCell, resultMap, "'"+cellValue+"'åœ¨è¯¥åˆ—ä¸­å·²å­˜åœ¨é‡å¤å€¼");
 				result = true;
 			}else {
 				uniqueList.add(cellValue);
@@ -551,10 +551,10 @@ public class ExcelImportUtil {
 
 
 	/**
-	 * ¼ì²éµ¼ÈëµÄµ¥Ôª¸ñÖĞµÄÖµÊÇ·ñÓë¸ø¶¨µÄÕıÔò±í´ïÊ½¼ì²éÆ÷Æ¥Åä
+	 * æ£€æŸ¥å¯¼å…¥çš„å•å…ƒæ ¼ä¸­çš„å€¼æ˜¯å¦ä¸ç»™å®šçš„æ­£åˆ™è¡¨è¾¾å¼æ£€æŸ¥å™¨åŒ¹é…
 	 * @param colEle
 	 * @param impCell
-	 * @return Æ¥Åä½á¹û
+	 * @return åŒ¹é…ç»“æœ
 	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
@@ -565,25 +565,25 @@ public class ExcelImportUtil {
 
 		boolean result = true;
 		String recheckerAttrVal = colEle.attributeValue(ExcelConstants.COL_ATTR_REGEXPCHECKER);
-		if (StringUtils.isNotBlank(recheckerAttrVal)) {//ÊÇ·ñÅäÖÃÕıÔò±í´ïÊ½¼ì²éÆ÷ ²¢ÇÒ ÓĞÑéÖ¤ÏŞÖÆ
+		if (StringUtils.isNotBlank(recheckerAttrVal)) {//æ˜¯å¦é…ç½®æ­£åˆ™è¡¨è¾¾å¼æ£€æŸ¥å™¨ å¹¶ä¸” æœ‰éªŒè¯é™åˆ¶
 			IRegExpChecker regExpChecker = (IRegExpChecker)Class.forName(recheckerAttrVal).newInstance();
 			if (impCell != null) {
 				String cellValue = getCellValue(impCell);
 				if (StringUtils.isNotBlank(cellValue)) {
 					result = regExpChecker.check(cellValue);
 					if (!result) {
-						setFailMsg(impCell, resultMap, "ËùÌîĞ´ÖµµÄ¸ñÊ½´íÎó");
-						logger.debug("---ÕıÔò±í´ïÊ½¼ìÑéÊ§°Ü---");
+						setFailMsg(impCell, resultMap, "æ‰€å¡«å†™å€¼çš„æ ¼å¼é”™è¯¯");
+						logger.debug("---æ­£åˆ™è¡¨è¾¾å¼æ£€éªŒå¤±è´¥---");
 					}
 				}else {
 					if (hasValidation) {
-						setFailMsg(impCell,resultMap, "¸Ãµ¥Ôª¸ñ²»ÄÜÎª¿Õ");
+						setFailMsg(impCell,resultMap, "è¯¥å•å…ƒæ ¼ä¸èƒ½ä¸ºç©º");
 						result = false;
 					}
 				}
 			}else {
 				if (hasValidation) {
-					setFailMsg(resultMap, colEle, dataRow, "¸Ãµ¥Ôª¸ñ²»ÄÜÎª¿Õ");
+					setFailMsg(resultMap, colEle, dataRow, "è¯¥å•å…ƒæ ¼ä¸èƒ½ä¸ºç©º");
 					result = false;
 				}
 			}
@@ -592,14 +592,14 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * Éú³ÉÒª¸üĞÂµÄĞĞµÄ update sqlÓï¾ä
+	 * ç”Ÿæˆè¦æ›´æ–°çš„è¡Œçš„ update sqlè¯­å¥
 	 *
 	 * @param rowSql
 	 * @param updateWhere
 	 */
 	private static void makeUpdateRowSql(StringBuffer rowSql, StringBuffer updateWhere) {
-		if (StringUtils.isNotBlank(updateWhere)) {// Èôwhere×Ó¾ä²»Îª¿Õ
-			// ½«where×Ó¾ä×îºóµÄ¶àÓàµÄANDÈ¥µô
+		if (StringUtils.isNotBlank(updateWhere)) {// è‹¥whereå­å¥ä¸ä¸ºç©º
+			// å°†whereå­å¥æœ€åçš„å¤šä½™çš„ANDå»æ‰
 			updateWhere.replace(updateWhere.lastIndexOf(" AND "), updateWhere.length(), "");
 			String where = " WHERE " + updateWhere;
 			rowSql.replace(rowSql.lastIndexOf(","), rowSql.length(), where);
@@ -609,13 +609,13 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * Éú³ÉmultinsertÓï¾ä
+	 * ç”Ÿæˆmultinsertè¯­å¥
 	 * @param row
 	 * @param multInsertSql
 	 * @param colEle
 	 * @param cell
 	 * @param resultMap
-	 * @param isRecord ÊÇ·ñÎªÍêÕûµÄÒ»Ìõ¼ÇÂ¼
+	 * @param isRecord æ˜¯å¦ä¸ºå®Œæ•´çš„ä¸€æ¡è®°å½•
 	 */
 	private static void makeMultInsertSql(Row row, StringBuffer multInsertSql, Element colEle, Cell cell,
 			Map<String, String> resultMap, boolean isRecord) {
@@ -630,39 +630,39 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * Éú³Éupdate²Ù×÷µÄwhereÌõ¼ş×Ó¾ä Éú³ÉµÄwhere×Ó¾ä¸ñÊ½Îª field1=value1 AND field1=value1 AND ...
+	 * ç”Ÿæˆupdateæ“ä½œçš„whereæ¡ä»¶å­å¥ ç”Ÿæˆçš„whereå­å¥æ ¼å¼ä¸º field1=value1 AND field1=value1 AND ...
 	 *
 	 * @param updateWhere
 	 * @param colEle
-	 *            ±íÖĞµÄÁĞÃû
+	 *            è¡¨ä¸­çš„åˆ—å
 	 * @param whereCell
-	 *            ×÷ÎªÌõ¼şµÄµ¥Ôª¸ñ¶ÔÏó
+	 *            ä½œä¸ºæ¡ä»¶çš„å•å…ƒæ ¼å¯¹è±¡
 	 */
 	private static void makeUpdateWhere(Row row,StringBuffer updateWhere, Element colEle, Cell whereCell,
 			Map<String, String> resultMap) {
 		String cellValue = getCellValue(whereCell);
-		if (StringUtils.isNotBlank(cellValue.trim())) {// ÈôcellÖµ²»Îª¿ÕÔòÉú³ÉwhereÌõ¼ş
+		if (StringUtils.isNotBlank(cellValue.trim())) {// è‹¥cellå€¼ä¸ä¸ºç©ºåˆ™ç”Ÿæˆwhereæ¡ä»¶
 			String fieldName = colEle.attributeValue(ExcelConstants.COL_ATTR_TABFIELD);
 			updateWhere.append(fieldName);
 			updateWhere.append("=");
 			updateWhere.append(transformIntoSqlFormat(row, colEle, cellValue, resultMap));
 			updateWhere.append(" AND ");
 		} else {
-			String failMsg = "ĞĞ£º"+(row.getRowNum()+1)+"ÖĞ×÷Îª¸üĞÂÌõ¼şµÄµ¥Ôª¸ñµÄÖµ²»ÄÜÎª¿Õ";
+			String failMsg = "è¡Œï¼š"+(row.getRowNum()+1)+"ä¸­ä½œä¸ºæ›´æ–°æ¡ä»¶çš„å•å…ƒæ ¼çš„å€¼ä¸èƒ½ä¸ºç©º";
 			logger.warn(failMsg);
 			setFailMsg(resultMap, failMsg);
 		}
 	}
 
 	/**
-	 * ×é³ÉÃ¿Ò»ĞĞÒªµÄinsert »ò update sql
+	 * ç»„æˆæ¯ä¸€è¡Œè¦çš„insert æˆ– update sql
 	 *
 	 * @param rowSql
-	 *            ÒÑÆ´Íê³ÉµÄ²¿·Öinsert »ò update sql
+	 *            å·²æ‹¼å®Œæˆçš„éƒ¨åˆ†insert æˆ– update sql
 	 * @param colEle
-	 *            ÅäÖÃÎÄ¼şÖĞµÄcolÔªËØ
+	 *            é…ç½®æ–‡ä»¶ä¸­çš„colå…ƒç´ 
 	 * @param impCell
-	 *            µ¼ÈëµÄexcelÎÄ¼şÖĞµÄµ¥Ôª¸ñ
+	 *            å¯¼å…¥çš„excelæ–‡ä»¶ä¸­çš„å•å…ƒæ ¼
 	 */
 	private static void makeRowSql(Row row, StringBuffer rowSql, Element colEle, Cell impCell, Map<String, String> resultMap,
 			Boolean isInsert) throws Exception {
@@ -672,7 +672,7 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ¸ù¾İ×ª»»Æ÷»ñµÃµ¥Ôª¸ñµÄÖµ
+	 * æ ¹æ®è½¬æ¢å™¨è·å¾—å•å…ƒæ ¼çš„å€¼
 	 *
 	 * @param colEle
 	 * @param impCell
@@ -687,9 +687,9 @@ public class ExcelImportUtil {
 		String cellValue = getCellValue(impCell);
 		String converterVal = colEle.attributeValue(ExcelConstants.COL_ATTR_CONVERTER);
 
-		if (converterVal != null && !"".equals(converterVal)) {// ¸ÃÁĞÒÑÅäÖÃ×ª»»Æ÷
+		if (converterVal != null && !"".equals(converterVal)) {// è¯¥åˆ—å·²é…ç½®è½¬æ¢å™¨
 			if (StringUtils.isBlank(cellValue)) {
-				String failMsg = "¸ÃÁĞ²»ÄÜÎª¿Õ";
+				String failMsg = "è¯¥åˆ—ä¸èƒ½ä¸ºç©º";
 				setFailMsg(resultMap, colEle, row, failMsg);
 			}else {
 				cellValue = convertCellVal(impCell, converterVal, resultMap);
@@ -714,14 +714,14 @@ public class ExcelImportUtil {
 			IConverter converter = (IConverter) Class.forName(converterVal).newInstance();
 			cellValue = converter.convert(impCell);
 			if ("".equals(cellValue)) {
-				setFailMsg(impCell, resultMap, "¸Ãµ¥Ôª¸ñÖµµÄÌîĞ´²»·ûºÏ¹æ·¶");
+				setFailMsg(impCell, resultMap, "è¯¥å•å…ƒæ ¼å€¼çš„å¡«å†™ä¸ç¬¦åˆè§„èŒƒ");
 			}
 		}
 		return cellValue;
 	}
 
 	/**
-	 * ÑéÖ¤²Ù×÷
+	 * éªŒè¯æ“ä½œ
 	 *
 	 * @param resultMap
 	 * @param colEle
@@ -739,7 +739,7 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ÊÇ·ñÅäÖÃÑéÖ¤ÔªËØ
+	 * æ˜¯å¦é…ç½®éªŒè¯å…ƒç´ 
 	 * @param validation
 	 * @return
 	 */
@@ -752,13 +752,13 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ¸ù¾İÅäÖÃÎÄ¼şÖĞµÄsheetÔªËØÀ´×é³ÉinsertÓï¾äµÄ£ºvalues Ö®Ç°µÄ²¿·Ö
+	 * æ ¹æ®é…ç½®æ–‡ä»¶ä¸­çš„sheetå…ƒç´ æ¥ç»„æˆinsertè¯­å¥çš„ï¼švalues ä¹‹å‰çš„éƒ¨åˆ†
 	 *
 	 * @param sheetEle
 	 * @return
 	 */
 	private static StringBuffer makePartInsertSql(Element sheetEle) {
-		List<Element> colList = sheetEle.selectNodes("./" + ExcelConstants.ELEMENT_COL);// »ñµÃsheetÔªËØÏÂËùÓĞµÄcol×ÓÔªËØ
+		List<Element> colList = sheetEle.selectNodes("./" + ExcelConstants.ELEMENT_COL);// è·å¾—sheetå…ƒç´ ä¸‹æ‰€æœ‰çš„colå­å…ƒç´ 
 		String tableName = sheetEle.attributeValue(ExcelConstants.SHEET_ATTR_TABLENAME);
 		StringBuffer insertSql = new StringBuffer("INSERT INTO ");
 		insertSql.append(tableName);
@@ -772,10 +772,10 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * Éú³É²¿·ÖµÄupdateÓï¾ä
+	 * ç”Ÿæˆéƒ¨åˆ†çš„updateè¯­å¥
 	 *
 	 * @param sheetElement
-	 *            ÅäÖÃÎÄ¼şÖĞµÄsheet±êÇ©
+	 *            é…ç½®æ–‡ä»¶ä¸­çš„sheetæ ‡ç­¾
 	 * @return
 	 */
 	private static StringBuffer makePartUpdateSql(Element sheetElement) {
@@ -787,7 +787,7 @@ public class ExcelImportUtil {
 		return updateSql;
 	}
 	/**
-	 * Éú³É²¿·Ö¶àĞĞ²åÈëµÄinsert sql ¼´£ºINSERT INTO TABLENAME (FIELD1,FIELD2...) SELECT
+	 * ç”Ÿæˆéƒ¨åˆ†å¤šè¡Œæ’å…¥çš„insert sql å³ï¼šINSERT INTO TABLENAME (FIELD1,FIELD2...) SELECT
 	 * @param sheetElement
 	 * @return
 	 */
@@ -812,38 +812,38 @@ public class ExcelImportUtil {
 		}
 		result = result.replace(result.lastIndexOf(","),result.length(), "");
 		result.append(") SELECT@%&");
-		logger.debug("---²¿·Ö¶àĞĞ²åÈëinsert sqlÉú³É---"+result);
+		logger.debug("---éƒ¨åˆ†å¤šè¡Œæ’å…¥insert sqlç”Ÿæˆ---"+result);
 		return result;
 	}
 
 	/**
-	 * ÑéÖ¤excelµ¥Ôª¸ñ
+	 * éªŒè¯excelå•å…ƒæ ¼
 	 *
 	 * @param cell
-	 *            ÒªÑéÖ¤µÄexcelµ¥Ôª¸ñ
+	 *            è¦éªŒè¯çš„excelå•å…ƒæ ¼
 	 * @param validateRule
-	 *            ÑéÖ¤¹æÔò
-	 * @param colEle ÁĞÅäÖÃÔªËØ
-	 * @param row µ¼ÈëµÄĞĞ
-	 * @return ÑéÖ¤ÊÇ·ñÍ¨¹ı
+	 *            éªŒè¯è§„åˆ™
+	 * @param colEle åˆ—é…ç½®å…ƒç´ 
+	 * @param row å¯¼å…¥çš„è¡Œ
+	 * @return éªŒè¯æ˜¯å¦é€šè¿‡
 	 */
 	public static boolean doValidate(Cell cell, String valType,Map<String, String>resultMap, Element colEle, Row row) {
 		boolean isSuccess = true;
-		if (valType.equalsIgnoreCase(ExcelConstants.VALIDATION_ISNUM)) {// ÑéÖ¤ÊÇ·ñÊı×Ö
+		if (valType.equalsIgnoreCase(ExcelConstants.VALIDATION_ISNUM)) {// éªŒè¯æ˜¯å¦æ•°å­—
 			isSuccess = valRegExp(cell, resultMap, ExcelConstants.REGEXP_ISNUM, ExcelConstants.VAL_FAIL_MSG_ISNUM, row, colEle);
-		} else if (valType.equalsIgnoreCase(ExcelConstants.VALIDATION_IS_POSITIVE_NUM)) {//Õı¸¡µãÊı×ÖÑéÖ¤
+		} else if (valType.equalsIgnoreCase(ExcelConstants.VALIDATION_IS_POSITIVE_NUM)) {//æ­£æµ®ç‚¹æ•°å­—éªŒè¯
 			isSuccess = valRegExp(cell, resultMap, ExcelConstants.REGEXP_IS_POSITIVE_NUM, ExcelConstants.VAL_FAIL_MSG_ISPOSITIVENUM, row, colEle);
-		}else if (valType.equalsIgnoreCase(ExcelConstants.VALIDATION_NOTNULL)) {// ÑéÖ¤ÊÇ·ñÎª¿Õ
+		}else if (valType.equalsIgnoreCase(ExcelConstants.VALIDATION_NOTNULL)) {// éªŒè¯æ˜¯å¦ä¸ºç©º
 			isSuccess = !isCellValueBlank(cell, resultMap,colEle,row);
 		}
 
 		return isSuccess;
 	}
 	/**
-	 * ÅĞ¶Ïµ¥Ôª¸ñÖĞµÄÖµÊÇ·ñÎª¿Õ
+	 * åˆ¤æ–­å•å…ƒæ ¼ä¸­çš„å€¼æ˜¯å¦ä¸ºç©º
 	 * @param cell
 	 * @param resultMap
-	 * @return ÊÇ·ñÎª¿ÕµÄ½á¹û
+	 * @return æ˜¯å¦ä¸ºç©ºçš„ç»“æœ
 	 */
 	public static boolean isCellValueBlank(Cell cell,Map<String, String> resultMap, Element colEle, Row row){
 		boolean result = true;
@@ -866,13 +866,13 @@ public class ExcelImportUtil {
 	 * @param row
 	 */
 	private static void setFailMsg(Map<String, String> resultMap, Element colEle, Row row, String failMsg) {
-		String fMsg = "µÚ"+(row.getRowNum()+1)+"ĞĞ£¬µÚ"+colNumToColName(Integer.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_COLNUM)))+"ÁĞ£¬" + failMsg;
-		logger.debug("---ÑéÖ¤Ê§°Ü---"+fMsg);
+		String fMsg = "ç¬¬"+(row.getRowNum()+1)+"è¡Œï¼Œç¬¬"+colNumToColName(Integer.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_COLNUM)))+"åˆ—ï¼Œ" + failMsg;
+		logger.debug("---éªŒè¯å¤±è´¥---"+fMsg);
 		setFailMsg(resultMap, fMsg);
 	}
 
 	/**
-	 * ÕıÔò±í´ïÊ½ÑéÖ¤
+	 * æ­£åˆ™è¡¨è¾¾å¼éªŒè¯
 	 *
 	 * @param cell
 	 * @param resultMap
@@ -894,17 +894,17 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ÉèÖÃ´íÎóĞÅÏ¢×·¼ÓĞĞÁĞĞÅÏ¢
+	 * è®¾ç½®é”™è¯¯ä¿¡æ¯è¿½åŠ è¡Œåˆ—ä¿¡æ¯
 	 * @param cell
 	 * @param resultMap
 	 * @param failMsg
 	 */
 	public static void setFailMsg(Cell cell,Map<String, String>resultMap, String failMsg){
-		failMsg = "µÚ"+(cell.getRowIndex()+1)+"ĞĞ£¬µÚ"+ExcelImportUtil.colNumToColName(cell.getColumnIndex()+1)+"ÁĞ£¬"+failMsg;
+		failMsg = "ç¬¬"+(cell.getRowIndex()+1)+"è¡Œï¼Œç¬¬"+ExcelImportUtil.colNumToColName(cell.getColumnIndex()+1)+"åˆ—ï¼Œ"+failMsg;
 		setFailMsg(resultMap, failMsg);
 	}
 	/**
-	 * ÔÚÔ­ÓĞµÄfailMsgÖĞ¼ÓÈësheetÃû³Æ ĞĞÊı ÁĞÊıĞÅÏ¢
+	 * åœ¨åŸæœ‰çš„failMsgä¸­åŠ å…¥sheetåç§° è¡Œæ•° åˆ—æ•°ä¿¡æ¯
 	 *
 	 * @param sheetName
 	 * @param rowNum
@@ -914,15 +914,15 @@ public class ExcelImportUtil {
 	 */
 	public static String makeFailMsg(String sheetName, int rowIndex, int colIndex, String failMsg) {
 		if (StringUtils.isBlank(sheetName)) {
-			return "µÚ" + (rowIndex + 1) + "ĞĞ£¬ µÚ" + ExcelImportUtil.colNumToColName(colIndex + 1) + "ÁĞ£¬" + failMsg;
+			return "ç¬¬" + (rowIndex + 1) + "è¡Œï¼Œ ç¬¬" + ExcelImportUtil.colNumToColName(colIndex + 1) + "åˆ—ï¼Œ" + failMsg;
 		}else {
-			return "¹¤×÷±í£º" + sheetName + "£¬µÚ" + (rowIndex + 1) + "ĞĞ£¬ µÚ" + ExcelImportUtil.colNumToColName(colIndex + 1) + "ÁĞ£¬" + failMsg;
+			return "å·¥ä½œè¡¨ï¼š" + sheetName + "ï¼Œç¬¬" + (rowIndex + 1) + "è¡Œï¼Œ ç¬¬" + ExcelImportUtil.colNumToColName(colIndex + 1) + "åˆ—ï¼Œ" + failMsg;
 		}
 
 	}
 
 	/**
-	 * ÔÚÔ­ÓĞµÄfailMsgÖĞ¼ÓÈësheetÃû³Æ ĞĞÊı ÁĞÊıĞÅÏ¢
+	 * åœ¨åŸæœ‰çš„failMsgä¸­åŠ å…¥sheetåç§° è¡Œæ•° åˆ—æ•°ä¿¡æ¯
 	 *
 	 * @param sheetName
 	 * @param rowNum
@@ -935,12 +935,12 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ¸ø¶¨ÖµÓëµÄ¸ø¶¨µÄÕıÔò±í´ïÊ½ÊÇ·ñÆ¥Åä
+	 * ç»™å®šå€¼ä¸çš„ç»™å®šçš„æ­£åˆ™è¡¨è¾¾å¼æ˜¯å¦åŒ¹é…
 	 *
 	 * @param valRegExp
-	 *            ¸ø¶¨µÄÕıÔò±í´ïÊ½
+	 *            ç»™å®šçš„æ­£åˆ™è¡¨è¾¾å¼
 	 * @param value
-	 *            ¸ø¶¨µÄÖµ
+	 *            ç»™å®šçš„å€¼
 	 * @return
 	 */
 	private static boolean isRegExpMatch(String valRegExp, String value) {
@@ -950,22 +950,22 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ¸ù¾İÀàĞÍ×é³Ésql
+	 * æ ¹æ®ç±»å‹ç»„æˆsql
 	 *
 	 * @param sql
 	 * @param fieldType
-	 *            ²åÈë±íÖĞµÄÀàĞÍ
+	 *            æ’å…¥è¡¨ä¸­çš„ç±»å‹
 	 * @param cellValue
-	 *            µ¥Ôª¸ñµÄÖµ
+	 *            å•å…ƒæ ¼çš„å€¼
 	 * @param isInsert
-	 *            ÊÇ·ñÊÇinsert²Ù×÷
+	 *            æ˜¯å¦æ˜¯insertæ“ä½œ
 	 *
 	 */
 	private static void makeFullSqlByType(Row row, StringBuffer sql, Element colEle, String cellValue,
 			Map<String, String> resultMap, Boolean isInsert) throws Exception {
 		String tResult = transformIntoSqlFormat(row, colEle, cellValue, resultMap);
 		if (StringUtils.isNotBlank(tResult)) {
-			String fieldName = colEle.attributeValue(ExcelConstants.COL_ATTR_TABFIELD);// ×Ö¶ÎÃû³Æ
+			String fieldName = colEle.attributeValue(ExcelConstants.COL_ATTR_TABFIELD);// å­—æ®µåç§°
 			if (!isInsert) {// update
 				sql.append(fieldName);
 				sql.append("=");
@@ -976,22 +976,22 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ½«µ¥Ôª¸ñÖĞµÄÖµ×ª»»ÎªsqlĞÎÊ½
+	 * å°†å•å…ƒæ ¼ä¸­çš„å€¼è½¬æ¢ä¸ºsqlå½¢å¼
 	 *
 	 * @param colEle
 	 * @param cellValue
 	 * @param resultMap
 	 */
 	private static String transformIntoSqlFormat(Row row, Element colEle, String cellValue, Map<String, String> resultMap) {
-		String fieldType = colEle.attributeValue(ExcelConstants.COL_ATTR_FIELDTYPE);// »ñµÃÒª²åÈëµÄ×Ö¶ÎµÄÀàĞÍ
+		String fieldType = colEle.attributeValue(ExcelConstants.COL_ATTR_FIELDTYPE);// è·å¾—è¦æ’å…¥çš„å­—æ®µçš„ç±»å‹
 		String result = "";
 		String failMsg = "";
-		String rowColInfo = "µÚ"+(row.getRowNum()+1)+"ĞĞ£¬µÚ"+ExcelImportUtil.colNumToColName(Integer.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_COLNUM)))+"ÁĞ£¬";
+		String rowColInfo = "ç¬¬"+(row.getRowNum()+1)+"è¡Œï¼Œç¬¬"+ExcelImportUtil.colNumToColName(Integer.valueOf(colEle.attributeValue(ExcelConstants.COL_ATTR_COLNUM)))+"åˆ—ï¼Œ";
 		if (ExcelConstants.FIELD_TYPE_DATE.equalsIgnoreCase(fieldType)) {
 			if (isRegExpMatch(ExcelConstants.REGEXP_DATE, cellValue)) {
 				result = "to_date('" + cellValue + "','" + ExcelConstants.DATE_FORMAT + "')";
 			} else {
-				failMsg = rowColInfo+cellValue + "µÄÈÕÆÚ¸ñÊ½²»Îª¹æ¶¨µÄ²åÈëÈÕÆÚ¸ñÊ½";
+				failMsg = rowColInfo+cellValue + "çš„æ—¥æœŸæ ¼å¼ä¸ä¸ºè§„å®šçš„æ’å…¥æ—¥æœŸæ ¼å¼";
 				setFailMsg(resultMap, failMsg);
 			}
 
@@ -1000,15 +1000,15 @@ public class ExcelImportUtil {
 				if (isRegExpMatch(ExcelConstants.REGEXP_ISNUM, cellValue)) {
 					result = cellValue;
 				} else {
-					failMsg = rowColInfo+"\""+cellValue + "\"Ó¦¸ÃÎªÊı×Ö";
+					failMsg = rowColInfo+"\""+cellValue + "\"åº”è¯¥ä¸ºæ•°å­—";
 					setFailMsg(resultMap, failMsg);
 				}
-			} else {// Ã»ÓĞ·Ç¿ÕÊı×ÖÑéÖ¤
+			} else {// æ²¡æœ‰éç©ºæ•°å­—éªŒè¯
 				Element valEle = (Element) colEle.selectSingleNode("./" + ExcelConstants.ELEMENT_VALIDATION);
 				if (valEle == null) {
 					result = "";
 				} else {
-					setFailMsg(resultMap, rowColInfo+"Öµ²»ÄÜÎª¿Õ");
+					setFailMsg(resultMap, rowColInfo+"å€¼ä¸èƒ½ä¸ºç©º");
 				}
 			}
 
@@ -1019,7 +1019,7 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * »ñµÃexcelµ¥Ôª¸ñµÄÖµ
+	 * è·å¾—excelå•å…ƒæ ¼çš„å€¼
 	 *
 	 * @param cell
 	 * @return
@@ -1027,7 +1027,7 @@ public class ExcelImportUtil {
 	public static String getCellValue(Cell cell) {
 		String cellValue = "";
 		if (cell != null) {
-			int cellType = cell.getCellType();// µ¥Ôª¸ñÀàĞÍ
+			int cellType = cell.getCellType();// å•å…ƒæ ¼ç±»å‹
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			switch (cellType) {
 			case Cell.CELL_TYPE_BLANK:
@@ -1044,7 +1044,7 @@ public class ExcelImportUtil {
 				}
 				break;
 			case Cell.CELL_TYPE_STRING:
-				cellValue = cell.getRichStringCellValue().toString().replace("¡¡", " ").trim();
+				cellValue = cell.getRichStringCellValue().toString().replace("ã€€", " ").trim();
 				break;
 			}
 		}
@@ -1052,7 +1052,7 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ¼ì²éµ¥Ôª¸ñÀàĞÍÊÇ·ñÎª×Ö·û£¬Êı×Ö»òÕß¿Õ£¬Èô²»Îª´ËÈıÖÖÀàĞÍ¾ù·µ»Øfalse
+	 * æ£€æŸ¥å•å…ƒæ ¼ç±»å‹æ˜¯å¦ä¸ºå­—ç¬¦ï¼Œæ•°å­—æˆ–è€…ç©ºï¼Œè‹¥ä¸ä¸ºæ­¤ä¸‰ç§ç±»å‹å‡è¿”å›false
 	 * @param impCell
 	 * @param resultMap
 	 * @return
@@ -1064,7 +1064,7 @@ public class ExcelImportUtil {
 			if (Cell.CELL_TYPE_STRING==cellType || Cell.CELL_TYPE_NUMERIC==cellType|| Cell.CELL_TYPE_BLANK==cellType) {
 				result = true;
 			}else {
-				setFailMsg(impCell, resultMap, "¸Ãµ¥Ôª¸ñÀàĞÍ´íÎó£¨Ö§³Öµ¥Ôª¸ñÀàĞÍ£ºÎÄ±¾»òÕßÊı×Ö¡£ÆäËûÀàĞÍÔİ²»Ö§³Ö£©");
+				setFailMsg(impCell, resultMap, "è¯¥å•å…ƒæ ¼ç±»å‹é”™è¯¯ï¼ˆæ”¯æŒå•å…ƒæ ¼ç±»å‹ï¼šæ–‡æœ¬æˆ–è€…æ•°å­—ã€‚å…¶ä»–ç±»å‹æš‚ä¸æ”¯æŒï¼‰");
 				result = false;
 			}
 		}
@@ -1072,12 +1072,12 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ¼ì²éÎÄ¼ş»òÄ¿Â¼µÄÂ·¾¶ÒÔ¼°ÎÄ¼şÊÇ·ñ´æÔÚÈô´æÔÚÔò·µ»Ø¸ÃÎÄ¼ş»òÄ¿Â¼µÄÎÄ¼ş¶ÔÏó
+	 * æ£€æŸ¥æ–‡ä»¶æˆ–ç›®å½•çš„è·¯å¾„ä»¥åŠæ–‡ä»¶æ˜¯å¦å­˜åœ¨è‹¥å­˜åœ¨åˆ™è¿”å›è¯¥æ–‡ä»¶æˆ–ç›®å½•çš„æ–‡ä»¶å¯¹è±¡
 	 *
 	 * @param FilePath
-	 *            ÎÄ¼şÂ·¾¶
+	 *            æ–‡ä»¶è·¯å¾„
 	 * @param isDir
-	 *            ¸ÃÂ·¾¶ÊÇ·ñÎªÄ¿Â¼
+	 *            è¯¥è·¯å¾„æ˜¯å¦ä¸ºç›®å½•
 	 * @throws Exception
 	 */
 	public static File validateFile(String FilePath, boolean isDir) throws Exception {
@@ -1089,19 +1089,19 @@ public class ExcelImportUtil {
 
 		file = new File(FilePath);
 		if (!file.exists()) {
-			logger.error("File£º" + FilePath + " is not exist!");
-			throw new Exception("File£º" + FilePath + " is not exist!");
+			logger.error("Fileï¼š" + FilePath + " is not exist!");
+			throw new Exception("Fileï¼š" + FilePath + " is not exist!");
 		}
 
 		if (isDir && !file.isDirectory()) {
-			logger.error("File£º" + FilePath + " is not Dir!");
-			throw new Exception("File£º" + FilePath + " is not Dir!");
+			logger.error("Fileï¼š" + FilePath + " is not Dir!");
+			throw new Exception("Fileï¼š" + FilePath + " is not Dir!");
 		}
 		return file;
 	}
 
 	/**
-	 * Éú³Éexce ¹¤×÷²¾¶ÔÏó
+	 * ç”Ÿæˆexce å·¥ä½œç°¿å¯¹è±¡
 	 *
 	 * @param excelFile
 	 * @return
@@ -1112,7 +1112,7 @@ public class ExcelImportUtil {
 		String fileExt = getFileExt(excelFile.getName());
 		long start = System.currentTimeMillis();
 		Workbook result = null;
-		logger.debug("---excelÎÄ¼şÀàĞÍ---" + fileExt);
+		logger.debug("---excelæ–‡ä»¶ç±»å‹---" + fileExt);
 		try {
 			boolean isProt = isProtected(document, templateId);
 			if (ExcelConstants.EXCEL_FILE_TYPE.equalsIgnoreCase(fileExt)) {
@@ -1124,23 +1124,23 @@ public class ExcelImportUtil {
 					result = genPOIXSSFWorkBook(excelFile, resultMap);
 				}
 			} else {
-				setFailMsg(resultMap, "²»ÄÜ½âÎöµ¼ÈëµÄexcelÎÄ¼ş");
+				setFailMsg(resultMap, "ä¸èƒ½è§£æå¯¼å…¥çš„excelæ–‡ä»¶");
 			}
 		} catch (Exception e) {
-			logger.warn("²»ÄÜ½âÎöµ¼ÈëµÄexcelÎÄ¼ş£º"+excelFile.getName());
+			logger.warn("ä¸èƒ½è§£æå¯¼å…¥çš„excelæ–‡ä»¶ï¼š"+excelFile.getName());
 			logger.error(e.getMessage(),e);
 			result = null;
 		}
 		long end = System.currentTimeMillis();
-		logger.debug("---»ñµÃworkbook¾­ÀúÊ±¼ä---"+(end-start));
+		logger.debug("---è·å¾—workbookç»å†æ—¶é—´---"+(end-start));
 		if (result == null) {
-			setFailMsg(resultMap, "µ¼ÈëµÄexcelÎÄ¼ş²»ÊÇ»ùÓÚÏµÍ³Ìá¹©µÄÄ£°å,ÇëÏÂÔØ±¾ÏµÍ³Ìá¹©µÄ×îĞÂÄ£°å", false);
+			setFailMsg(resultMap, "å¯¼å…¥çš„excelæ–‡ä»¶ä¸æ˜¯åŸºäºç³»ç»Ÿæä¾›çš„æ¨¡æ¿,è¯·ä¸‹è½½æœ¬ç³»ç»Ÿæä¾›çš„æœ€æ–°æ¨¡æ¿", false);
 		}
 		return result;
 	}
 
 	/**
-	 * ÊÇ·ñÑéÖ¤Ä£°åµÄ¹æ·¶ĞÔ¼´ÊÇ·ñÎªÏµÍ³Ìá¹©Ä£°å
+	 * æ˜¯å¦éªŒè¯æ¨¡æ¿çš„è§„èŒƒæ€§å³æ˜¯å¦ä¸ºç³»ç»Ÿæä¾›æ¨¡æ¿
 	 * @param document
 	 * @param templateId
 	 * @return
@@ -1156,7 +1156,7 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * »ñµÃtemplateÔªËØ
+	 * è·å¾—templateå…ƒç´ 
 	 * @param document
 	 * @param templateId
 	 * @return
@@ -1168,10 +1168,10 @@ public class ExcelImportUtil {
 		return templateE;
 	}
 	/**
-	 * »ñµÃÎÄ¼şÀ©Õ¹Ãû
+	 * è·å¾—æ–‡ä»¶æ‰©å±•å
 	 *
 	 * @param fileName
-	 * @return ·µ»ØÎÄ¼şÀ©Õ¹Ãû
+	 * @return è¿”å›æ–‡ä»¶æ‰©å±•å
 	 */
 	public static String getFileExt(String fileName) {
 		String result = "";
@@ -1182,17 +1182,17 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ·µ»ØExcel2007¹¤×÷²¾¶ÔÏó
+	 * è¿”å›Excel2007å·¥ä½œç°¿å¯¹è±¡
 	 *
 	 * @param excelFilePath
-	 *            ÎÄ¼şÂ·¾¶
+	 *            æ–‡ä»¶è·¯å¾„
 	 * @param document
-	 *            ÅäÖÃÎÄ¼şÎÄµµ¶ÔÏó
+	 *            é…ç½®æ–‡ä»¶æ–‡æ¡£å¯¹è±¡
 	 * @param templateId
-	 *            ÅäÖÃÎÄ¼şÖĞµÄÄ£°åÔªËØµÄÄ£°åidÊôĞÔ
+	 *            é…ç½®æ–‡ä»¶ä¸­çš„æ¨¡æ¿å…ƒç´ çš„æ¨¡æ¿idå±æ€§
 	 * @param resultMap
-	 *            ½á¹ûĞÅÏ¢
-	 * @return excel¹¤×÷²¾¶ÔÏó
+	 *            ç»“æœä¿¡æ¯
+	 * @return excelå·¥ä½œç°¿å¯¹è±¡
 	 */
 	public static Workbook genPOIXSSFWorkBook(File excelFile, boolean isProt,Element templateE,
 			Map<String, String> resultMap) throws Exception {
@@ -1200,10 +1200,10 @@ public class ExcelImportUtil {
 		FileInputStream fis = null;
 		Workbook workbook = null;
 		try {
-			logger.debug("---excelÎÄ¼şÂ·¾¶---" + excelFile.getAbsolutePath());
+			logger.debug("---excelæ–‡ä»¶è·¯å¾„---" + excelFile.getAbsolutePath());
 			fis = new FileInputStream(excelFile);
 			if (isProt) {
-				// ÈôÄ£°åÖĞÉèÖÃÁË¹¤×÷²¾±£»¤
+				// è‹¥æ¨¡æ¿ä¸­è®¾ç½®äº†å·¥ä½œç°¿ä¿æŠ¤
 				try {
 					POIFSFileSystem fsys = new POIFSFileSystem(fis);
 					EncryptionInfo info = new EncryptionInfo(fsys);
@@ -1211,8 +1211,8 @@ public class ExcelImportUtil {
 					if (d.verifyPassword(Decryptor.DEFAULT_PASSWORD)) {
 						workbook = WorkbookFactory.create(d.getDataStream(fsys));
 					}else {
-						setFailMsg(resultMap, "µ¼ÈëµÄexcelÎÄ¼ş²»ÊÇ»ùÓÚÏµÍ³Ìá¹©µÄÄ£°å,ÇëÏÂÔØ±¾ÏµÍ³Ìá¹©µÄÄ£°å");
-						logger.debug("µ¼ÈëµÄexcelÎÄ¼ş²»ÊÇ»ùÓÚÏµÍ³Ìá¹©µÄÄ£°å");
+						setFailMsg(resultMap, "å¯¼å…¥çš„excelæ–‡ä»¶ä¸æ˜¯åŸºäºç³»ç»Ÿæä¾›çš„æ¨¡æ¿,è¯·ä¸‹è½½æœ¬ç³»ç»Ÿæä¾›çš„æ¨¡æ¿");
+						logger.debug("å¯¼å…¥çš„excelæ–‡ä»¶ä¸æ˜¯åŸºäºç³»ç»Ÿæä¾›çš„æ¨¡æ¿");
 					}
 				} catch (Exception e) {
 					if (e instanceof OfficeXmlFileException) {
@@ -1226,11 +1226,11 @@ public class ExcelImportUtil {
 					}
 				}
 			} else {
-				// Î´ÉèÖÃ¹¤×÷²¾±£»¤
-				// workbook = new XSSFWorkbook(fis);// ´´½¨¿ÉĞ´¹¤×÷±¡
+				// æœªè®¾ç½®å·¥ä½œç°¿ä¿æŠ¤
+				// workbook = new XSSFWorkbook(fis);// åˆ›å»ºå¯å†™å·¥ä½œè–„
 				workbook = WorkbookFactory.create(fis);
 			}
-			//ÑéÖ¤ExcelÎÄ¼şÊÇ·ñÎª»ùÓÚÏµÍ³Ìá¹©µÄÄ£°å
+			//éªŒè¯Excelæ–‡ä»¶æ˜¯å¦ä¸ºåŸºäºç³»ç»Ÿæä¾›çš„æ¨¡æ¿
 			certificateWorkbook(resultMap, templateE, workbook);
 
 		} catch (FileNotFoundException e) {
@@ -1250,12 +1250,12 @@ public class ExcelImportUtil {
 			resultMap.put(ExcelConstants.RESULT_KEY, ExcelConstants.SUCCESS);
 		}
 
-		logger.debug("---³É¹¦»ñµÃworkbook---");
+		logger.debug("---æˆåŠŸè·å¾—workbook---");
 		return workbook;
 	}
 
 	/**
-	 * ÑéÖ¤Ä£°åÊÇ·ñÎªÏµÍ³Ìá¹©Ä£°å
+	 * éªŒè¯æ¨¡æ¿æ˜¯å¦ä¸ºç³»ç»Ÿæä¾›æ¨¡æ¿
 	 * @param resultMap
 	 * @param templateNode
 	 * @param workbook
@@ -1263,26 +1263,26 @@ public class ExcelImportUtil {
 	private static void certificateWorkbook(Map<String, String> resultMap,
 			Element templateNode, Workbook workbook) {
 		String certificate = templateNode.attributeValue(ExcelConstants.TEMPLATE_ATTR_CERTIFICATE);
-		logger.debug("---ÅäÖÃÎÄ¼şÖĞµÄÄ£°åĞ£Ñé×Ö·û´®Îª---"+certificate);
+		logger.debug("---é…ç½®æ–‡ä»¶ä¸­çš„æ¨¡æ¿æ ¡éªŒå­—ç¬¦ä¸²ä¸º---"+certificate);
 		if (workbook != null && certificate != null && !"".equals(certificate)) {
 			if (!certificating(workbook, certificate)) {
-				setFailMsg(resultMap, "µ¼ÈëµÄexcelÎÄ¼ş²»ÊÇ»ùÓÚÏµÍ³Ìá¹©µÄÄ£°å,ÇëÏÂÔØ±¾ÏµÍ³Ìá¹©µÄÄ£°å");
-				logger.debug("µ¼ÈëµÄexcelÎÄ¼ş²»ÊÇ»ùÓÚÏµÍ³Ìá¹©µÄÄ£°å");
+				setFailMsg(resultMap, "å¯¼å…¥çš„excelæ–‡ä»¶ä¸æ˜¯åŸºäºç³»ç»Ÿæä¾›çš„æ¨¡æ¿,è¯·ä¸‹è½½æœ¬ç³»ç»Ÿæä¾›çš„æ¨¡æ¿");
+				logger.debug("å¯¼å…¥çš„excelæ–‡ä»¶ä¸æ˜¯åŸºäºç³»ç»Ÿæä¾›çš„æ¨¡æ¿");
 			}
 		}
 	}
 
 	/**
-	 * ·µ»ØExcel2007¹¤×÷²¾¶ÔÏó
+	 * è¿”å›Excel2007å·¥ä½œç°¿å¯¹è±¡
 	 *
 	 * @param excelFilePath
-	 *            excelÎÄ¼şÂ·¾¶
+	 *            excelæ–‡ä»¶è·¯å¾„
 	 */
 	public static Workbook genPOIXSSFWorkBook(File excelFile, Map<String, String> resultMap) throws Exception {
 		FileInputStream fis = null;
 		Workbook workbook = null;
 		try {
-			logger.debug("---excelÎÄ¼şÂ·¾¶---" + excelFile.getAbsolutePath());
+			logger.debug("---excelæ–‡ä»¶è·¯å¾„---" + excelFile.getAbsolutePath());
 			fis = new FileInputStream(excelFile);
 			POIFSFileSystem fsys = new POIFSFileSystem(fis);
 			EncryptionInfo info = new EncryptionInfo(fsys);
@@ -1296,11 +1296,11 @@ public class ExcelImportUtil {
 			resultMap.put(ExcelConstants.RESULT_KEY, ExcelConstants.SUCCESS);
 		} catch (FileNotFoundException e) {
 			resultMap.put(ExcelConstants.RESULT_KEY, ExcelConstants.FAIL);
-			resultMap.put(ExcelConstants.MSG_KEY, "ÎÄ¼ş²»´æÔÚ");
+			resultMap.put(ExcelConstants.MSG_KEY, "æ–‡ä»¶ä¸å­˜åœ¨");
 			throw e;
 		} catch (IOException e) {
 			resultMap.put(ExcelConstants.RESULT_KEY, ExcelConstants.FAIL);
-			resultMap.put(ExcelConstants.MSG_KEY, "ÏµÍ³IO´íÎó");
+			resultMap.put(ExcelConstants.MSG_KEY, "ç³»ç»ŸIOé”™è¯¯");
 			throw e;
 		} catch (Exception e) {
 			if (e instanceof OfficeXmlFileException) {
@@ -1312,7 +1312,7 @@ public class ExcelImportUtil {
 				resultMap.put(ExcelConstants.RESULT_KEY, ExcelConstants.SUCCESS);
 			} else {
 				resultMap.put(ExcelConstants.RESULT_KEY, ExcelConstants.FAIL);
-				resultMap.put(ExcelConstants.MSG_KEY, "Î´Öª´íÎó");
+				resultMap.put(ExcelConstants.MSG_KEY, "æœªçŸ¥é”™è¯¯");
 				throw e;
 			}
 		} finally {
@@ -1324,12 +1324,12 @@ public class ExcelImportUtil {
 				}
 			}
 		}
-		logger.debug("---³É¹¦»ñµÃworkbook---");
+		logger.debug("---æˆåŠŸè·å¾—workbook---");
 		return workbook;
 	}
 
 	/**
-	 * ·µ»ØExcel97-2003µÄ¹¤×÷²¾¶ÔÏó
+	 * è¿”å›Excel97-2003çš„å·¥ä½œç°¿å¯¹è±¡
 	 *
 	 * @param excelFilePath
 	 */
@@ -1337,11 +1337,11 @@ public class ExcelImportUtil {
 		Workbook workbook = null;
 		FileInputStream fis = null;
 		try {
-			logger.debug("---ÎÄ¼şÎªexcel97-2003ÎÄ¼ş--µ¼ÈëexcelÎÄ¼şÂ·¾¶---" + excelFile);
+			logger.debug("---æ–‡ä»¶ä¸ºexcel97-2003æ–‡ä»¶--å¯¼å…¥excelæ–‡ä»¶è·¯å¾„---" + excelFile);
 			fis = new FileInputStream(excelFile);
 			POIFSFileSystem fsys = new POIFSFileSystem(fis);
 			workbook = WorkbookFactory.create(fsys);
-			logger.debug("---³É¹¦»ñµÃworkbook---");
+			logger.debug("---æˆåŠŸè·å¾—workbook---");
 			certificateWorkbook(resultMap,getTemplateElement(document, templateId),workbook);
 		} catch (FileNotFoundException e) {
 			logger.error(e.getMessage(),e);
@@ -1369,27 +1369,27 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ÈÏÖ¤¹¤×÷²¾ÊÇ·ñÎª»ùÓÚÏµÍ³Ìá¹©µÄµ¼ÈëÄ£°å
+	 * è®¤è¯å·¥ä½œç°¿æ˜¯å¦ä¸ºåŸºäºç³»ç»Ÿæä¾›çš„å¯¼å…¥æ¨¡æ¿
 	 *
 	 * @param workbook
 	 * @return
 	 */
 	private static boolean certificating(Workbook workbook, String certificateCode) {
-		logger.debug("---¿ªÊ¼---·½·¨---certificating");
+		logger.debug("---å¼€å§‹---æ–¹æ³•---certificating");
 		boolean result = false;
 		Sheet certificateSheet = workbook.getSheet("certificate");
-		if (certificateSheet != null) {// ÊÇ·ñ´æÔÚÃûÎªcertificateµÄsheet
+		if (certificateSheet != null) {// æ˜¯å¦å­˜åœ¨åä¸ºcertificateçš„sheet
 			Cell certificateCell = certificateSheet.getRow(0).getCell(0);
-			if (certificateCell != null) { // ¸ÃÈÏÖ¤sheetÖĞµÄµÚÒ»ĞĞµÚÒ»ÁĞµÄcellÊÇ·ñÎª¿Õ
+			if (certificateCell != null) { // è¯¥è®¤è¯sheetä¸­çš„ç¬¬ä¸€è¡Œç¬¬ä¸€åˆ—çš„cellæ˜¯å¦ä¸ºç©º
 				String certificateValue = certificateCell.getRichStringCellValue().getString();
-				logger.debug("---½âÎöÎÄ¼şÖĞµÄĞ£Ñécertificate sheetÖĞµÄĞ£Ñé×Ö·û´®Îª---"+certificateValue);
-				if (certificateCode.equals(certificateValue)) {// cellÖĞµÄÖµÓëÅäÖÃÖĞµÄÖµÊÇ·ñÏàµÈÀ´ÑéÖ¤¸ÃÎÄ¼şÊÇ·ñ»ùÓÚÏµÍ³Ìá¹©µÄÄ£°åĞŞ¸Ä
+				logger.debug("---è§£ææ–‡ä»¶ä¸­çš„æ ¡éªŒcertificate sheetä¸­çš„æ ¡éªŒå­—ç¬¦ä¸²ä¸º---"+certificateValue);
+				if (certificateCode.equals(certificateValue)) {// cellä¸­çš„å€¼ä¸é…ç½®ä¸­çš„å€¼æ˜¯å¦ç›¸ç­‰æ¥éªŒè¯è¯¥æ–‡ä»¶æ˜¯å¦åŸºäºç³»ç»Ÿæä¾›çš„æ¨¡æ¿ä¿®æ”¹
 					result = true;
-					logger.debug("---ÅäÖÃÎÄ¼şÖĞµÄĞ£Ñé×Ö·û´®Óë½âÎöÎÄ¼şÖĞµÄĞ£Ñé×Ö·û´®ÏàÍ¬---¸ÃÎÄ¼şÎª±ê×¼ÎÄ¼ş---");
+					logger.debug("---é…ç½®æ–‡ä»¶ä¸­çš„æ ¡éªŒå­—ç¬¦ä¸²ä¸è§£ææ–‡ä»¶ä¸­çš„æ ¡éªŒå­—ç¬¦ä¸²ç›¸åŒ---è¯¥æ–‡ä»¶ä¸ºæ ‡å‡†æ–‡ä»¶---");
 				}
 			}
 		}
-		logger.debug("---½áÊø---·½·¨---certificating");
+		logger.debug("---ç»“æŸ---æ–¹æ³•---certificating");
 		return result;
 	}
 
@@ -1418,7 +1418,7 @@ public class ExcelImportUtil {
 	}
 
 	/**
-	 * ½«ÖĞµÄÁĞºÅ×ª»»ÎªÁĞÃû³Æ£¨A£¬B...£©
+	 * å°†ä¸­çš„åˆ—å·è½¬æ¢ä¸ºåˆ—åç§°ï¼ˆAï¼ŒB...ï¼‰
 	 * @param colNum
 	 * @return
 	 */

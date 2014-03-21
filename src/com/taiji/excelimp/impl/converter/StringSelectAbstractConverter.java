@@ -4,7 +4,7 @@ import org.apache.poi.ss.usermodel.Cell;
 
 import com.taiji.excelimp.api.IConverter;
 /**
- * ¶ÔexcelÖÐµÄÏÂÀ­Ñ¡ÏîÖÐ²»Ðè¸ù¾ÝÏµÍ³ÖÐÅäÖÃÂë±í×ª»»£¨¼´excelÖÐËùÌîµÄÃ¶¾ÙÖµ¼´Îª´æÈëÖµ£©µÄÍ¨ÓÃ×ª»»Æ÷Ä£°å
+ * å¯¹excelä¸­çš„ä¸‹æ‹‰é€‰é¡¹ä¸­ä¸éœ€æ ¹æ®ç³»ç»Ÿä¸­é…ç½®ç è¡¨è½¬æ¢ï¼ˆå³excelä¸­æ‰€å¡«çš„æžšä¸¾å€¼å³ä¸ºå­˜å…¥å€¼ï¼‰çš„é€šç”¨è½¬æ¢å™¨æ¨¡æ¿
  * @author zhangxin
  *
  */

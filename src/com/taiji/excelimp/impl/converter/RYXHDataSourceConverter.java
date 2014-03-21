@@ -5,7 +5,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import com.taiji.excelimp.api.IConverter;
 
 /**
- * È¼ÓÍÏûºÄÊı¾İÀ´Ô´×ª»»Æ÷
+ * ç‡ƒæ²¹æ¶ˆè€—æ•°æ®æ¥æºè½¬æ¢å™¨
  * 
  * @author zhangxin
  * 
@@ -30,9 +30,9 @@ public class RYXHDataSourceConverter implements IConverter {
 				default:
 					return result;
 				}
-				// È¼ÓÍÏûºÄÊı¾İÀ´Ô´£º¼ÓÓÍĞ¡Æ± Ì¨ÕÊ ¼ÓÓÍ¼ÓÆø¿¨ ¾­Ñé¹ÀËã
-				if ("¼ÓÓÍĞ¡Æ±".equals(cellValue) || "Ì¨ÕÊ".equals(cellValue) || "¼ÓÓÍ¼ÓÆø¿¨".equals(cellValue)
-						|| "¾­Ñé¹ÀËã".equals(cellValue)) {
+				// ç‡ƒæ²¹æ¶ˆè€—æ•°æ®æ¥æºï¼šåŠ æ²¹å°ç¥¨ å°å¸ åŠ æ²¹åŠ æ°”å¡ ç»éªŒä¼°ç®—
+				if ("åŠ æ²¹å°ç¥¨".equals(cellValue) || "å°å¸".equals(cellValue) || "åŠ æ²¹åŠ æ°”å¡".equals(cellValue)
+						|| "ç»éªŒä¼°ç®—".equals(cellValue)) {
 					result = cellValue;
 				}
 			}

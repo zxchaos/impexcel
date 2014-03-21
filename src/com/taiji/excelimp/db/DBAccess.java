@@ -40,7 +40,7 @@ public class DBAccess {
 			Class.forName(this.driverClassName);
 			conn = DriverManager.getConnection(dbUrl, userName, password);
 			long end = System.currentTimeMillis();
-			logger.debug("----»ñµÃconn---¾­ÀúÊ±¼ä" + (end - start));
+			logger.debug("----è·å¾—conn---ç»å†æ—¶é—´" + (end - start));
 		} catch (ClassNotFoundException e) {
 			logger.error(e.getMessage(), e);
 		} catch (SQLException e) {
@@ -50,7 +50,7 @@ public class DBAccess {
 	}
 
 	/**
-	 * ÅúÁ¿Ö´ĞĞsql
+	 * æ‰¹é‡æ‰§è¡Œsql
 	 *
 	 * @param sqls
 	 */
@@ -82,7 +82,7 @@ public class DBAccess {
 	}
 
 	/**
-	 * ÅúÁ¿Ö´ĞĞsql
+	 * æ‰¹é‡æ‰§è¡Œsql
 	 *
 	 * @param sqls
 	 */
@@ -108,7 +108,7 @@ public class DBAccess {
 	}
 
 	/**
-	 * Ö´ĞĞsql
+	 * æ‰§è¡Œsql
 	 *
 	 * @param sql
 	 * @return
@@ -139,7 +139,7 @@ public class DBAccess {
 	}
 
 	/**
-	 * Ö´ĞĞsql
+	 * æ‰§è¡Œsql
 	 *
 	 * @param sql
 	 * @return
@@ -148,7 +148,7 @@ public class DBAccess {
 	public int executeSql(String sql, Connection conn) throws Exception {
 		int result = 0;
 		Statement stmt = null;
-		logger.debug("---Ö´ĞĞsql---" + sql);
+		logger.debug("---æ‰§è¡Œsql---" + sql);
 		try {
 			stmt = conn.createStatement();
 			result = stmt.executeUpdate(sql);
@@ -164,53 +164,53 @@ public class DBAccess {
 			conn.commit();
 			release(stmt);
 		}
-		logger.debug("---sql---Ö´ĞĞÍê³É---");
+		logger.debug("---sql---æ‰§è¡Œå®Œæˆ---");
 		return result;
 	}
 
 	/**
 	 * @param v_jb
-	 *            µ±Ç°ÓÃ»§¼¶±ğ
+	 *            å½“å‰ç”¨æˆ·çº§åˆ«
 	 * @param v_xzjb
-	 *            ĞĞÕş¼¶±ğ
+	 *            è¡Œæ”¿çº§åˆ«
 	 * @param v_proviceid
-	 *            Ê¡ID
+	 *            çœID
 	 * @param v_cityid
-	 *            ÊĞID
+	 *            å¸‚ID
 	 * @param v_countyid
-	 *            ÏØID
+	 *            å¿ID
 	 * @param v_year
-	 *            Äê¶È
+	 *            å¹´åº¦
 	 * @param v_month
-	 *            ÔÂ·İ
+	 *            æœˆä»½
 	 * @param v_province
-	 *            Ê¡Ãû³Æ
+	 *            çœåç§°
 	 * @param v_city
-	 *            ÊĞÃû³Æ
+	 *            å¸‚åç§°
 	 * @param v_county
-	 *            ÏØÃû³Æ
+	 *            å¿åç§°
 	 * @param v_company
-	 *            ¹«Ë¾Ãû³Æ
+	 *            å…¬å¸åç§°
 	 *
 	 * */
 	public String updateSjhzCSGJ(int v_jb, int v_xzjb, long v_proviceid, long v_cityid, long v_countyid,
 			String v_companyid, int v_year, int v_month, String v_province, String v_city, String v_county,
 			String v_company, Connection conn) throws Exception {
-		logger.debug("---¿ªÊ¼µ÷ÓÃ---csgj´æ´¢¹ı³Ì---");
+		logger.debug("---å¼€å§‹è°ƒç”¨---csgjå­˜å‚¨è¿‡ç¨‹---");
 		if (conn == null) {
 			return "0,no conn";
 		}
 
 		int v_hzjb = v_jb;
 		if (v_countyid == -1) {
-			// ÊĞÖ±
-			v_county = "ÊĞÖ±";
+			// å¸‚ç›´
+			v_county = "å¸‚ç›´";
 			v_countyid = -1;
 		}
 		if (v_countyid == -1 && v_cityid == -1) {
-			// Ê¡Ö±
-			v_city = "Ê¡Ö±";
-			v_county = "Ê¡Ö±";
+			// çœç›´
+			v_city = "çœç›´";
+			v_county = "çœç›´";
 		}
 		int v_dwlb = v_jb;
 
@@ -235,11 +235,11 @@ public class DBAccess {
 			proc.registerOutParameter(14, OracleTypes.VARCHAR);
 
 			proc.execute();
-			logger.debug("---½áÊøµ÷ÓÃcsgj´æ´¢¹ı³Ì---");
+			logger.debug("---ç»“æŸè°ƒç”¨csgjå­˜å‚¨è¿‡ç¨‹---");
 			v_out_int = proc.getInt(13);
 			v_out_str = proc.getString(14);
 
-			// µ÷ÊÔĞÅÏ¢
+			// è°ƒè¯•ä¿¡æ¯
 			if (v_out_str != null)
 				logger.debug(v_out_str);
 			return v_out_int + "," + v_out_str;
@@ -254,47 +254,47 @@ public class DBAccess {
 
 	/**
 	 * @param v_jb
-	 *            µ±Ç°ÓÃ»§¼¶±ğ
+	 *            å½“å‰ç”¨æˆ·çº§åˆ«
 	 * @param v_xzjb
-	 *            ĞĞÕş¼¶±ğ
+	 *            è¡Œæ”¿çº§åˆ«
 	 * @param v_proviceid
-	 *            Ê¡ID
+	 *            çœID
 	 * @param v_cityid
-	 *            ÊĞID
+	 *            å¸‚ID
 	 * @param v_countyid
-	 *            ÏØID
+	 *            å¿ID
 	 * @param v_year
-	 *            Äê¶È
+	 *            å¹´åº¦
 	 * @param v_month
-	 *            ÔÂ·İ
+	 *            æœˆä»½
 	 * @param v_province
-	 *            Ê¡Ãû³Æ
+	 *            çœåç§°
 	 * @param v_city
-	 *            ÊĞÃû³Æ
+	 *            å¸‚åç§°
 	 * @param v_county
-	 *            ÏØÃû³Æ
+	 *            å¿åç§°
 	 * @param v_company
-	 *            ¹«Ë¾Ãû³Æ
+	 *            å…¬å¸åç§°
 	 *
 	 * */
 	public String updateSjhzNCKY(int v_jb, int v_xzjb, long v_proviceid, long v_cityid, long v_countyid,
 			String v_companyid, int v_year, int v_month, String v_province, String v_city, String v_county,
 			String v_company, Connection conn) throws Exception {
-		logger.debug("---¿ªÊ¼µ÷ÓÃ---ncky´æ´¢¹ı³Ì---");
+		logger.debug("---å¼€å§‹è°ƒç”¨---nckyå­˜å‚¨è¿‡ç¨‹---");
 		if (conn == null) {
 			return "0,no conn";
 		}
 
 		int v_hzjb = v_xzjb;
 		if (v_countyid == -1) {
-			// ÊĞÖ±
-			v_county = "ÊĞÖ±";
+			// å¸‚ç›´
+			v_county = "å¸‚ç›´";
 			v_countyid = -1;
 		}
 		if (v_countyid == -1 && v_cityid == -1) {
-			// Ê¡Ö±
-			v_city = "Ê¡Ö±";
-			v_county = "Ê¡Ö±";
+			// çœç›´
+			v_city = "çœç›´";
+			v_county = "çœç›´";
 		}
 
 		int v_dwlb = v_jb;
@@ -320,11 +320,11 @@ public class DBAccess {
 			proc.registerOutParameter(14, OracleTypes.VARCHAR);
 
 			proc.execute();
-			logger.debug("---½áÊøµ÷ÓÃncky´æ´¢¹ı³Ì---");
+			logger.debug("---ç»“æŸè°ƒç”¨nckyå­˜å‚¨è¿‡ç¨‹---");
 			v_out_int = proc.getInt(13);
 			v_out_str = proc.getString(14);
 
-			// µ÷ÊÔĞÅÏ¢
+			// è°ƒè¯•ä¿¡æ¯
 			if (v_out_str != null)
 				logger.debug(v_out_str);
 			return v_out_int + "," + v_out_str;
@@ -339,47 +339,47 @@ public class DBAccess {
 
 	/**
 	 * @param v_jb
-	 *            µ±Ç°ÓÃ»§¼¶±ğ
+	 *            å½“å‰ç”¨æˆ·çº§åˆ«
 	 * @param v_xzjb
-	 *            ĞĞÕş¼¶±ğ
+	 *            è¡Œæ”¿çº§åˆ«
 	 * @param v_proviceid
-	 *            Ê¡ID
+	 *            çœID
 	 * @param v_cityid
-	 *            ÊĞID
+	 *            å¸‚ID
 	 * @param v_countyid
-	 *            ÏØID
+	 *            å¿ID
 	 * @param v_year
-	 *            Äê¶È
+	 *            å¹´åº¦
 	 * @param v_month
-	 *            ÔÂ·İ
+	 *            æœˆä»½
 	 * @param v_province
-	 *            Ê¡Ãû³Æ
+	 *            çœåç§°
 	 * @param v_city
-	 *            ÊĞÃû³Æ
+	 *            å¸‚åç§°
 	 * @param v_county
-	 *            ÏØÃû³Æ
+	 *            å¿åç§°
 	 * @param v_company
-	 *            ¹«Ë¾Ãû³Æ
+	 *            å…¬å¸åç§°
 	 *
 	 * */
 	public String updateSjhzCZQC(int v_jb, int v_xzjb, long v_proviceid, long v_cityid, long v_countyid,
 			String v_companyid, int v_year, int v_month, String v_province, String v_city, String v_county,
 			String v_company, Connection conn) throws Exception {
-		logger.debug("---¿ªÊ¼µ÷ÓÃ---czqc´æ´¢¹ı³Ì---");
+		logger.debug("---å¼€å§‹è°ƒç”¨---czqcå­˜å‚¨è¿‡ç¨‹---");
 		if (conn == null) {
 			return "0,no conn";
 		}
 
 		int v_hzjb = v_xzjb;
 		if (v_countyid == -1) {
-			// ÊĞÖ±
-			v_county = "ÊĞÖ±";
+			// å¸‚ç›´
+			v_county = "å¸‚ç›´";
 			v_countyid = -1;
 		}
 		if (v_countyid == -1 && v_cityid == -1) {
-			// Ê¡Ö±
-			v_city = "Ê¡Ö±";
-			v_county = "Ê¡Ö±";
+			// çœç›´
+			v_city = "çœç›´";
+			v_county = "çœç›´";
 		}
 		int v_dwlb = v_jb;
 
@@ -404,11 +404,11 @@ public class DBAccess {
 			proc.registerOutParameter(14, OracleTypes.VARCHAR);
 
 			proc.execute();
-			logger.debug("---½áÊøµ÷ÓÃczqc´æ´¢¹ı³Ì---");
+			logger.debug("---ç»“æŸè°ƒç”¨czqcå­˜å‚¨è¿‡ç¨‹---");
 			v_out_int = proc.getInt(13);
 			v_out_str = proc.getString(14);
 
-			// µ÷ÊÔĞÅÏ¢
+			// è°ƒè¯•ä¿¡æ¯
 			if (v_out_str != null)
 				logger.debug(v_out_str);
 			return v_out_int + "," + v_out_str;
@@ -422,7 +422,7 @@ public class DBAccess {
 	}
 
 	/**
-	 * Ö´ĞĞÅúÁ¿¸üĞÂºÍµ÷ÓÃ´æ´¢¹ı³Ì
+	 * æ‰§è¡Œæ‰¹é‡æ›´æ–°å’Œè°ƒç”¨å­˜å‚¨è¿‡ç¨‹
 	 *
 	 * @param dbAccess
 	 * @param updateSqls
@@ -430,16 +430,16 @@ public class DBAccess {
 	 * @throws Exception
 	 */
 	public void updateAndCallprocedure(String[] updateSqls, String[] fileNameParts, String hylb) throws Exception {
-		logger.debug("---¿ªÊ¼ÅúÁ¿¸üĞÂºÍµ÷ÓÃ´æ´¢¹ı³Ì---");
+		logger.debug("---å¼€å§‹æ‰¹é‡æ›´æ–°å’Œè°ƒç”¨å­˜å‚¨è¿‡ç¨‹---");
 		Connection conn = this.getConnection();
 		try {
 			conn.setAutoCommit(false);
-			// ½«½âÎöexcelÉú³ÉµÄsqlµ¼ÈëÊı¾İ¿â
-			logger.debug("---½«updateÓï¾äĞ´ÈëÊı¾İ¿â---");
+			// å°†è§£æexcelç”Ÿæˆçš„sqlå¯¼å…¥æ•°æ®åº“
+			logger.debug("---å°†updateè¯­å¥å†™å…¥æ•°æ®åº“---");
 			this.batchExecuteSqls(updateSqls, conn);
-			logger.debug("---updateÊı¾İ¿âÍê±Ï---");
+			logger.debug("---updateæ•°æ®åº“å®Œæ¯•---");
 
-			logger.debug("---µ÷ÓÃ´æ´¢¹ı³Ì---");
+			logger.debug("---è°ƒç”¨å­˜å‚¨è¿‡ç¨‹---");
 			if ("csgj".equals(hylb)) {
 				this.updateSjhzCSGJ(9, 4, Long.valueOf(fileNameParts[2]), Long.valueOf(fileNameParts[3]),
 						Long.valueOf(fileNameParts[4]), fileNameParts[5], Integer.parseInt(fileNameParts[6]),
@@ -458,25 +458,25 @@ public class DBAccess {
 			}
 
 			conn.commit();
-			logger.debug("---½áÊøµ÷ÓÃ´æ´¢¹ı³Ì---");
+			logger.debug("---ç»“æŸè°ƒç”¨å­˜å‚¨è¿‡ç¨‹---");
 		} catch (Exception e) {
 			conn.rollback();
-			logger.debug("---ÅúÁ¿¸üĞÂºÍµ÷ÓÃ´æ´¢¹ı³Ì³ö´í---");
+			logger.debug("---æ‰¹é‡æ›´æ–°å’Œè°ƒç”¨å­˜å‚¨è¿‡ç¨‹å‡ºé”™---");
 			logger.error(e.getMessage(), e);
 			throw e;
 		} finally {
 			this.release(conn);
 		}
-		logger.debug("---½áÊøÅúÁ¿¸üĞÂºÍµ÷ÓÃ´æ´¢¹ı³Ì---");
+		logger.debug("---ç»“æŸæ‰¹é‡æ›´æ–°å’Œè°ƒç”¨å­˜å‚¨è¿‡ç¨‹---");
 	}
 
 	/**
-	 * ÊÍ·ÅStatement Connection×ÊÔ´
+	 * é‡Šæ”¾Statement Connectionèµ„æº
 	 *
 	 * @param stmt
-	 *            Òª±»ÊÍ·ÅµÄStatement
+	 *            è¦è¢«é‡Šæ”¾çš„Statement
 	 * @param conn
-	 *            Òª±»ÊÍ·ÅµÄConnection
+	 *            è¦è¢«é‡Šæ”¾çš„Connection
 	 */
 	public void release(Statement stmt, Connection conn) {
 		release(stmt);
@@ -484,7 +484,7 @@ public class DBAccess {
 	}
 
 	/**
-	 * ÊÍ·Åconn
+	 * é‡Šæ”¾conn
 	 *
 	 * @param conn
 	 */
@@ -500,10 +500,10 @@ public class DBAccess {
 	}
 
 	/**
-	 * ÊÍ·ÅStatement
+	 * é‡Šæ”¾Statement
 	 *
 	 * @param stmt
-	 *            Òª±»ÊÍ·ÅµÄStatement
+	 *            è¦è¢«é‡Šæ”¾çš„Statement
 	 */
 	public void release(Statement stmt) {
 		if (stmt != null) {
@@ -517,10 +517,10 @@ public class DBAccess {
 	}
 
 	/**
-	 * ÊÍ·Å×ÊÔ´
+	 * é‡Šæ”¾èµ„æº
 	 *
 	 * @param rs
-	 *            Òª±»ÊÍ·ÅµÄResultSet
+	 *            è¦è¢«é‡Šæ”¾çš„ResultSet
 	 */
 	public void release(ResultSet rs) {
 		if (rs != null) {
@@ -534,12 +534,12 @@ public class DBAccess {
 	}
 
 	/**
-	 * ÊÍ·Å×ÊÔ´
+	 * é‡Šæ”¾èµ„æº
 	 *
 	 * @param rs
-	 *            Òª±»ÊÍ·ÅµÄResultSet
+	 *            è¦è¢«é‡Šæ”¾çš„ResultSet
 	 * @param stmt
-	 *            Òª±»ÊÍ·ÅµÄStatement
+	 *            è¦è¢«é‡Šæ”¾çš„Statement
 	 */
 	public void release(ResultSet rs, Statement stmt) {
 		release(rs);
@@ -561,7 +561,7 @@ public class DBAccess {
 			conn = getConnection();
 			tmp = getOneFieldContent(sql, conn);
 		} catch (Exception e) {
-			logger.error("ÔËĞĞSQL=" + sql + "Ê±³ö´í", e);
+			logger.error("è¿è¡ŒSQL=" + sql + "æ—¶å‡ºé”™", e);
 		} finally {
 			release(conn);
 		}
@@ -569,12 +569,12 @@ public class DBAccess {
 	}
 
 	/**
-	 * È¡µÃÊı¾İ¿âÒ»Ìõ¼ÇÂ¼£¬ÊÊÓÃÓÚsqlÓï¾äÖĞÖ»²éÑ¯Ò»¸ö×Ö¶Î
+	 * å–å¾—æ•°æ®åº“ä¸€æ¡è®°å½•ï¼Œé€‚ç”¨äºsqlè¯­å¥ä¸­åªæŸ¥è¯¢ä¸€ä¸ªå­—æ®µ
 	 *
 	 * @param sql
-	 *            SQLÓï¾ä
+	 *            SQLè¯­å¥
 	 * @param conn
-	 *            Êı¾İ¿âÁ¬½Ó
+	 *            æ•°æ®åº“è¿æ¥
 	 * @return List
 	 */
 	public String getOneFieldContent(String sql, Connection conn) throws Exception {
@@ -616,9 +616,9 @@ public class DBAccess {
 	}
 
 	/**
-	 * »ñµÃµ±Ç°Ê±¼äyyyyMMdd
+	 * è·å¾—å½“å‰æ—¶é—´yyyyMMdd
 	 *
-	 * @return ·µ»Øµ±Ç°Ê±¼äyyyyMMdd¸ñÊ½
+	 * @return è¿”å›å½“å‰æ—¶é—´yyyyMMddæ ¼å¼
 	 */
 	private String getNowDateString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("MMddHHmm");
@@ -626,7 +626,7 @@ public class DBAccess {
 	}
 
 	/**
-	 * ½«½âÎö³ö´íĞÅÏ¢²åÈëÊı¾İ¿â
+	 * å°†è§£æå‡ºé”™ä¿¡æ¯æ’å…¥æ•°æ®åº“
 	 *
 	 * @param dwid
 	 * @param hylb
@@ -635,12 +635,12 @@ public class DBAccess {
 	 */
 	public void insertErrorInfo(long dwid, String hylb, String sj, String info, String type) throws Exception {
 		String insertsql = "INSERT INTO PLDRFK_INFO (ID,DWID,HYLB,SJ,INFO,TYPE) values(?,?,?,?,?,?)";
-		logger.debug("---²åÈëµ¼Èë½á¹ûĞÅÏ¢µÄÔ¤±àÒësql---" + insertsql);
+		logger.debug("---æ’å…¥å¯¼å…¥ç»“æœä¿¡æ¯çš„é¢„ç¼–è¯‘sql---" + insertsql);
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		try {
 			long id = getSequence();
-			logger.debug("---Éú³Éid---" + id);
+			logger.debug("---ç”Ÿæˆid---" + id);
 			conn = getConnection();
 			psmt = conn.prepareStatement(insertsql);
 			psmt.setLong(1, id);
@@ -650,9 +650,9 @@ public class DBAccess {
 			psmt.setString(5, info);
 			psmt.setString(6, type);
 			psmt.executeUpdate();
-			logger.debug("---Ö´ĞĞ²åÈëÍê³É---");
+			logger.debug("---æ‰§è¡Œæ’å…¥å®Œæˆ---");
 		} catch (SQLException e) {
-			logger.error("Ö´ĞĞsql³ö´í£¬" + e.getMessage(), e);
+			logger.error("æ‰§è¡Œsqlå‡ºé”™ï¼Œ" + e.getMessage(), e);
 			throw e;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -663,10 +663,10 @@ public class DBAccess {
 	}
 
 	/**
-	 * mapÖĞµÄ×Ö¶ÎµÄÖµÎª²éÑ¯Ìõ¼şÊÇ·ñÔÚÄ³±íÖĞÓĞÖØ¸´¼ÇÂ¼
+	 * mapä¸­çš„å­—æ®µçš„å€¼ä¸ºæŸ¥è¯¢æ¡ä»¶æ˜¯å¦åœ¨æŸè¡¨ä¸­æœ‰é‡å¤è®°å½•
 	 *
 	 * @param fieldName
-	 * @param valueMap  °üº¬²éÑ¯Ìõ¼şmap£¬mapµÄkeyÎª×Ö¶ÎÃû³Æ£¬valueÎª×Ö¶ÎÖµ
+	 * @param valueMap  åŒ…å«æŸ¥è¯¢æ¡ä»¶mapï¼Œmapçš„keyä¸ºå­—æ®µåç§°ï¼Œvalueä¸ºå­—æ®µå€¼
 	 * @return
 	 */
 	public boolean isFieldValueDup(String tableName, Map<String, String> valueMap, Connection conn) throws Exception {
@@ -678,7 +678,7 @@ public class DBAccess {
 			sql+=entry.getKey()+"='"+entry.getValue()+"' and ";
 		}
 		sql = sql.substring(0,sql.lastIndexOf("and"));
-		logger.debug("---²éÖØsql---" + sql);
+		logger.debug("---æŸ¥é‡sql---" + sql);
 
 		try {
 
@@ -704,8 +704,8 @@ public class DBAccess {
 	 * @return
 	 */
 	public HashMap<String, Long> initHashMap(String strSQL) {
-		logger.debug("---¿ªÊ¼»ñÈ¡»º´æMap---");
-		logger.debug("---»ñÈ¡sql---" + strSQL);
+		logger.debug("---å¼€å§‹è·å–ç¼“å­˜Map---");
+		logger.debug("---è·å–sql---" + strSQL);
 		Connection conn = null;
 		PreparedStatement pstm = null;
 		ResultSet rst = null;
@@ -726,12 +726,12 @@ public class DBAccess {
 		} finally {
 			this.release(conn);
 		}
-		logger.debug("---»ñÈ¡mapÍê±Ï---");
+		logger.debug("---è·å–mapå®Œæ¯•---");
 		return hashmp;
 	}
 
 	/**
-	 * ²åÈëÊÜÒæÈË±í ºÍ »ù´¡±í
+	 * æ’å…¥å—ç›Šäººè¡¨ å’Œ åŸºç¡€è¡¨
 	 *
 	 * @param conn
 	 * @param multInsertSql
@@ -745,7 +745,7 @@ public class DBAccess {
 		try {
 			stmtSyr = conn.createStatement();
 			stmtSyr.executeUpdate(multInsertSql);
-			logger.debug("---multinsert---²åÈëÊÜÒæÈË±íÍê±Ï---");
+			logger.debug("---multinsert---æ’å…¥å—ç›Šäººè¡¨å®Œæ¯•---");
 			String jcbSql = "UPDATE " + hylb + "JCB SET ";
 			String[] pkParts = pks.split(",");
 			for (int i = 0; i < pkParts.length; i++) {
@@ -753,10 +753,10 @@ public class DBAccess {
 			}
 			jcbSql = jcbSql.substring(0, jcbSql.lastIndexOf(","));
 			jcbSql += " WHERE SJID=" + sjid;
-			logger.debug("---multinsert---²åÈë»ù´¡±ísql---" + jcbSql);
+			logger.debug("---multinsert---æ’å…¥åŸºç¡€è¡¨sql---" + jcbSql);
 			stmtJcb = conn.createStatement();
 			stmtJcb.executeUpdate(jcbSql);
-			logger.debug("---multinsert---²åÈë»ù´¡±íÍê±Ï---");
+			logger.debug("---multinsert---æ’å…¥åŸºç¡€è¡¨å®Œæ¯•---");
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);

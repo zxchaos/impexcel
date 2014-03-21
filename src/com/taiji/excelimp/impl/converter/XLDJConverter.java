@@ -1,7 +1,7 @@
 package com.taiji.excelimp.impl.converter;
 
 /**
- * ÏßÂ·µÈ¼¶×ª»»Æ÷
+ * çº¿è·¯ç­‰çº§è½¬æ¢å™¨
  * @author zhangxin
  *
  */
@@ -10,11 +10,11 @@ public class XLDJConverter extends StringSelectAbstractConverter {
 	@Override
 	public String getCellValue(String cellValue) {
 		String result = "";
-		if ("Ò»¼¶ÍøÂç".equals(cellValue)) {
+		if ("ä¸€çº§ç½‘ç»œ".equals(cellValue)) {
 			result = "1";
-		}else if ("¶ş¼¶ÍøÂç".equals(cellValue)) {
+		}else if ("äºŒçº§ç½‘ç»œ".equals(cellValue)) {
 			result = "2";
-		}else if ("Èı¼¶ÍøÂç".equals(cellValue)) {
+		}else if ("ä¸‰çº§ç½‘ç»œ".equals(cellValue)) {
 			result = "3";
 		}
 		return result;

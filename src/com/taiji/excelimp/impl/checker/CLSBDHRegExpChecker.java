@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.taiji.excelimp.api.IRegExpChecker;
 /**
- * ³µÁ¾Ê¶±ğ´úºÅÕıÔòÑéÖ¤Æ÷
+ * è½¦è¾†è¯†åˆ«ä»£å·æ­£åˆ™éªŒè¯å™¨
  * @author zhangxin
  *
  */
@@ -16,7 +16,7 @@ public class CLSBDHRegExpChecker implements IRegExpChecker {
 	public boolean check(String cellValue) {
 		boolean result = false;
 		if (StringUtils.isNotBlank(cellValue)) {
-			Pattern pattern = Pattern.compile("[A-HJ-NPR-Za-hj-npr-z0-9]{17}");//¹²17Î»¡£²»»á°üº¬ I¡¢O¡¢QÈı¸öÓ¢ÎÄ×ÖÄ¸
+			Pattern pattern = Pattern.compile("[A-HJ-NPR-Za-hj-npr-z0-9]{17}");//å…±17ä½ã€‚ä¸ä¼šåŒ…å« Iã€Oã€Qä¸‰ä¸ªè‹±æ–‡å­—æ¯
 			if (pattern.matcher(cellValue).matches()) {
 				result = true;
 			}

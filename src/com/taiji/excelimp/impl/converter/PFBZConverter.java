@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
- * ÅÅ·Å±ê×¼×ª»»Æ÷
+ * æ’æ”¾æ ‡å‡†è½¬æ¢å™¨
  * @author zhangxin
  *
  */
@@ -14,7 +14,7 @@ public class PFBZConverter extends StringSelectAbstractConverter {
 	@Override
 	public String getCellValue(String cellValue) {
 		String result = "";
-		String [] pfbzArray = new String[]{"¹ú¢ôÒÔÉÏ", "¹ú¢ô", "¹ú¢ó", "¹ú¢ò", "¹ú¢òÒÔÏÂ"};
+		String [] pfbzArray = new String[]{"å›½â…£ä»¥ä¸Š", "å›½â…£", "å›½â…¢", "å›½â…¡", "å›½â…¡ä»¥ä¸‹"};
 		if (Arrays.asList(pfbzArray).contains(cellValue)) {
 			result = cellValue;
 		}

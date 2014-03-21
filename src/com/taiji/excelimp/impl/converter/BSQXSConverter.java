@@ -3,7 +3,7 @@ package com.taiji.excelimp.impl.converter;
 import java.util.Arrays;
 
 /**
- * ±äËÙÆ÷ĞÍÊ½×ª»»Æ÷
+ * å˜é€Ÿå™¨å‹å¼è½¬æ¢å™¨
  * @author zhangxin
  *
  */
@@ -12,16 +12,16 @@ public class BSQXSConverter extends StringSelectAbstractConverter {
 	@Override
 	public String getCellValue(String cellValue) {
 		String result = "";
-		cellValue = cellValue.replace("(", "").replace(")", "").replace("£¨", "").replace("£©", "").replace("/", "");
-		String [] bsqxsArray = new String [] {"ÊÖ¶¯±äËÙÆ÷MT","×Ô¶¯±äËÙÆ÷AT","ÊÖ¶¯×Ô¶¯±äËÙÆ÷","ÎŞ¼¶Ê½±äËÙÆ÷"};
+		cellValue = cellValue.replace("(", "").replace(")", "").replace("ï¼ˆ", "").replace("ï¼‰", "").replace("/", "");
+		String [] bsqxsArray = new String [] {"æ‰‹åŠ¨å˜é€Ÿå™¨MT","è‡ªåŠ¨å˜é€Ÿå™¨AT","æ‰‹åŠ¨è‡ªåŠ¨å˜é€Ÿå™¨","æ— çº§å¼å˜é€Ÿå™¨"};
 		if (Arrays.asList(bsqxsArray).contains(cellValue)) {
 			result = cellValue;
-			if ("ÊÖ¶¯±äËÙÆ÷MT".equals(cellValue)) {
-				result = "ÊÖ¶¯±äËÙÆ÷(MT)";
-			}else if ("×Ô¶¯±äËÙÆ÷AT".equals(cellValue)) {
-				result = "×Ô¶¯±äËÙÆ÷(AT)";
-			}else if ("ÊÖ¶¯×Ô¶¯±äËÙÆ÷".equals(cellValue)) {
-				result = "ÊÖ¶¯/×Ô¶¯±äËÙÆ÷";
+			if ("æ‰‹åŠ¨å˜é€Ÿå™¨MT".equals(cellValue)) {
+				result = "æ‰‹åŠ¨å˜é€Ÿå™¨(MT)";
+			}else if ("è‡ªåŠ¨å˜é€Ÿå™¨AT".equals(cellValue)) {
+				result = "è‡ªåŠ¨å˜é€Ÿå™¨(AT)";
+			}else if ("æ‰‹åŠ¨è‡ªåŠ¨å˜é€Ÿå™¨".equals(cellValue)) {
+				result = "æ‰‹åŠ¨/è‡ªåŠ¨å˜é€Ÿå™¨";
 			}else {
 				result = cellValue;
 			}

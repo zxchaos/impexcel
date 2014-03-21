@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.taiji.excelimp.api.IRegExpChecker;
 /**
- * 车牌号码检验器
+ * 杞︾墝鍙风爜妫�楠屽櫒
  * @author zhangxin
  *
  */
@@ -16,7 +16,7 @@ public class CPHMRegExpChecker implements IRegExpChecker {
 	public boolean check(String cellValue) {
 		boolean result = false;
 		///^[a-zA-Z]{1}[a-zA-Z_0-9]{5}$/ 
-		Pattern pattern = Pattern.compile("^新[a-zA-Z]([a-zA-Z_0-9]{5})$");
+		Pattern pattern = Pattern.compile("^鏂癧a-zA-Z]([a-zA-Z_0-9]{5})$");
 		if (StringUtils.isNotBlank(cellValue)) {
 			result = pattern.matcher(cellValue).matches();
 		}

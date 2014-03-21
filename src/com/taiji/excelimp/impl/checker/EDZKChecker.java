@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.taiji.excelimp.api.IRegExpChecker;
 /**
- * ¶î¶¨ÔØ¿ÍÈËÊý¼ì²éÆ÷£º¶î¶¨ÔØ¿ÍÈËÊýÐèÒª´óÓÚµÈÓÚ0£¬Ð¡ÓÚµÈÓÚ999
+ * é¢å®šè½½å®¢äººæ•°æ£€æŸ¥å™¨ï¼šé¢å®šè½½å®¢äººæ•°éœ€è¦å¤§äºŽç­‰äºŽ0ï¼Œå°äºŽç­‰äºŽ999
  * @author zhangxin
  *
  */
@@ -13,7 +13,7 @@ public class EDZKChecker implements IRegExpChecker {
 	private Logger logger = LoggerFactory.getLogger(EDZKChecker.class);
 	@Override
 	public boolean check(String cellValue) {
-		logger.debug("---¶î¶¨ÔØ¿ÍÈËÊý¼ì²éÆ÷---´«ÈëÖµ---"+cellValue);
+		logger.debug("---é¢å®šè½½å®¢äººæ•°æ£€æŸ¥å™¨---ä¼ å…¥å€¼---"+cellValue);
 		boolean result = false;
 		String intValue = "";
 		if (cellValue.contains(".")) {
@@ -21,7 +21,7 @@ public class EDZKChecker implements IRegExpChecker {
 		}else {
 			intValue = cellValue;
 		}
-		logger.debug("---×ª»»ÖµºóµÄÖµ---"+intValue);
+		logger.debug("---è½¬æ¢å€¼åŽçš„å€¼---"+intValue);
 		if (Integer.valueOf(intValue)>=0 && Integer.valueOf(intValue)<=999) {
 			result = true;
 		}
