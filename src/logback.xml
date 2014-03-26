@@ -5,10 +5,10 @@
 		</encoder>
 	</appender>
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>logFile.log</file>
+		<file>/home/zxchaos/projectFiles/projects/logs/logFile.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover -->
-			<fileNamePattern>impExcel.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>/home/zxchaos/projectFiles/projects/logs/impExcel.%d{yyyy-MM-dd}.log</fileNamePattern>
 
 			<!-- keep 30 days worth of history -->
 			<maxHistory>30</maxHistory>
@@ -16,7 +16,7 @@
 
 		<encoder>
 			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} : %msg%n</pattern>
-			 <charset>UTF-8</charset> 
+			 <charset>UTF-8</charset>
 		</encoder>
 	</appender>
 	<root level="DEBUG">
